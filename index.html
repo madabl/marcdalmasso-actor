@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Marc Dalmasso — Actor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --off-black: #111111;
+      --dark: #1a1a1a;
+      --border: #2e2e2e;
+      --muted: #555555;
+      --light: #a0a0a0;
+      --white: #f0ede8;
+      --accent: #c8b89a;
+      --accent-dim: rgba(200,184,154,0.08);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--black);color:var(--white);font-family:'Raleway',sans-serif;font-weight:300;font-size:15px;line-height:1.7;overflow-x:hidden;cursor:crosshair}
+    ::selection{background:var(--accent);color:var(--black)}
+    ::-webkit-scrollbar{width:2px}
+    ::-webkit-scrollbar-track{background:var(--black)}
+    ::-webkit-scrollbar-thumb{background:var(--border)}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:28px 48px;background:linear-gradient(to bottom,rgba(10,10,10,.97) 60%,transparent)}
+    .nav-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:18px;letter-spacing:.12em;color:var(--white);text-decoration:none}
+    .nav-right{display:flex;align-items:center;gap:36px}
+    .lang-switcher{display:flex;gap:16px}
+    .lang-btn{background:none;border:none;color:var(--muted);font-family:'Raleway',sans-serif;font-weight:300;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:crosshair;transition:color .3s;padding:0}
+    .lang-btn.active,.lang-btn:hover{color:var(--accent)}
+    .nav-links{display:flex;gap:28px}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.18em;text-transform:uppercase;transition:color .3s}
+    .nav-links a:hover{color:var(--white)}
+
+    /* HERO */
+    .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:end;padding:0 48px 80px;gap:80px;position:relative}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(200,184,154,.03),transparent 65%);pointer-events:none}
+    .hero-main{position:relative;z-index:1}
+    .hero-tag{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;opacity:0;animation:fadeUp 1s ease forwards .3s}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(58px,8vw,110px);line-height:.92;letter-spacing:-.01em;color:var(--white);opacity:0;animation:fadeUp 1.1s ease forwards .5s}
+    .hero-title em{font-style:italic;color:var(--accent)}
+    .hero-statement{margin-top:40px;max-width:400px;font-size:13px;line-height:1.9;color:var(--light);opacity:0;animation:fadeUp 1.1s ease forwards .8s}
+    .hero-scroll{position:absolute;bottom:80px;left:0;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--border);opacity:0;animation:fadeIn 2s ease forwards 1.5s;display:flex;align-items:center;gap:12px}
+    .hero-scroll::before{content:'';display:block;width:40px;height:1px;background:var(--border)}
+
+    /* HERO PHOTO */
+    .hero-photo-col{position:relative;height:70vh;max-height:600px;opacity:0;animation:fadeIn 1.4s ease forwards .9s}
+    .hero-photo-frame{width:100%;height:100%;overflow:hidden;position:relative}
+    .hero-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(15%) contrast(1.05);transition:filter .6s;display:block}
+    .hero-photo-frame:hover img{filter:grayscale(0%) contrast(1)}
+    .hero-photo-placeholder{width:100%;height:100%;background:var(--off-black);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:var(--muted)}
+    .hero-photo-placeholder-icon{width:48px;height:48px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .hero-photo-placeholder span{font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+    .hero-photo-caption{position:absolute;bottom:-28px;right:0;font-size:9px;letter-spacing:.2em;color:var(--border);text-transform:uppercase}
+
+    /* SECTIONS */
+    section{padding:120px 48px}
+    .section-header{display:flex;align-items:baseline;gap:24px;margin-bottom:80px}
+    .section-label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+    .section-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:42px;color:var(--white);font-style:italic}
+    .section-rule{flex:1;height:1px;background:var(--border)}
+
+    /* PROJECTS */
+    .projects-list{display:flex;flex-direction:column;gap:2px}
+    .project-card{background:var(--off-black);border:1px solid var(--border);overflow:hidden;transition:border-color .4s}
+    .project-card:hover{border-color:rgba(200,184,154,.3)}
+    .project-top{display:grid;grid-template-columns:220px 1fr}
+
+    /* Cartell */
+    .project-cartell{position:relative;background:var(--dark);min-height:320px;overflow:hidden}
+    .project-cartell img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .6s ease}
+    .project-card:hover .project-cartell img{transform:scale(1.03)}
+    .project-cartell-placeholder{width:100%;height:100%;min-height:320px;background:var(--dark);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--border);padding:24px}
+    .cartell-placeholder-text{font-size:9px;letter-spacing:.25em;text-transform:uppercase;text-align:center}
+
+    /* Project header */
+    .project-header{padding:48px;display:flex;flex-direction:column;justify-content:space-between;border-bottom:1px solid var(--border)}
+    .project-type{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+    .project-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;line-height:1.1;color:var(--white);margin-bottom:8px}
+    .project-author{font-size:13px;color:var(--accent);letter-spacing:.06em;margin-bottom:32px}
+    .project-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 32px;font-size:12px}
+    .project-meta-item{color:var(--muted);line-height:1.6}
+    .project-meta-item strong{display:block;font-weight:400;color:var(--light);font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:2px}
+
+    /* Project body */
+    .project-body{padding:40px 48px}
+    .project-abstract{font-size:13px;color:var(--muted);line-height:1.9;max-width:680px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+
+    /* Media */
+    .project-media{margin-bottom:40px}
+    .media-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--border);margin-bottom:16px}
+    .photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px}
+    .photo-slot{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--dark);cursor:crosshair}
+    .photo-slot img{width:100%;height:100%;object-fit:cover;filter:grayscale(15%);transition:filter .4s,transform .5s;display:block}
+    .photo-slot:hover img{filter:grayscale(0%);transform:scale(1.04)}
+    .photo-slot::after{content:attr(data-caption);position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:var(--light);font-size:10px;letter-spacing:.1em;padding:20px 12px 10px;opacity:0;transition:opacity .3s}
+    .photo-slot:hover::after{opacity:1}
+    .photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--border);border:1px dashed rgba(46,46,46,.6)}
+    .photo-placeholder span{font-size:9px;letter-spacing:.2em;text-transform:uppercase}
+    .videos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
+    .video-slot{position:relative;aspect-ratio:16/9;background:var(--dark);overflow:hidden}
+    .video-slot iframe{width:100%;height:100%;border:none;display:block}
+    .video-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--border);border:1px dashed rgba(46,46,46,.6)}
+    .video-placeholder-icon{width:44px;height:44px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+    .video-placeholder span{font-size:9px;letter-spacing:.2em;text-transform:uppercase}
+    .video-label{position:absolute;bottom:0;left:0;right:0;padding:5px 10px;background:rgba(10,10,10,.8);font-size:10px;color:var(--muted);letter-spacing:.06em}
+
+    /* Bolos */
+    .project-bolos{padding-top:32px;border-top:1px solid var(--border)}
+    .bolos-title{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--border);margin-bottom:12px}
+    .bolo-item{font-size:11px;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(46,46,46,.4);display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+    .bolo-item:last-child{border-bottom:none}
+    .bolo-venue{color:var(--light)}
+    .bolo-date{color:var(--border);white-space:nowrap;font-size:10px}
+    .bolo-cancelled{text-decoration:line-through;opacity:.45}
+
+    /* TRAINING */
+    .training-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+    .training-item{background:var(--off-black);border:1px solid var(--border);overflow:hidden;transition:border-color .4s}
+    .training-item:hover{border-color:rgba(200,184,154,.3)}
+    .training-header{padding:36px 40px 28px;border-bottom:1px solid var(--border);position:relative}
+    .training-institution{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .training-institution a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(200,184,154,.3);transition:border-color .3s}
+    .training-institution a:hover{border-color:var(--accent)}
+    .training-title-el{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;font-style:italic;color:var(--white);line-height:1.3}
+    .training-period{position:absolute;top:36px;right:40px;font-size:10px;color:var(--border);letter-spacing:.1em}
+    .training-body{padding:24px 40px 32px}
+    .training-meta{font-size:12px;color:var(--muted);line-height:2}
+    .training-meta a{color:var(--light);text-decoration:none;border-bottom:1px solid var(--border);transition:color .3s,border-color .3s}
+    .training-meta a:hover{color:var(--accent);border-color:var(--accent)}
+    .training-photos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:16px}
+    .training-photo-slot{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--dark)}
+    .training-photo-slot img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter .4s,transform .5s;display:block}
+    .training-photo-slot:hover img{filter:grayscale(0%);transform:scale(1.04)}
+
+    /* ABOUT */
+    #about{background:var(--off-black)}
+    .about-inner{max-width:1000px;margin:0 auto}
+    .about-content{display:grid;grid-template-columns:1fr 360px;gap:80px;align-items:start}
+    .about-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;line-height:1.75;color:var(--light)}
+    .about-text em{color:var(--white);font-style:italic}
+    .about-detail-group{margin-bottom:36px}
+    .about-detail-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .about-detail-value{font-size:12px;color:var(--light);line-height:2}
+    .about-detail-value a{color:var(--light);text-decoration:none;border-bottom:1px solid var(--border);transition:color .3s,border-color .3s}
+    .about-detail-value a:hover{color:var(--accent);border-color:var(--accent)}
+    .skill-tag{display:inline-block;border:1px solid var(--border);padding:3px 10px;font-size:10px;letter-spacing:.1em;color:var(--muted);margin:2px 3px 2px 0;transition:border-color .3s,color .3s}
+    .skill-tag:hover{border-color:var(--accent);color:var(--accent)}
+
+    /* CONTACT */
+    #contact{border-top:1px solid var(--border);padding:80px 48px;display:flex;justify-content:space-between;align-items:center}
+    .contact-left{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;font-style:italic;color:var(--white);line-height:1.4}
+    .contact-email{color:var(--accent);text-decoration:none;font-style:normal;border-bottom:1px solid transparent;transition:border-color .3s}
+    .contact-email:hover{border-color:var(--accent)}
+    .contact-right{text-align:right;font-size:11px;color:var(--muted);line-height:2.5}
+    .contact-right a{color:var(--muted);text-decoration:none;transition:color .3s}
+    .contact-right a:hover{color:var(--accent)}
+
+    /* FOOTER */
+    footer{padding:28px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .footer-copy{font-size:10px;color:var(--border);letter-spacing:.15em}
+    .footer-tag{font-size:10px;color:var(--border);letter-spacing:.2em}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{to{opacity:1}}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      nav{padding:20px 24px}
+      .nav-links{display:none}
+      .hero{grid-template-columns:1fr;padding:100px 24px 60px;gap:48px}
+      .hero-photo-col{height:55vw;max-height:340px}
+      section{padding:80px 24px}
+      .project-top{grid-template-columns:1fr}
+      .project-cartell,.project-cartell-placeholder{min-height:220px}
+      .photos-grid{grid-template-columns:repeat(2,1fr)}
+      .videos-grid{grid-template-columns:1fr}
+      .training-grid{grid-template-columns:1fr}
+      .about-content{grid-template-columns:1fr;gap:48px}
+      #contact{flex-direction:column;gap:32px;text-align:center}
+      .contact-right{text-align:center}
+      footer{flex-direction:column;gap:12px;text-align:center}
+    }
+    @media(max-width:600px){
+      .photos-grid{grid-template-columns:1fr}
+      .training-photos-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-name">Marc Dalmasso</a>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('ca')">CAT</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <div class="nav-links">
+      <a href="#projectes" id="nav-projects">Projectes</a>
+      <a href="#formacio" id="nav-training">Formació</a>
+      <a href="#about" id="nav-about">Sobre mi</a>
+      <a href="#contact" id="nav-contact">Contacte</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-main">
+    <p class="hero-tag" id="hero-tag">Dossier Artístic</p>
+    <h1 class="hero-title">Marc<br><em>Dalmasso</em></h1>
+    <p class="hero-statement" id="hero-statement">
+      Actor format entre la companyia i l'escola, entre el text clàssic i la creació col·lectiva. Una presència construïda en la col·laboració, el risc i la precisió.
+    </p>
+    <div class="hero-scroll" id="scroll-hint">Desplaça</div>
+  </div>
+
+  <div class="hero-photo-col">
+    <div class="hero-photo-frame">
+      <!--
+        ════════════════════════════════════════
+        FOTO DE PERFIL
+        Quan tinguis la foto, elimina el div
+        hero-photo-placeholder i afegeix:
+
+        <img src="assets/images/marc-dalmasso.jpg"
+             alt="Marc Dalmasso, actor">
+
+        Recomanació: foto en vertical (portrait),
+        enquadrada de cintura cap amunt o sencer.
+        Mida mínima recomanada: 800×1100px.
+        ════════════════════════════════════════
+      -->
+      <div class="hero-photo-placeholder">
+        <div class="hero-photo-placeholder-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span id="photo-placeholder-text">Foto de perfil</span>
+      </div>
+    </div>
+    <div class="hero-photo-caption" id="photo-caption">Marc Dalmasso · Actor</div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projectes">
+  <div class="section-header">
+    <span class="section-label">— 01</span>
+    <h2 class="section-title" id="title-projects">Projectes</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="projects-list">
+
+    <!-- LA FESTA -->
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-cartell">
+          <!--
+            CARTELL LA FESTA
+            <img src="assets/images/cartell-la-festa.jpg" alt="Cartell La Festa">
+          -->
+          <div class="project-cartell-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg>
+            <span class="cartell-placeholder-text" id="cartell-label">Cartell</span>
+          </div>
+        </div>
+        <div class="project-header">
+          <div>
+            <div class="project-type" id="type-1">Teatre · Envers Teatre</div>
+            <div class="project-title">La Festa</div>
+            <div class="project-author">Thomas Vinterberg</div>
+          </div>
+          <div class="project-meta-grid">
+            <div class="project-meta-item"><strong id="meta-char">Personatge</strong>Michael</div>
+            <div class="project-meta-item"><strong id="meta-dir">Direcció</strong>Laura Larrègle</div>
+            <div class="project-meta-item"><strong id="meta-comp">Companyia</strong>Envers Teatre</div>
+            <div class="project-meta-item"><strong id="meta-adapt">Adaptació</strong>Envers Teatre</div>
+          </div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-abstract" id="abstract-festa">
+          Adaptació de Festen (1998) de Thomas Vinterberg. El 60è aniversari del senyor Hansen, una família, un secret terrible. Una investigació sobre la hipocresia social, el patriarcat i la violència latent que s'amaga rere la civilitat. Estrena al Centre Cívic Tomasa Cuevas, Barcelona (desembre 2019).
+        </div>
+        <div class="project-media">
+          <div class="media-label" id="media-photos-label">Fotografies</div>
+          <div class="photos-grid">
+            <!--
+              FOTOS LA FESTA
+              Substitueix cada <img> amb la teva foto real.
+              Format recomanat: JPG o WebP, ~800×600px, <400KB.
+              data-caption: peu de foto que apareix en hover.
+            -->
+            <div class="photo-slot" data-caption="La Festa · Envers Teatre">
+              <img src="https://picsum.photos/seed/festa1/600/450" alt="La Festa">
+            </div>
+            <div class="photo-slot" data-caption="La Festa · Centre Cívic Tomasa Cuevas">
+              <img src="https://picsum.photos/seed/festa2/600/450" alt="La Festa">
+            </div>
+            <div class="photo-slot" data-caption="La Festa · Envers Teatre">
+              <img src="https://picsum.photos/seed/festa3/600/450" alt="La Festa">
+            </div>
+            <div class="photo-slot" data-caption="">
+              <img src="https://picsum.photos/seed/festa4/600/450" alt="La Festa">
+            </div>
+            <div class="photo-slot" data-caption="">
+              <img src="https://picsum.photos/seed/festa5/600/450" alt="La Festa">
+            </div>
+            <div class="photo-slot" data-caption="">
+              <img src="https://picsum.photos/seed/festa6/600/450" alt="La Festa">
+            </div>
+          </div>
+          <div class="media-label" style="margin-top:20px" id="media-video-label">Vídeo</div>
+          <div class="videos-grid">
+            <!--
+              VÍDEOS LA FESTA
+              Substitueix l'iframe src amb el teu embed de Vimeo:
+              https://player.vimeo.com/video/EL_TEU_ID?title=0&byline=0&portrait=0&color=c8b89a
+            -->
+            <div class="video-slot">
+              <iframe src="https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+              <div class="video-label" id="video-sample-label">Exemple · substitueix l'ID de Vimeo</div>
+            </div>
+            <div class="video-slot">
+              <div class="video-placeholder">
+                <div class="video-placeholder-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                </div>
+                <span id="video-add-label">Afegir vídeo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-bolos">
+          <div class="bolos-title" id="bolos-label">Representacions</div>
+          <div class="bolo-item"><span class="bolo-venue">Centre Cívic Tomasa Cuevas, Barcelona</span><span class="bolo-date">21–22/12/2019</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Centre Cívic Tomasa Cuevas, Barcelona</span><span class="bolo-date">22/02/2020</span></div>
+          <div class="bolo-item bolo-cancelled"><span class="bolo-venue">Espai Jove la Fontana, Barcelona</span><span class="bolo-date">22/03/2020 · cancel·lat (COVID)</span></div>
+          <div class="bolo-item bolo-cancelled"><span class="bolo-venue">Societat El Centru, Vila-seca</span><span class="bolo-date">16/05/2020 · cancel·lat (COVID)</span></div>
+          <div class="bolo-item bolo-cancelled"><span class="bolo-venue">Sala Santa Llúcia, Reus</span><span class="bolo-date">17/05/2020 · cancel·lat (COVID)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTÒRIES -->
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-cartell">
+          <!-- <img src="assets/images/cartell-histories.jpg" alt="Cartell Històries per a ser explicades"> -->
+          <div class="project-cartell-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg>
+            <span class="cartell-placeholder-text">Cartell</span>
+          </div>
+        </div>
+        <div class="project-header">
+          <div>
+            <div class="project-type" id="type-2">Teatre · Envers Teatre</div>
+            <div class="project-title">Històries per a ser explicades</div>
+            <div class="project-author">Osvaldo Dragún</div>
+          </div>
+          <div class="project-meta-grid">
+            <div class="project-meta-item"><strong>Personatge</strong>Diverses rols</div>
+            <div class="project-meta-item"><strong>Direcció</strong>Laura Larrègle</div>
+            <div class="project-meta-item"><strong>Companyia</strong>Envers Teatre</div>
+            <div class="project-meta-item"><strong>Traducció</strong>Envers Teatre</div>
+          </div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-abstract" id="abstract-histories">
+          Quatre peces breus que fusionen el teatre èpic brechtià amb l'humor àcid porteny. Micos que es tornen homes, treballadors atrapats en sistemes absurds, dignitats cedides per supervivència. L'home incapaç de dominar el món que ell mateix ha creat. Seleccionada per la Mostra Nacional Itinera de Grups Amateurs de Catalunya.
+        </div>
+        <div class="project-media">
+          <div class="media-label">Fotografies</div>
+          <div class="photos-grid">
+            <div class="photo-slot" data-caption="Històries per a ser explicades">
+              <img src="https://picsum.photos/seed/hist1/600/450" alt="Històries">
+            </div>
+            <div class="photo-slot" data-caption="Mostra Itinera, Olot 2022">
+              <img src="https://picsum.photos/seed/hist2/600/450" alt="Històries">
+            </div>
+            <div class="photo-slot" data-caption="">
+              <img src="https://picsum.photos/seed/hist3/600/450" alt="Històries">
+            </div>
+            <div class="photo-slot" data-caption="">
+              <img src="https://picsum.photos/seed/hist4/600/450" alt="Històries">
+            </div>
+            <div class="photo-slot" data-caption="">
+              <img src="https://picsum.photos/seed/hist5/600/450" alt="Històries">
+            </div>
+            <div class="photo-slot" data-caption="">
+              <img src="https://picsum.photos/seed/hist6/600/450" alt="Històries">
+            </div>
+          </div>
+          <div class="media-label" style="margin-top:20px">Vídeo</div>
+          <div class="videos-grid">
+            <div class="video-slot">
+              <iframe src="https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+              <div class="video-label">Exemple · substitueix l'ID de Vimeo</div>
+            </div>
+            <div class="video-slot">
+              <div class="video-placeholder">
+                <div class="video-placeholder-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+                <span>Afegir vídeo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-bolos">
+          <div class="bolos-title">Representacions</div>
+          <div class="bolo-item"><span class="bolo-venue">La Bàscula, Barcelona</span><span class="bolo-date">17/03/2023</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Teatre Pere Serrat · Mostra Itinera, Olot</span><span class="bolo-date">24/09/2022</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Casa dels Contes, Barcelona</span><span class="bolo-date">09–16/06/2022</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Sala Ars, Barcelona</span><span class="bolo-date">05–19/05/2022</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Casa dels Contes, Barcelona</span><span class="bolo-date">10–31/03/2022</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Sala Diagonal · Mostra Itinera, Campdevànol</span><span class="bolo-date">23/10/2021</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Centre Cívic Tomasa Cuevas, Barcelona</span><span class="bolo-date">27/06/2021</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Plaça Comas, Barcelona</span><span class="bolo-date">16/06/2021</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Sala Santa Llúcia, Reus</span><span class="bolo-date">28/03/2021</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EL DIABLE DE L'AMPOLLA -->
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-cartell">
+          <!-- <img src="assets/images/cartell-diable.jpg" alt="Cartell El Diable de l'Ampolla"> -->
+          <div class="project-cartell-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg>
+            <span class="cartell-placeholder-text">Cartell</span>
+          </div>
+        </div>
+        <div class="project-header">
+          <div>
+            <div class="project-type" id="type-3">Teatre Familiar · Envers Teatre</div>
+            <div class="project-title">El Diable de l'Ampolla</div>
+            <div class="project-author">R.L. Stevenson</div>
+          </div>
+          <div class="project-meta-grid">
+            <div class="project-meta-item"><strong>Personatge</strong>Lopaka · Habitant de Honolulu · Contramestre</div>
+            <div class="project-meta-item"><strong>Direcció</strong>Laura Larrègle</div>
+            <div class="project-meta-item"><strong>Companyia</strong>Envers Teatre</div>
+            <div class="project-meta-item"><strong>Adaptació</strong>Envers Teatre</div>
+          </div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-abstract" id="abstract-diable">
+          Adaptació teatral del conte de R.L. Stevenson. Un mariner hawaià, una ampolla màgica i un diable que ho atorga tot — menys la vida. Un espectacle per a públic familiar que navega entre la fascinació i l'advertència moral.
+        </div>
+        <div class="project-media">
+          <div class="media-label">Fotografies</div>
+          <div class="photos-grid">
+            <div class="photo-slot" data-caption="El Diable de l'Ampolla">
+              <img src="https://picsum.photos/seed/diab1/600/450" alt="El Diable de l'Ampolla">
+            </div>
+            <div class="photo-slot" data-caption="Espai Jove Boca Nord, 2025">
+              <img src="https://picsum.photos/seed/diab2/600/450" alt="El Diable de l'Ampolla">
+            </div>
+            <div class="photo-slot" data-caption="">
+              <img src="https://picsum.photos/seed/diab3/600/450" alt="El Diable de l'Ampolla">
+            </div>
+          </div>
+          <div class="media-label" style="margin-top:20px">Vídeo</div>
+          <div class="videos-grid">
+            <div class="video-slot">
+              <iframe src="https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+              <div class="video-label">Exemple · substitueix l'ID de Vimeo</div>
+            </div>
+            <div class="video-slot">
+              <div class="video-placeholder">
+                <div class="video-placeholder-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+                <span>Afegir vídeo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-bolos">
+          <div class="bolos-title">Representacions</div>
+          <div class="bolo-item"><span class="bolo-venue">Espai Jove Boca Nord, Barcelona</span><span class="bolo-date">10/05/2025</span></div>
+          <div class="bolo-item"><span class="bolo-venue">Ca la Panarra, Barcelona</span><span class="bolo-date">22/06/2024</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARKING DAY -->
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-cartell">
+          <!-- <img src="assets/images/cartell-parking.jpg" alt="Park(ing) Day"> -->
+          <div class="project-cartell-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg>
+            <span class="cartell-placeholder-text">Cartell</span>
+          </div>
+        </div>
+        <div class="project-header">
+          <div>
+            <div class="project-type" id="type-4">Acció Teatral · Espai Públic</div>
+            <div class="project-title" id="parking-title">Accions Performatives</div>
+            <div class="project-author" id="parking-sub">Park(ing) Day · Ajuntament de Barcelona</div>
+          </div>
+          <div class="project-meta-grid">
+            <div class="project-meta-item"><strong>Companyia</strong>Envers Teatre</div>
+            <div class="project-meta-item"><strong>Espai</strong>Plaça Comas, Les Corts</div>
+            <div class="project-meta-item"><strong>Anys</strong>2019 · 2020</div>
+          </div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-abstract" id="abstract-parking">
+          Accions teatrals improvisades i interactives a l'espai públic, en el marc del Park(ing) Day de l'Ajuntament de Barcelona. La plaça com a escenari obert, el viandant com a espectador inesperat.
+        </div>
+        <div class="project-media">
+          <div class="media-label">Fotografies</div>
+          <div class="photos-grid">
+            <div class="photo-slot" data-caption="Park(ing) Day 2019">
+              <img src="https://picsum.photos/seed/park1/600/450" alt="Park(ing) Day">
+            </div>
+            <div class="photo-slot" data-caption="Plaça Comas, Les Corts">
+              <img src="https://picsum.photos/seed/park2/600/450" alt="Park(ing) Day">
+            </div>
+            <div class="photo-slot" data-caption="">
+              <div class="photo-placeholder">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <span>Foto</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /projects-list -->
+</section>
+
+<!-- TRAINING -->
+<section id="formacio" style="background:var(--off-black)">
+  <div class="section-header">
+    <span class="section-label">— 02</span>
+    <h2 class="section-title" id="title-training">Formació</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="training-grid">
+
+    <div class="training-item">
+      <div class="training-header">
+        <div class="training-institution"><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia</a></div>
+        <div class="training-title-el" id="train-beckett-title">Interpretació · Teatre de l'Absurd (Beckett)</div>
+        <div class="training-period">2025–26</div>
+      </div>
+      <div class="training-body">
+        <div class="training-meta">Prof. <a href="https://www.eolia.cat/portfolio-items/ferran-madico/" target="_blank" rel="noopener">Ferran Màdico</a></div>
+      </div>
+    </div>
+
+    <div class="training-item">
+      <div class="training-header">
+        <div class="training-institution"><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia</a></div>
+        <div class="training-title-el" id="train-clown-title">Clown</div>
+        <div class="training-period">2025</div>
+      </div>
+      <div class="training-body">
+        <div class="training-meta">Prof. <a href="https://www.eolia.cat/portfolio-items/arnau-marin/" target="_blank" rel="noopener">Arnau Marín</a></div>
+      </div>
+    </div>
+
+    <div class="training-item">
+      <div class="training-header">
+        <div class="training-institution"><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia</a></div>
+        <div class="training-title-el" id="train-interp-title">Interpretació</div>
+        <div class="training-period">2024–25</div>
+      </div>
+      <div class="training-body">
+        <div class="training-meta">
+          <a href="https://www.eolia.cat/portfolio-items/rosa-may/" target="_blank" rel="noopener">Rosa May</a> ·
+          <a href="https://www.eolia.cat/portfolio-items/carla-torres/" target="_blank" rel="noopener">Carla Torres</a> ·
+          <a href="https://www.eolia.cat/portfolio-items/salva-soler/" target="_blank" rel="noopener">Salva Soler</a>
+        </div>
+        <div class="media-label" style="margin-top:20px;margin-bottom:10px">Fotografies</div>
+        <div class="training-photos-grid">
+          <div class="training-photo-slot"><img src="https://picsum.photos/seed/eolia1/400/250" alt="Eòlia Interpretació"></div>
+          <div class="training-photo-slot"><img src="https://picsum.photos/seed/eolia2/400/250" alt="Eòlia Interpretació"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="training-item">
+      <div class="training-header">
+        <div class="training-institution"><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia</a></div>
+        <div class="training-title-el" id="train-move-title">Moviment, Viewpoints i Creació Escènica</div>
+        <div class="training-period">2023–25</div>
+      </div>
+      <div class="training-body">
+        <div class="training-meta">
+          <a href="https://www.eolia.cat/portfolio-items/mar-medina/" target="_blank" rel="noopener">Marc Medina</a> ·
+          <a href="https://www.eolia.cat/portfolio-items/georgia-vardarou/" target="_blank" rel="noopener">Georgia Vardarou</a>
+        </div>
+        <div class="media-label" style="margin-top:20px;margin-bottom:10px">Fotografies</div>
+        <div class="training-photos-grid">
+          <div class="training-photo-slot"><img src="https://picsum.photos/seed/move1/400/250" alt="Moviment Viewpoints"></div>
+          <div class="training-photo-slot"><img src="https://picsum.photos/seed/move2/400/250" alt="Moviment Viewpoints"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="training-item">
+      <div class="training-header">
+        <div class="training-institution"><a href="https://www.lazzigags.cat/" target="_blank" rel="noopener">Lazzigags</a></div>
+        <div class="training-title-el" id="train-musical-title">Teatre Musical</div>
+        <div class="training-period">2016–17</div>
+      </div>
+      <div class="training-body">
+        <div class="training-meta">Prof. Lluís Garrido</div>
+      </div>
+    </div>
+
+    <div class="training-item">
+      <div class="training-header">
+        <div class="training-institution">Col·legi Major Penyafort-Montserrat</div>
+        <div class="training-title-el" id="train-penyafort-title">Interpretació Teatral</div>
+        <div class="training-period">—</div>
+      </div>
+      <div class="training-body">
+        <div class="training-meta">Dir. Laura Larrègle</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="section-header">
+      <span class="section-label">— 03</span>
+      <h2 class="section-title" id="title-about">Sobre mi</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="about-content">
+      <div class="about-text" id="about-text">
+        Actor format entre la <em>companyia amateur</em> i l'escola professional. El treball col·lectiu d'Envers Teatre, la mirada del teatre èpic i la recerca del moviment escènic conviven amb la formació continuada a Eòlia.<br><br>Un recorregut que va del Shakespeare al Beckett, del Vinterberg al Dragún: textos que exigeixen presència, risc i precisió.
+      </div>
+      <div>
+        <div class="about-detail-group">
+          <div class="about-detail-label" id="about-label-company">Companyia</div>
+          <div class="about-detail-value">
+            <a href="https://www.instagram.com/envers.teatre/" target="_blank" rel="noopener">Envers Teatre</a><br>@envers.teatre
+          </div>
+        </div>
+        <div class="about-detail-group">
+          <div class="about-detail-label" id="about-label-school">Escola</div>
+          <div class="about-detail-value">
+            <a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia, Barcelona</a>
+          </div>
+        </div>
+        <div class="about-detail-group">
+          <div class="about-detail-label" id="about-label-skills">Habilitats escèniques</div>
+          <div class="about-detail-value">
+            <span class="skill-tag">Viewpoints</span>
+            <span class="skill-tag">Clown</span>
+            <span class="skill-tag">Teatre musical</span>
+            <span class="skill-tag">Teatre de carrer</span>
+            <span class="skill-tag">Teatre fòrum</span>
+          </div>
+        </div>
+        <div class="about-detail-group">
+          <div class="about-detail-label" id="about-label-lang">Idiomes d'actuació</div>
+          <div class="about-detail-value" id="about-langs">Català (natiu) · Castellà · Anglès</div>
+        </div>
+        <div class="about-detail-group">
+          <div class="about-detail-label" id="about-label-avail">Disponibilitat</div>
+          <div class="about-detail-value" id="about-avail">Barcelona · Catalunya</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="contact-left" id="contact-phrase">
+    Parlem.<br>
+    <!-- IMPORTANT: substitueix per el teu email real -->
+    <a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>
+  </div>
+  <div class="contact-right">
+    <div><a href="https://www.instagram.com/envers.teatre/" target="_blank" rel="noopener">@envers.teatre</a></div>
+    <div><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia Barcelona</a></div>
+    <div style="margin-top:16px;color:var(--border);font-size:10px;letter-spacing:.1em" id="contact-location">Barcelona</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy" id="footer-copy">© Marc Dalmasso · Dossier Artístic</div>
+  <div class="footer-tag">Actor · Barcelona</div>
+</footer>
+
+<script>
+const T = {
+  ca: {
+    'hero-tag':'Dossier Artístic',
+    'hero-statement':'Actor format entre la companyia i l\'escola, entre el text clàssic i la creació col·lectiva. Una presència construïda en la col·laboració, el risc i la precisió.',
+    'scroll-hint':'Desplaça',
+    'nav-projects':'Projectes','nav-training':'Formació','nav-about':'Sobre mi','nav-contact':'Contacte',
+    'photo-placeholder-text':'Foto de perfil','photo-caption':'Marc Dalmasso · Actor',
+    'title-projects':'Projectes','cartell-label':'Cartell',
+    'type-1':'Teatre · Envers Teatre','type-2':'Teatre · Envers Teatre','type-3':'Teatre Familiar · Envers Teatre','type-4':'Acció Teatral · Espai Públic',
+    'meta-char':'Personatge','meta-dir':'Direcció','meta-comp':'Companyia','meta-adapt':'Adaptació',
+    'bolos-label':'Representacions','media-photos-label':'Fotografies','media-video-label':'Vídeo',
+    'video-sample-label':'Exemple · substitueix l\'ID de Vimeo','video-add-label':'Afegir vídeo',
+    'abstract-festa':'Adaptació de Festen (1998) de Thomas Vinterberg. El 60è aniversari del senyor Hansen, una família, un secret terrible. Una investigació sobre la hipocresia social, el patriarcat i la violència latent que s\'amaga rere la civilitat. Estrena al Centre Cívic Tomasa Cuevas, Barcelona (desembre 2019).',
+    'abstract-histories':'Quatre peces breus que fusionen el teatre èpic brechtià amb l\'humor àcid porteny. Micos que es tornen homes, treballadors atrapats en sistemes absurds, dignitats cedides per supervivència. L\'home incapaç de dominar el món que ell mateix ha creat. Seleccionada per la Mostra Nacional Itinera de Grups Amateurs de Catalunya.',
+    'abstract-diable':'Adaptació teatral del conte de R.L. Stevenson. Un mariner hawaià, una ampolla màgica i un diable que ho atorga tot — menys la vida. Un espectacle per a públic familiar que navega entre la fascinació i l\'advertència moral.',
+    'parking-title':'Accions Performatives','parking-sub':'Park(ing) Day · Ajuntament de Barcelona',
+    'abstract-parking':'Accions teatrals improvisades i interactives a l\'espai públic, en el marc del Park(ing) Day de l\'Ajuntament de Barcelona. La plaça com a escenari obert, el viandant com a espectador inesperat.',
+    'title-training':'Formació',
+    'train-beckett-title':'Interpretació · Teatre de l\'Absurd (Beckett)','train-clown-title':'Clown',
+    'train-interp-title':'Interpretació','train-move-title':'Moviment, Viewpoints i Creació Escènica',
+    'train-musical-title':'Teatre Musical','train-penyafort-title':'Interpretació Teatral',
+    'title-about':'Sobre mi',
+    'about-text':'Actor format entre la <em>companyia amateur</em> i l\'escola professional. El treball col·lectiu d\'Envers Teatre, la mirada del teatre èpic i la recerca del moviment escènic conviven amb la formació continuada a Eòlia.<br><br>Un recorregut que va del Shakespeare al Beckett, del Vinterberg al Dragún: textos que exigeixen presència, risc i precisió.',
+    'about-label-company':'Companyia','about-label-school':'Escola','about-label-skills':'Habilitats escèniques',
+    'about-label-lang':'Idiomes d\'actuació','about-langs':'Català (natiu) · Castellà · Anglès',
+    'about-label-avail':'Disponibilitat','about-avail':'Barcelona · Catalunya',
+    'contact-phrase':'Parlem.<br><a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>',
+    'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístic','lang':'ca'
+  },
+  es: {
+    'hero-tag':'Dossier Artístico',
+    'hero-statement':'Actor formado entre la compañía y la escuela, entre el texto clásico y la creación colectiva. Una presencia construida en la colaboración, el riesgo y la precisión.',
+    'scroll-hint':'Desplaza',
+    'nav-projects':'Proyectos','nav-training':'Formación','nav-about':'Sobre mí','nav-contact':'Contacto',
+    'photo-placeholder-text':'Foto de perfil','photo-caption':'Marc Dalmasso · Actor',
+    'title-projects':'Proyectos','cartell-label':'Cartel',
+    'type-1':'Teatro · Envers Teatre','type-2':'Teatro · Envers Teatre','type-3':'Teatro Familiar · Envers Teatre','type-4':'Acción Teatral · Espacio Público',
+    'meta-char':'Personaje','meta-dir':'Dirección','meta-comp':'Compañía','meta-adapt':'Adaptación',
+    'bolos-label':'Representaciones','media-photos-label':'Fotografías','media-video-label':'Vídeo',
+    'video-sample-label':'Ejemplo · reemplaza el ID de Vimeo','video-add-label':'Añadir vídeo',
+    'abstract-festa':'Adaptación de Festen (1998) de Thomas Vinterberg. El 60º aniversario del señor Hansen, una familia, un secreto terrible. Una investigación sobre la hipocresía social, el patriarcado y la violencia latente que se oculta tras la civilidad. Estreno en el Centre Cívic Tomasa Cuevas, Barcelona (diciembre 2019).',
+    'abstract-histories':'Cuatro piezas breves que fusionan el teatro épico brechtiano con el humor ácido porteño. Monos que se vuelven hombres, trabajadores atrapados en sistemas absurdos, dignidades cedidas por supervivencia. El hombre incapaz de dominar el mundo que él mismo ha creado. Seleccionada por la Mostra Nacional Itinera de Grups Amateurs de Catalunya.',
+    'abstract-diable':'Adaptación teatral del cuento de R.L. Stevenson. Un marinero hawaiano, una botella mágica y un diablo que lo otorga todo — menos la vida. Un espectáculo para público familiar que navega entre la fascinación y la advertencia moral.',
+    'parking-title':'Acciones Performativas','parking-sub':'Park(ing) Day · Ajuntament de Barcelona',
+    'abstract-parking':'Acciones teatrales improvisadas e interactivas en el espacio público, en el marco del Park(ing) Day del Ajuntament de Barcelona. La plaza como escenario abierto, el transeúnte como espectador inesperado.',
+    'title-training':'Formación',
+    'train-beckett-title':'Interpretación · Teatro del Absurdo (Beckett)','train-clown-title':'Clown',
+    'train-interp-title':'Interpretación','train-move-title':'Movimiento, Viewpoints y Creación Escénica',
+    'train-musical-title':'Teatro Musical','train-penyafort-title':'Interpretación Teatral',
+    'title-about':'Sobre mí',
+    'about-text':'Actor formado entre la <em>compañía amateur</em> y la escuela profesional. El trabajo colectivo de Envers Teatre, la mirada del teatro épico y la investigación del movimiento escénico conviven con la formación continuada en Eòlia.<br><br>Un recorrido que va de Shakespeare a Beckett, de Vinterberg a Dragún: textos que exigen presencia, riesgo y precisión.',
+    'about-label-company':'Compañía','about-label-school':'Escuela','about-label-skills':'Habilidades escénicas',
+    'about-label-lang':'Idiomas de actuación','about-langs':'Catalán (nativo) · Castellano · Inglés',
+    'about-label-avail':'Disponibilidad','about-avail':'Barcelona · Cataluña',
+    'contact-phrase':'Hablemos.<br><a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>',
+    'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístico','lang':'es'
+  },
+  en: {
+    'hero-tag':'Artistic Dossier',
+    'hero-statement':'Actor trained between the company and the school, between the classical text and collective creation. A presence built on collaboration, risk and precision.',
+    'scroll-hint':'Scroll',
+    'nav-projects':'Projects','nav-training':'Training','nav-about':'About','nav-contact':'Contact',
+    'photo-placeholder-text':'Profile photo','photo-caption':'Marc Dalmasso · Actor',
+    'title-projects':'Projects','cartell-label':'Poster',
+    'type-1':'Theatre · Envers Teatre','type-2':'Theatre · Envers Teatre','type-3':'Family Theatre · Envers Teatre','type-4':'Theatrical Action · Public Space',
+    'meta-char':'Character','meta-dir':'Direction','meta-comp':'Company','meta-adapt':'Adaptation',
+    'bolos-label':'Performances','media-photos-label':'Photography','media-video-label':'Video',
+    'video-sample-label':'Sample · replace Vimeo ID','video-add-label':'Add video',
+    'abstract-festa':'Adaptation of Festen (1998) by Thomas Vinterberg. Mr Hansen\'s 60th birthday, a family, a terrible secret. An investigation into social hypocrisy, patriarchy and the latent violence hidden behind civility. Premiered at Centre Cívic Tomasa Cuevas, Barcelona (December 2019).',
+    'abstract-histories':'Four short pieces fusing Brechtian epic theatre with sharp Buenos Aires humour. Monkeys becoming men, workers trapped in absurd systems, dignities surrendered for survival. Man incapable of mastering the world he himself created. Selected for the Mostra Nacional Itinera de Grups Amateurs de Catalunya.',
+    'abstract-diable':'Theatrical adaptation of R.L. Stevenson\'s tale. A Hawaiian sailor, a magic bottle and a devil who grants everything — except life. A family show navigating between fascination and moral warning.',
+    'parking-title':'Performative Actions','parking-sub':'Park(ing) Day · Barcelona City Council',
+    'abstract-parking':'Improvised, interactive theatrical actions in public space, as part of Barcelona City Council\'s Park(ing) Day initiative. The square as open stage, the passerby as unexpected spectator.',
+    'title-training':'Training',
+    'train-beckett-title':'Acting · Theatre of the Absurd (Beckett)','train-clown-title':'Clown',
+    'train-interp-title':'Acting','train-move-title':'Movement, Viewpoints & Scenic Creation',
+    'train-musical-title':'Musical Theatre','train-penyafort-title':'Acting',
+    'title-about':'About',
+    'about-text':'Actor trained between <em>amateur company</em> and professional school. The collective work of Envers Teatre, the lens of epic theatre and the exploration of scenic movement coexist with ongoing training at Eòlia.<br><br>A journey from Shakespeare to Beckett, from Vinterberg to Dragún: texts that demand presence, risk and precision.',
+    'about-label-company':'Company','about-label-school':'School','about-label-skills':'Stage skills',
+    'about-label-lang':'Acting languages','about-langs':'Catalan (native) · Spanish · English',
+    'about-label-avail':'Availability','about-avail':'Barcelona · Catalonia',
+    'contact-phrase':'Let\'s talk.<br><a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>',
+    'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Artistic Dossier','lang':'en'
+  }
+};
+
+function setLang(lang) {
+  document.documentElement.lang = T[lang].lang;
+  Object.keys(T[lang]).forEach(k => {
+    const el = document.getElementById(k);
+    if (el) el.innerHTML = T[lang][k];
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase() === lang);
+  });
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.project-card, .training-item').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(18px)';
+  el.style.transition = `opacity .7s ease ${i * .06}s, transform .7s ease ${i * .06}s, border-color .4s`;
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
