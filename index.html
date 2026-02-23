@@ -12,14 +12,27 @@
     :root {
       --black: #0a0a0a;
       --off-black: #111111;
-      --dark: #1a1a1a;
+      --dark: #161616;
       --border: #2e2e2e;
-      --muted: #666666;
+      --muted: #666;
       --light: #b0b0b0;
       --white: #f0ede8;
       --accent: #c8b89a;
-      --accent-dim: rgba(200,184,154,0.08);
+
+      /* ── CARTELL SIZE ──────────────────────────
+         Change these two values to resize cartells.
+         --cartell-h : fixed height of the image area.
+         --cartell-min-w : minimum cell width before row-wrap triggers.
+         At 4 projects × 200px min each → wraps below ~800px container.
+      ────────────────────────────────────────── */
+      --cartell-h: 320px;
+      --cartell-min-w: 200px;
+
+      /* Training visual area height */
+      --training-vis-h: 110px;
+      --training-min-w: 180px;
     }
+
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{background:var(--black);color:var(--white);font-family:'Raleway',sans-serif;font-weight:300;font-size:15px;line-height:1.7;overflow-x:hidden;cursor:crosshair}
@@ -28,7 +41,7 @@
     ::-webkit-scrollbar-track{background:var(--black)}
     ::-webkit-scrollbar-thumb{background:var(--border)}
 
-    /* ── NAV ────────────────────────────────── */
+    /* ── NAV ── */
     nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:28px 48px;background:linear-gradient(to bottom,rgba(10,10,10,.97) 60%,transparent)}
     .nav-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:18px;letter-spacing:.12em;color:var(--white);text-decoration:none}
     .nav-right{display:flex;align-items:center;gap:36px}
@@ -39,234 +52,142 @@
     .nav-links a{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.18em;text-transform:uppercase;transition:color .3s}
     .nav-links a:hover{color:var(--white)}
 
-    /* ── HERO ───────────────────────────────── */
-    .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0 48px;gap:60px;position:relative;padding-top:80px}
+    /* ── HERO ── */
+    .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:80px 48px 60px;gap:60px;position:relative}
     .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(200,184,154,.03),transparent 65%);pointer-events:none}
-    .hero-main{position:relative;z-index:1;padding-bottom:40px}
+    .hero-main{position:relative;z-index:1}
     .hero-tag{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--accent);margin-bottom:28px;opacity:0;animation:fadeUp 1s ease forwards .3s}
     .hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(52px,7vw,100px);line-height:.9;letter-spacing:-.01em;color:var(--white);opacity:0;animation:fadeUp 1.1s ease forwards .5s}
     .hero-title em{font-style:italic;color:var(--accent)}
     .hero-statement{margin-top:36px;max-width:380px;font-size:13px;line-height:1.9;color:var(--light);opacity:0;animation:fadeUp 1.1s ease forwards .8s}
 
-    /* ── HERO PHOTO SLIDER ──────────────────── */
-    .hero-photo-col{
-      position:relative;
-      opacity:0;animation:fadeIn 1.4s ease forwards .9s;
-      display:flex;flex-direction:column;gap:12px;
-      align-self:center;
-    }
-
-    /* Main display frame — fixed height, image fills it */
-    .hero-display{
-      position:relative;
-      width:100%;
-      aspect-ratio:3/4;
-      max-height:65vh;
-      overflow:hidden;
-      background:var(--off-black);
-      border:1px solid var(--border);
-    }
-
-    .hero-display img{
-      position:absolute;inset:0;
-      width:100%;height:100%;
-      object-fit:cover;object-position:top center;
-      filter:grayscale(10%) contrast(1.04);
-      transition:opacity .5s ease, filter .5s;
-      opacity:0;
-    }
+    /* ── HERO PHOTO COLUMN ── */
+    .hero-photo-col{position:relative;opacity:0;animation:fadeIn 1.4s ease forwards .9s;display:flex;flex-direction:column;align-items:center;gap:10px}
+    .hero-photo-col::before{content:'';position:absolute;inset:0;background:var(--dark);z-index:0;border:1px solid var(--border)}
+    .hero-display,.hero-thumbs{position:relative;z-index:1}
+    .hero-display{position:relative;width:100%;max-width:360px;aspect-ratio:3/4;overflow:hidden;background:var(--off-black);border:1px solid var(--border)}
+    .hero-display img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(10%) contrast(1.04);transition:opacity .5s ease,filter .5s;opacity:0}
     .hero-display img.active{opacity:1}
     .hero-display:hover img.active{filter:grayscale(0%) contrast(1)}
-
-    /* Counter overlay */
-    .hero-display-counter{
-      position:absolute;bottom:12px;right:14px;
-      font-size:9px;letter-spacing:.2em;
-      color:rgba(240,237,232,.4);
-      pointer-events:none;
-      z-index:2;
-    }
-
-    /* Thumbnail strip */
-    .hero-thumbs{
-      display:flex;gap:6px;
-    }
-    .hero-thumb{
-      flex:1;aspect-ratio:1;overflow:hidden;
-      background:var(--dark);border:1px solid var(--border);
-      cursor:crosshair;transition:border-color .3s, opacity .3s;
-      opacity:.45;
-    }
+    .hero-display-counter{position:absolute;bottom:10px;right:12px;font-size:9px;letter-spacing:.2em;color:rgba(240,237,232,.4);pointer-events:none;z-index:2}
+    .hero-thumbs{display:flex;gap:6px;width:100%;max-width:360px}
+    .hero-thumb{flex:1;aspect-ratio:1;overflow:hidden;background:var(--dark);border:1px solid var(--border);cursor:crosshair;transition:border-color .3s,opacity .3s;opacity:.4}
     .hero-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;pointer-events:none}
     .hero-thumb.active,.hero-thumb:hover{opacity:1;border-color:var(--accent)}
 
-    /* ── SECTION COMMONS ────────────────────── */
+    /* ── SECTION COMMONS ── */
     section{padding:100px 48px}
-    .section-header{display:flex;align-items:baseline;gap:24px;margin-bottom:64px}
+    .section-header{display:flex;align-items:baseline;gap:24px;margin-bottom:56px}
     .section-label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
     .section-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:40px;color:var(--white);font-style:italic}
     .section-rule{flex:1;height:1px;background:var(--border)}
 
-    /* ── TIMELINE PILL (used in training) ───── */
-    .period-pill{
-      display:inline-block;
-      background:rgba(200,184,154,.1);
-      border:1px solid rgba(200,184,154,.25);
-      color:var(--accent);
-      font-size:9px;letter-spacing:.18em;
-      text-transform:uppercase;padding:2px 10px;
-      margin-bottom:12px;
-    }
-
-    /* ── TRAINING ───────────────────────────── */
-    .training-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px}
-    .training-item{background:var(--off-black);border:1px solid var(--border);overflow:hidden;transition:border-color .4s}
-    .training-item:hover{border-color:rgba(200,184,154,.35)}
-    .training-header{padding:32px 36px 24px;border-bottom:1px solid var(--border);position:relative}
-    .training-institution{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-    .training-institution a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(200,184,154,.25);transition:border-color .3s}
-    .training-institution a:hover{border-color:var(--accent)}
-    .training-title-el{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;font-style:italic;color:var(--white);line-height:1.3}
-    .training-period-badge{
-      position:absolute;top:32px;right:36px;
-      font-size:9px;letter-spacing:.15em;
-      color:var(--accent);
-      background:rgba(200,184,154,.08);
-      border:1px solid rgba(200,184,154,.2);
-      padding:2px 8px;
-    }
-    .training-body{padding:20px 36px 28px}
-    .training-meta{font-size:12px;color:var(--muted);line-height:2}
-    .training-meta a{color:var(--light);text-decoration:none;border-bottom:1px solid var(--border);transition:color .3s,border-color .3s}
-    .training-meta a:hover{color:var(--accent);border-color:var(--accent)}
-    .training-photos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:14px}
-    .training-photo-slot{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--dark)}
-    .training-photo-slot img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter .4s,transform .5s;display:block}
-    .training-photo-slot:hover img{filter:grayscale(0%);transform:scale(1.04)}
-    .media-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--border);margin-bottom:12px}
-
-    /* ── PROJECTS ACCORDION ─────────────────── */
-    .projects-accordion{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);transition:grid-template-columns .5s cubic-bezier(.4,0,.2,1)}
-    /* When a tab is active, it expands to ~2.5x the others */
-    .projects-accordion.has-active{grid-template-columns:1fr 1fr 1fr 1fr} /* overridden by JS inline */
-
-    .proj-tab{
-      position:relative;
-      border-right:1px solid var(--border);
-      overflow:hidden;
-      cursor:crosshair;
-      background:var(--off-black);
-      transition:background .3s;
-      display:flex;flex-direction:column;
-    }
-    .proj-tab:last-child{border-right:none}
-    .proj-tab:hover,.proj-tab.active{background:var(--dark)}
-
-    /* Cartell area at top of each tab */
-    .proj-tab-cartell{
-      position:relative;
-      overflow:hidden;
-      flex-shrink:0;
-      height:260px;
-      background:var(--black);
-    }
-    .proj-tab-cartell img{
-      width:100%;height:100%;object-fit:cover;object-position:top center;
-      display:block;
-      transition:transform .6s ease, opacity .4s;
-      filter:brightness(.8) grayscale(20%);
-    }
-    .proj-tab:hover .proj-tab-cartell img,
-    .proj-tab.active .proj-tab-cartell img{
-      transform:scale(1.04);filter:brightness(1) grayscale(0%);
-    }
-
-    /* Cartell cycling counter */
-    .cartell-counter{
-      position:absolute;bottom:8px;right:10px;
-      font-size:9px;letter-spacing:.15em;
-      color:rgba(240,237,232,.45);
-      pointer-events:none;z-index:3;
-    }
-
-    /* Click-to-cycle hint */
-    .cartell-hint{
-      position:absolute;top:8px;left:10px;
-      font-size:8px;letter-spacing:.18em;text-transform:uppercase;
-      color:var(--accent);opacity:0;
-      transition:opacity .3s;pointer-events:none;z-index:3;
-    }
-    .proj-tab:hover .cartell-hint{opacity:1}
-
-    /* Compact info strip inside tab (always visible) */
-    .proj-tab-info{
-      padding:20px 22px 18px;
+    /* ── ACCORDION GRID ──────────────────────────
+       Projects: auto-fill with fixed min-width.
+       The cell width grows to fill available space
+       but never shrinks below --cartell-min-w,
+       at which point it wraps to a new row.
+       This keeps the cartell image at its fixed
+       --cartell-h regardless of window width.
+    ────────────────────────────────────────── */
+    .acc-grid{
+      display:grid;
+      gap:0;
+      border-left:1px solid var(--border);
       border-top:1px solid var(--border);
-      flex-shrink:0;
     }
-    .proj-tab-year{font-size:9px;letter-spacing:.2em;color:var(--accent);margin-bottom:6px}
-    .proj-tab-name{
-      font-family:'Cormorant Garamond',serif;
-      font-weight:300;font-size:16px;
-      color:var(--white);line-height:1.2;
-      transition:color .3s;
-    }
-    .proj-tab:hover .proj-tab-name,.proj-tab.active .proj-tab-name{color:var(--accent)}
-    .proj-tab-role{font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:.04em}
 
-    /* Expand arrow */
-    .proj-tab-arrow{
-      position:absolute;bottom:16px;right:18px;
-      width:18px;height:18px;
-      border:1px solid var(--border);
-      display:flex;align-items:center;justify-content:center;
-      opacity:0;transition:opacity .3s, transform .3s;
+    /* Projects: auto-fill, min-width triggers wrap */
+    .acc-grid.proj-grid{
+      grid-template-columns: repeat(auto-fill, minmax(var(--cartell-min-w), 1fr));
     }
-    .proj-tab:hover .proj-tab-arrow{opacity:1}
-    .proj-tab.active .proj-tab-arrow{opacity:1;transform:rotate(180deg)}
 
-    /* ── PROJECT DETAIL PANEL ───────────────── */
-    .project-detail{
-      margin-top:2px;
-      border:1px solid var(--border);
-      border-top:none;
-      background:var(--off-black);
+    /* Training: same idea but narrower minimum */
+    .acc-grid.train-grid{
+      grid-template-columns: repeat(auto-fill, minmax(var(--training-min-w), 1fr));
+    }
+
+    .acc-tab{position:relative;border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;cursor:crosshair;background:var(--off-black);transition:background .3s;display:flex;flex-direction:column}
+    .acc-tab:hover,.acc-tab.active{background:var(--dark)}
+
+    /* ── VISUAL AREA ──────────────────────────
+       Fixed pixel height — this is the key change.
+       The image fills 100% of this fixed-height box.
+       No matter how wide the cell gets, height stays.
+       object-fit:cover ensures correct framing.
+    ────────────────────────────────────────── */
+    .acc-tab-visual{
+      position:relative;
       overflow:hidden;
-      max-height:0;
-      transition:max-height .6s cubic-bezier(.4,0,.2,1);
+      flex-shrink:0;
+      background:var(--black);
+      /* Projects: fixed cartell height */
+      height: var(--cartell-h);
     }
-    .project-detail.open{max-height:2000px}
 
-    .detail-inner{padding:48px}
+    /* Training visual overrides to shorter fixed height */
+    .train-grid .acc-tab-visual{
+      height: var(--training-vis-h);
+    }
 
-    /* Two-column: info left, bolos right */
-    .detail-top{display:grid;grid-template-columns:1fr 340px;gap:48px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+    .acc-tab-visual img{
+      /* Fill the fixed-height box entirely */
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:top center;
+      display:block;
+      transition:transform .6s ease,filter .5s;
+      filter:brightness(.75) grayscale(25%);
+    }
+    .acc-tab:hover .acc-tab-visual img,
+    .acc-tab.active .acc-tab-visual img{transform:scale(1.04);filter:brightness(1) grayscale(0%)}
 
-    .detail-abstract{font-size:13px;color:var(--light);line-height:1.9;max-width:580px}
-    .detail-meta{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:12px 24px}
+    /* Training: no-image placeholder */
+    .acc-tab-visual.no-img{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--black);border-bottom:1px solid var(--border)}
+    .acc-tab-visual.no-img .vis-period{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,32px);font-weight:300;font-style:italic;color:rgba(200,184,154,.35);letter-spacing:.02em}
+    .acc-tab-visual.no-img .vis-inst{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,184,154,.5)}
+
+    /* Arrow navigation */
+    .cartell-arrows{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:5}
+    .acc-tab-visual:hover .cartell-arrows{opacity:1;pointer-events:auto}
+    .cartell-btn{width:32px;height:32px;background:rgba(10,10,10,.65);border:1px solid rgba(240,237,232,.2);display:flex;align-items:center;justify-content:center;cursor:crosshair;transition:background .2s,border-color .2s;flex-shrink:0}
+    .cartell-btn:hover{background:rgba(10,10,10,.9);border-color:var(--accent)}
+    .cartell-btn svg{pointer-events:none}
+    .cartell-counter-overlay{position:absolute;bottom:8px;right:10px;font-size:9px;letter-spacing:.15em;color:rgba(240,237,232,.5);pointer-events:none;z-index:4}
+
+    /* Tab info strip */
+    .acc-tab-info{padding:18px 20px 16px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+    .acc-tab-year{font-size:9px;letter-spacing:.2em;color:var(--accent);margin-bottom:5px}
+    .acc-tab-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:15px;color:var(--white);line-height:1.25}
+    .acc-tab:hover .acc-tab-name,.acc-tab.active .acc-tab-name{color:var(--accent)}
+    .acc-tab-sub{font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:.03em;line-height:1.4}
+    .acc-tab-indicator{margin-top:12px;width:16px;height:1px;background:var(--border);transition:width .3s,background .3s}
+    .acc-tab:hover .acc-tab-indicator,.acc-tab.active .acc-tab-indicator{width:32px;background:var(--accent)}
+
+    /* Detail panel */
+    .acc-detail{grid-column:1/-1;border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;max-height:0;transition:max-height .55s cubic-bezier(.4,0,.2,1);background:var(--off-black)}
+    .acc-detail.open{max-height:2400px}
+    .detail-inner{padding:44px 48px}
+    .detail-top{display:grid;grid-template-columns:1fr 300px;gap:48px;margin-bottom:36px;padding-bottom:36px;border-bottom:1px solid var(--border)}
+    .detail-top.no-bolos{grid-template-columns:1fr}
+    .detail-abstract{font-size:13px;color:var(--light);line-height:1.9}
+    .detail-meta{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
     .detail-meta-item{font-size:12px;color:var(--muted);line-height:1.6}
     .detail-meta-item strong{display:block;font-weight:400;color:var(--light);font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:2px}
-
-    /* Bolos panel (right column) */
-    .detail-bolos{}
-    .detail-bolos-title{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
-    .bolo-item{font-size:11.5px;color:var(--light);padding:6px 0;border-bottom:1px solid rgba(46,46,46,.5);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+    .detail-bolos-title{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+    .bolo-item{font-size:11px;color:var(--light);padding:5px 0;border-bottom:1px solid rgba(46,46,46,.5);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
     .bolo-item:last-child{border-bottom:none}
     .bolo-venue{color:var(--light)}
     .bolo-date{color:var(--accent);white-space:nowrap;font-size:10px;flex-shrink:0}
-    .bolo-cancelled .bolo-venue,.bolo-cancelled .bolo-date{text-decoration:line-through;opacity:.4}
-
-    /* Media */
-    .detail-media{}
-    .detail-media-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--border);margin-bottom:14px}
+    .bolo-cancelled .bolo-venue,.bolo-cancelled .bolo-date{text-decoration:line-through;opacity:.38;color:var(--muted)}
+    .detail-media-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--border);margin-bottom:12px}
     .photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px}
     .photo-slot{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--dark);cursor:crosshair}
     .photo-slot img{width:100%;height:100%;object-fit:cover;filter:grayscale(12%);transition:filter .4s,transform .5s;display:block}
     .photo-slot:hover img{filter:grayscale(0%);transform:scale(1.04)}
     .photo-slot::after{content:attr(data-caption);position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:var(--light);font-size:10px;letter-spacing:.08em;padding:20px 12px 10px;opacity:0;transition:opacity .3s}
     .photo-slot:hover::after{opacity:1}
-    .photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--border);border:1px dashed rgba(46,46,46,.5)}
-    .photo-placeholder span{font-size:9px;letter-spacing:.2em;text-transform:uppercase}
     .videos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:4px}
     .video-slot{position:relative;aspect-ratio:16/9;background:var(--dark);overflow:hidden}
     .video-slot iframe{width:100%;height:100%;border:none;display:block}
@@ -275,13 +196,13 @@
     .video-placeholder span{font-size:9px;letter-spacing:.2em;text-transform:uppercase}
     .video-label{position:absolute;bottom:0;left:0;right:0;padding:5px 10px;background:rgba(10,10,10,.8);font-size:10px;color:var(--muted);letter-spacing:.06em}
 
-    /* ── ABOUT ──────────────────────────────── */
+    /* About */
     #about{background:var(--off-black)}
-    .about-inner{max-width:1000px;margin:0 auto}
-    .about-content{display:grid;grid-template-columns:1fr 340px;gap:80px;align-items:start}
+    .about-inner{max-width:960px;margin:0 auto}
+    .about-content{display:grid;grid-template-columns:1fr 320px;gap:72px;align-items:start}
     .about-text{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;line-height:1.75;color:var(--light)}
     .about-text em{color:var(--white);font-style:italic}
-    .about-detail-group{margin-bottom:32px}
+    .about-detail-group{margin-bottom:30px}
     .about-detail-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
     .about-detail-value{font-size:12px;color:var(--light);line-height:2}
     .about-detail-value a{color:var(--light);text-decoration:none;border-bottom:1px solid var(--border);transition:color .3s,border-color .3s}
@@ -289,7 +210,7 @@
     .skill-tag{display:inline-block;border:1px solid var(--border);padding:3px 10px;font-size:10px;letter-spacing:.1em;color:var(--muted);margin:2px 3px 2px 0;transition:border-color .3s,color .3s}
     .skill-tag:hover{border-color:var(--accent);color:var(--accent)}
 
-    /* ── CONTACT ────────────────────────────── */
+    /* Contact */
     #contact{border-top:1px solid var(--border);padding:80px 48px;display:flex;justify-content:space-between;align-items:center}
     .contact-left{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;font-style:italic;color:var(--white);line-height:1.4}
     .contact-email{color:var(--accent);text-decoration:none;font-style:normal;border-bottom:1px solid transparent;transition:border-color .3s}
@@ -298,47 +219,35 @@
     .contact-right a{color:var(--muted);text-decoration:none;transition:color .3s}
     .contact-right a:hover{color:var(--accent)}
 
-    /* ── FOOTER ─────────────────────────────── */
+    /* Footer */
     footer{padding:28px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    .footer-copy{font-size:10px;color:var(--border);letter-spacing:.15em}
-    .footer-tag{font-size:10px;color:var(--border);letter-spacing:.2em}
+    .footer-copy,.footer-tag{font-size:10px;color:var(--border);letter-spacing:.15em}
 
-    /* ── ANIMATIONS ─────────────────────────── */
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn{to{opacity:1}}
 
-    /* ── RESPONSIVE ─────────────────────────── */
-    @media(max-width:1000px){
-      .projects-accordion{grid-template-columns:1fr 1fr!important}
-      .proj-tab:nth-child(2){border-right:none}
-      .proj-tab:nth-child(3){border-top:1px solid var(--border)}
-      .detail-top{grid-template-columns:1fr}
-    }
-    @media(max-width:768px){
+    /* Responsive */
+    @media(max-width:720px){
       nav{padding:20px 24px}
       .nav-links{display:none}
-      .hero{grid-template-columns:1fr;padding:100px 24px 60px;gap:40px}
-      .hero-display{aspect-ratio:4/5;max-height:55vw}
+      .hero{grid-template-columns:1fr;padding:90px 24px 56px;gap:40px}
+      .hero-display{max-width:280px}
+      .hero-thumbs{max-width:280px}
       section{padding:72px 24px}
-      .projects-accordion{grid-template-columns:1fr!important}
-      .proj-tab{border-right:none;border-bottom:1px solid var(--border)}
-      .training-grid{grid-template-columns:1fr}
+      .detail-top{grid-template-columns:1fr!important;gap:28px}
       .about-content{grid-template-columns:1fr;gap:40px}
       #contact{flex-direction:column;gap:32px;text-align:center}
       .contact-right{text-align:center}
       footer{flex-direction:column;gap:12px;text-align:center}
       .photos-grid{grid-template-columns:repeat(2,1fr)}
     }
-    @media(max-width:500px){
-      .photos-grid{grid-template-columns:1fr}
-      .videos-grid{grid-template-columns:1fr}
-      .training-photos-grid{grid-template-columns:1fr}
+    @media(max-width:440px){
+      .photos-grid,.videos-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
 
-<!-- ── NAV ── -->
 <nav>
   <a href="#" class="nav-name">Marc Dalmasso</a>
   <div class="nav-right">
@@ -356,7 +265,6 @@
   </div>
 </nav>
 
-<!-- ── HERO ── -->
 <section class="hero" id="home">
   <div class="hero-main">
     <p class="hero-tag" id="hero-tag">Dossier Artístic</p>
@@ -365,240 +273,34 @@
       Actor format entre la companyia i l'escola, entre el text clàssic i la creació col·lectiva. Una presència construïda en la col·laboració, el risc i la precisió.
     </p>
   </div>
-
-  <!-- PHOTO SLIDER -->
   <div class="hero-photo-col">
-    <!--
-      DISPLAY PRINCIPAL
-      Les imatges s'apilen; JS mostra la .active.
-      Afegeix o elimina <img> lliurement.
-      Recomanació: fotos en vertical (3:4 o similar), min 800px d'amplada.
-    -->
     <div class="hero-display" id="heroDisplay">
       <img src="assets/0_profile/marc1.jpeg" alt="Marc Dalmasso" class="active">
-      <!--
-        <img src="assets/0_profile/marc2.jpeg" alt="Marc Dalmasso">
-        <img src="assets/0_profile/marc3.jpeg" alt="Marc Dalmasso">
-        Afegeix aquí les teves fotos addicionals
-      -->
-      <!-- PLACEHOLDER — elimina quan tinguis fotos -->
-      <img src="https://picsum.photos/seed/profile2/500/667" alt="Marc Dalmasso">
-      <img src="https://picsum.photos/seed/profile3/500/667" alt="Marc Dalmasso">
-      <div class="hero-display-counter" id="heroCounter">1 / 3</div>
+      <img src="assets/0_profile/marc2.jpeg" alt="Marc Dalmasso">
+      <div class="hero-display-counter" id="heroCounter">1 / 2</div>
     </div>
-
-    <!-- THUMBNAIL STRIP -->
-    <div class="hero-thumbs" id="heroThumbs">
-      <!-- Populated by JS from the images above -->
-    </div>
+    <div class="hero-thumbs" id="heroThumbs"></div>
   </div>
 </section>
 
-<!-- ── FORMACIÓ (01) ── -->
 <section id="formacio" style="background:var(--off-black)">
   <div class="section-header">
     <span class="section-label">— 01</span>
     <h2 class="section-title" id="title-training">Formació</h2>
     <div class="section-rule"></div>
   </div>
-  <div class="training-grid">
-
-    <!-- Eòlia: Beckett 2025-26 -->
-    <div class="training-item">
-      <div class="training-header">
-        <div class="training-institution"><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia</a></div>
-        <div class="training-title-el" id="train-beckett-title">Interpretació · Teatre de l'Absurd (Beckett)</div>
-        <div class="training-period-badge">2025–26</div>
-      </div>
-      <div class="training-body">
-        <div class="training-meta">Prof. <a href="https://www.eolia.cat/portfolio-items/ferran-madico/" target="_blank" rel="noopener">Ferran Màdico</a></div>
-      </div>
-    </div>
-
-    <!-- Eòlia: Clown 2025 -->
-    <div class="training-item">
-      <div class="training-header">
-        <div class="training-institution"><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia</a></div>
-        <div class="training-title-el" id="train-clown-title">Clown</div>
-        <div class="training-period-badge">2025</div>
-      </div>
-      <div class="training-body">
-        <div class="training-meta">Prof. <a href="https://www.eolia.cat/portfolio-items/arnau-marin/" target="_blank" rel="noopener">Arnau Marín</a></div>
-      </div>
-    </div>
-
-    <!-- Eòlia: Interpretació 2024-25 -->
-    <div class="training-item">
-      <div class="training-header">
-        <div class="training-institution"><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia</a></div>
-        <div class="training-title-el" id="train-interp-title">Interpretació</div>
-        <div class="training-period-badge">2024–25</div>
-      </div>
-      <div class="training-body">
-        <div class="training-meta">
-          <a href="https://www.eolia.cat/portfolio-items/rosa-may/" target="_blank" rel="noopener">Rosa May</a> ·
-          <a href="https://www.eolia.cat/portfolio-items/carla-torres/" target="_blank" rel="noopener">Carla Torres</a> ·
-          <a href="https://www.eolia.cat/portfolio-items/salva-soler/" target="_blank" rel="noopener">Salva Soler</a>
-        </div>
-        <div class="media-label" style="margin-top:16px;margin-bottom:10px">Fotografies</div>
-        <div class="training-photos-grid">
-          <div class="training-photo-slot"><img src="https://picsum.photos/seed/eolia1/400/250" alt="Eòlia Interpretació"></div>
-          <div class="training-photo-slot"><img src="https://picsum.photos/seed/eolia2/400/250" alt="Eòlia Interpretació"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Eòlia: Moviment 2023-25 -->
-    <div class="training-item">
-      <div class="training-header">
-        <div class="training-institution"><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia</a></div>
-        <div class="training-title-el" id="train-move-title">Moviment, Viewpoints i Creació Escènica</div>
-        <div class="training-period-badge">2023–25</div>
-      </div>
-      <div class="training-body">
-        <div class="training-meta">
-          <a href="https://www.eolia.cat/portfolio-items/mar-medina/" target="_blank" rel="noopener">Marc Medina</a> ·
-          <a href="https://www.eolia.cat/portfolio-items/georgia-vardarou/" target="_blank" rel="noopener">Georgia Vardarou</a>
-        </div>
-        <div class="media-label" style="margin-top:16px;margin-bottom:10px">Fotografies</div>
-        <div class="training-photos-grid">
-          <div class="training-photo-slot"><img src="https://picsum.photos/seed/move1/400/250" alt="Moviment Viewpoints"></div>
-          <div class="training-photo-slot"><img src="https://picsum.photos/seed/move2/400/250" alt="Moviment Viewpoints"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Lazzigags 2016-17 -->
-    <div class="training-item">
-      <div class="training-header">
-        <div class="training-institution"><a href="https://www.lazzigags.cat/" target="_blank" rel="noopener">Lazzigags</a></div>
-        <div class="training-title-el" id="train-musical-title">Teatre Musical</div>
-        <div class="training-period-badge">2016–17</div>
-      </div>
-      <div class="training-body">
-        <div class="training-meta">Prof. Lluís Garrido</div>
-      </div>
-    </div>
-
-    <!-- Penyafort -->
-    <div class="training-item">
-      <div class="training-header">
-        <div class="training-institution">Col·legi Major Penyafort-Montserrat</div>
-        <div class="training-title-el" id="train-penyafort-title">Interpretació Teatral</div>
-        <div class="training-period-badge" id="train-penyafort-period">Formació inicial</div>
-      </div>
-      <div class="training-body">
-        <div class="training-meta">Dir. Laura Larrègle</div>
-      </div>
-    </div>
-
-  </div>
+  <div class="acc-grid train-grid" id="trainingGrid"></div>
 </section>
 
-<!-- ── PROJECTES (02) ── -->
 <section id="projectes">
   <div class="section-header">
     <span class="section-label">— 02</span>
     <h2 class="section-title" id="title-projects">Projectes</h2>
     <div class="section-rule"></div>
   </div>
-
-  <!--
-    ACCORDION: hover a tab → expands. Click cartell → cycles through cartells.
-    Active tab stays open until another is hovered.
-  -->
-  <div class="projects-accordion" id="projectsAccordion">
-
-    <!-- TAB 1: La Festa -->
-    <div class="proj-tab" data-proj="0">
-      <div class="proj-tab-cartell" data-cartells='["assets/envers_festen/cartells/cartell1.jpg"]'>
-        <img src="assets/envers_festen/cartells/cartell1.jpg" alt="La Festa">
-        <div class="cartell-counter" style="display:none">1 / 1</div>
-        <div class="cartell-hint" id="hint-click">Clica per canviar cartell</div>
-      </div>
-      <div class="proj-tab-info">
-        <div class="proj-tab-year">2019–2020</div>
-        <div class="proj-tab-name">La Festa</div>
-        <div class="proj-tab-role">Michael · Thomas Vinterberg</div>
-      </div>
-      <div class="proj-tab-arrow">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6,9 12,15 18,9"/></svg>
-      </div>
-    </div>
-
-    <!-- TAB 2: Històries -->
-    <div class="proj-tab" data-proj="1">
-      <div class="proj-tab-cartell" data-cartells='["assets/envers_histories/cartells/cartell1.jpg","assets/envers_histories/cartells/cartell2.jpg","assets/envers_histories/cartells/cartell3.jpg","assets/envers_histories/cartells/cartell4.jpg"]'>
-        <img src="assets/envers_histories/cartells/cartell1.jpg" alt="Històries per a ser explicades">
-        <div class="cartell-counter">1 / 4</div>
-        <div class="cartell-hint">Clica per canviar cartell</div>
-      </div>
-      <div class="proj-tab-info">
-        <div class="proj-tab-year">2021–2023</div>
-        <div class="proj-tab-name">Històries per a ser explicades</div>
-        <div class="proj-tab-role">Diverses rols · Osvaldo Dragún</div>
-      </div>
-      <div class="proj-tab-arrow">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6,9 12,15 18,9"/></svg>
-      </div>
-    </div>
-
-    <!-- TAB 3: El Diable -->
-    <div class="proj-tab" data-proj="2">
-      <div class="proj-tab-cartell" data-cartells='["assets/envers_diable/cartells/cartell1.jpg"]'>
-        <img src="assets/envers_diable/cartells/cartell1.jpg" alt="El Diable de l'Ampolla">
-        <div class="cartell-counter" style="display:none">1 / 1</div>
-        <div class="cartell-hint">Clica per canviar cartell</div>
-      </div>
-      <div class="proj-tab-info">
-        <div class="proj-tab-year">2024–2025</div>
-        <div class="proj-tab-name">El Diable de l'Ampolla</div>
-        <div class="proj-tab-role">Lopaka · R.L. Stevenson</div>
-      </div>
-      <div class="proj-tab-arrow">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6,9 12,15 18,9"/></svg>
-      </div>
-    </div>
-
-    <!-- TAB 4: Parking Day -->
-    <div class="proj-tab" data-proj="3">
-      <div class="proj-tab-cartell" data-cartells='["assets/envers_parking_day/cartells/cartell1.jpg"]'>
-        <img src="assets/envers_parking_day/cartells/cartell1.jpg" alt="Park(ing) Day">
-        <div class="cartell-counter" style="display:none">1 / 1</div>
-        <div class="cartell-hint">Clica per canviar cartell</div>
-      </div>
-      <div class="proj-tab-info">
-        <div class="proj-tab-year">2019–2020</div>
-        <div class="proj-tab-name" id="parking-title">Accions Performatives</div>
-        <div class="proj-tab-role" id="parking-sub">Park(ing) Day · Ajuntament Barcelona</div>
-      </div>
-      <div class="proj-tab-arrow">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6,9 12,15 18,9"/></svg>
-      </div>
-    </div>
-
-  </div><!-- /accordion -->
-
-  <!-- DETAIL PANEL (shared, moves content in depending on active tab) -->
-  <div class="project-detail" id="projectDetail">
-    <div class="detail-inner">
-      <div class="detail-top">
-        <div>
-          <div class="detail-abstract" id="detailAbstract"></div>
-          <div class="detail-meta" id="detailMeta"></div>
-        </div>
-        <div class="detail-bolos">
-          <div class="detail-bolos-title" id="bolos-label">Representacions</div>
-          <div id="detailBolos"></div>
-        </div>
-      </div>
-      <div class="detail-media" id="detailMedia"></div>
-    </div>
-  </div>
-
+  <div class="acc-grid proj-grid" id="projectsGrid"></div>
 </section>
 
-<!-- ── ABOUT (03) ── -->
 <section id="about" style="background:var(--off-black)">
   <div class="about-inner">
     <div class="section-header">
@@ -640,7 +342,6 @@
   </div>
 </section>
 
-<!-- ── CONTACT ── -->
 <div id="contact">
   <div class="contact-left" id="contact-phrase">
     Parlem.<br>
@@ -659,357 +360,454 @@
 </footer>
 
 <script>
-/* ══════════════════════════════════════════
-   TRANSLATIONS
-══════════════════════════════════════════ */
+'use strict';
+
 const T = {
   ca:{
     'hero-tag':'Dossier Artístic',
     'hero-statement':'Actor format entre la companyia i l\'escola, entre el text clàssic i la creació col·lectiva. Una presència construïda en la col·laboració, el risc i la precisió.',
     'nav-training':'Formació','nav-projects':'Projectes','nav-about':'Sobre mi','nav-contact':'Contacte',
     'title-training':'Formació','title-projects':'Projectes','title-about':'Sobre mi',
-    'train-beckett-title':'Interpretació · Teatre de l\'Absurd (Beckett)',
-    'train-clown-title':'Clown','train-interp-title':'Interpretació',
-    'train-move-title':'Moviment, Viewpoints i Creació Escènica',
-    'train-musical-title':'Teatre Musical','train-penyafort-title':'Interpretació Teatral',
-    'train-penyafort-period':'Formació inicial',
-    'parking-title':'Accions Performatives','parking-sub':'Park(ing) Day · Ajuntament Barcelona',
-    'bolos-label':'Representacions',
     'about-text':'Actor format entre la <em>companyia amateur</em> i l\'escola professional. El treball col·lectiu d\'Envers Teatre, la mirada del teatre èpic i la recerca del moviment escènic conviven amb la formació continuada a Eòlia.<br><br>Un recorregut que va del Shakespeare al Beckett, del Vinterberg al Dragún: textos que exigeixen presència, risc i precisió.',
     'about-label-company':'Companyia','about-label-school':'Escola','about-label-skills':'Habilitats escèniques',
     'about-label-lang':'Idiomes d\'actuació','about-langs':'Català (natiu) · Castellà · Anglès',
     'about-label-avail':'Disponibilitat','about-avail':'Barcelona · Catalunya',
     'contact-phrase':'Parlem.<br><a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>',
-    'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístic','lang':'ca'
+    'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístic','lang':'ca',
+    bolosLabel:'Representacions',photoLabel:'Fotografies',videoLabel:'Vídeo',addVideo:'Afegir vídeo',
   },
   es:{
     'hero-tag':'Dossier Artístico',
     'hero-statement':'Actor formado entre la compañía y la escuela, entre el texto clásico y la creación colectiva. Una presencia construida en la colaboración, el riesgo y la precisión.',
     'nav-training':'Formación','nav-projects':'Proyectos','nav-about':'Sobre mí','nav-contact':'Contacto',
     'title-training':'Formación','title-projects':'Proyectos','title-about':'Sobre mí',
-    'train-beckett-title':'Interpretación · Teatro del Absurdo (Beckett)',
-    'train-clown-title':'Clown','train-interp-title':'Interpretación',
-    'train-move-title':'Movimiento, Viewpoints y Creación Escénica',
-    'train-musical-title':'Teatro Musical','train-penyafort-title':'Interpretación Teatral',
-    'train-penyafort-period':'Formación inicial',
-    'parking-title':'Acciones Performativas','parking-sub':'Park(ing) Day · Ajuntament Barcelona',
-    'bolos-label':'Representaciones',
     'about-text':'Actor formado entre la <em>compañía amateur</em> y la escuela profesional. El trabajo colectivo de Envers Teatre, la mirada del teatro épico y la investigación del movimiento escénico conviven con la formación continuada en Eòlia.<br><br>Un recorrido que va de Shakespeare a Beckett, de Vinterberg a Dragún: textos que exigen presencia, riesgo y precisión.',
     'about-label-company':'Compañía','about-label-school':'Escuela','about-label-skills':'Habilidades escénicas',
     'about-label-lang':'Idiomas de actuación','about-langs':'Catalán (nativo) · Castellano · Inglés',
     'about-label-avail':'Disponibilidad','about-avail':'Barcelona · Cataluña',
     'contact-phrase':'Hablemos.<br><a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>',
-    'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístico','lang':'es'
+    'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístico','lang':'es',
+    bolosLabel:'Representaciones',photoLabel:'Fotografías',videoLabel:'Vídeo',addVideo:'Añadir vídeo',
   },
   en:{
     'hero-tag':'Artistic Dossier',
     'hero-statement':'Actor trained between the company and the school, between the classical text and collective creation. A presence built on collaboration, risk and precision.',
     'nav-training':'Training','nav-projects':'Projects','nav-about':'About','nav-contact':'Contact',
     'title-training':'Training','title-projects':'Projects','title-about':'About',
-    'train-beckett-title':'Acting · Theatre of the Absurd (Beckett)',
-    'train-clown-title':'Clown','train-interp-title':'Acting',
-    'train-move-title':'Movement, Viewpoints & Scenic Creation',
-    'train-musical-title':'Musical Theatre','train-penyafort-title':'Acting',
-    'train-penyafort-period':'Initial training',
-    'parking-title':'Performative Actions','parking-sub':'Park(ing) Day · Barcelona City Council',
-    'bolos-label':'Performances',
     'about-text':'Actor trained between <em>amateur company</em> and professional school. The collective work of Envers Teatre, the lens of epic theatre and the exploration of scenic movement coexist with ongoing training at Eòlia.<br><br>A journey from Shakespeare to Beckett, from Vinterberg to Dragún: texts that demand presence, risk and precision.',
     'about-label-company':'Company','about-label-school':'School','about-label-skills':'Stage skills',
     'about-label-lang':'Acting languages','about-langs':'Catalan (native) · Spanish · English',
     'about-label-avail':'Availability','about-avail':'Barcelona · Catalonia',
     'contact-phrase':'Let\'s talk.<br><a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>',
-    'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Artistic Dossier','lang':'en'
+    'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Artistic Dossier','lang':'en',
+    bolosLabel:'Performances',photoLabel:'Photography',videoLabel:'Video',addVideo:'Add video',
   }
 };
 
-function setLang(lang) {
-  document.documentElement.lang = T[lang].lang;
-  Object.keys(T[lang]).forEach(k => { const el=document.getElementById(k); if(el) el.innerHTML=T[lang][k]; });
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase()===lang));
+let currentLang = 'ca';
+function setLang(lang){
+  currentLang=lang;
+  document.documentElement.lang=T[lang].lang;
+  Object.keys(T[lang]).forEach(k=>{const el=document.getElementById(k);if(el)el.innerHTML=T[lang][k];});
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===lang));
+  if(projAccordion.activeIdx>=0)projAccordion.renderDetail(projAccordion.activeIdx);
+  if(trainAccordion.activeIdx>=0)trainAccordion.renderDetail(trainAccordion.activeIdx);
 }
 
-/* ══════════════════════════════════════════
-   PROJECT DATA
-   Edit abstracts, meta, bolos, and media here.
-══════════════════════════════════════════ */
-const PROJECTS = [
+const PROJECTS=[
   {
-    abstract: {
-      ca: 'Adaptació de <em>Festen</em> (1998) de Thomas Vinterberg. El 60è aniversari del senyor Hansen, una família, un secret terrible. Una investigació sobre la hipocresia social, el patriarcat i la violència latent que s\'amaga rere la civilitat.',
-      es: 'Adaptación de <em>Festen</em> (1998) de Thomas Vinterberg. El 60º aniversario del señor Hansen, una familia, un secreto terrible. Una investigación sobre la hipocresía social, el patriarcado y la violencia latente.',
-      en: 'Adaptation of <em>Festen</em> (1998) by Thomas Vinterberg. Mr Hansen\'s 60th birthday, a family, a terrible secret. An investigation into social hypocrisy, patriarchy and latent violence.'
+    year:'2019–2020',
+    name:{ca:'La Festa',es:'La Festa',en:'La Festa'},
+    sub:{ca:'Michael · Thomas Vinterberg',es:'Michael · Thomas Vinterberg',en:'Michael · Thomas Vinterberg'},
+    cartells:['assets/envers_festen/cartells/cartell1.jpg'],
+    abstract:{
+      ca:'Adaptació de <em>Festen</em> (1998) de Thomas Vinterberg. El 60è aniversari del senyor Hansen, una família, un secret terrible. Una investigació sobre la hipocresia social, el patriarcat i la violència latent que s\'amaga rere la civilitat.',
+      es:'Adaptación de <em>Festen</em> (1998) de Thomas Vinterberg. El 60º aniversario del señor Hansen, una familia, un secreto terrible. Una investigación sobre la hipocresía social, el patriarcado y la violencia latente.',
+      en:'Adaptation of <em>Festen</em> (1998) by Thomas Vinterberg. Mr Hansen\'s 60th birthday, a family, a terrible secret. An investigation into social hypocrisy, patriarchy and latent violence.'
     },
-    meta: {
-      ca: [['Personatge','Michael'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Adaptació','Envers Teatre']],
-      es: [['Personaje','Michael'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Adaptación','Envers Teatre']],
-      en: [['Character','Michael'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Adaptation','Envers Teatre']]
+    meta:{
+      ca:[['Personatge','Michael'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Adaptació','Envers Teatre']],
+      es:[['Personaje','Michael'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Adaptación','Envers Teatre']],
+      en:[['Character','Michael'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Adaptation','Envers Teatre']]
     },
-    bolos: [
-      {venue:'Centre Cívic Tomasa Cuevas, Barcelona', date:'21–22/12/2019'},
-      {venue:'Centre Cívic Tomasa Cuevas, Barcelona', date:'22/02/2020'},
-      {venue:'Espai Jove la Fontana, Barcelona', date:'22/03/2020', cancelled:true, note:'COVID'},
-      {venue:'Societat El Centru, Vila-seca', date:'16/05/2020', cancelled:true, note:'COVID'},
-      {venue:'Sala Santa Llúcia, Reus', date:'17/05/2020', cancelled:true, note:'COVID'},
+    bolos:[
+      {venue:'Centre Cívic Tomasa Cuevas, Barcelona',date:'21–22/12/2019'},
+      {venue:'Centre Cívic Tomasa Cuevas, Barcelona',date:'22/02/2020'},
+      {venue:'Espai Jove la Fontana, Barcelona',date:'22/03/2020',cancelled:true,note:'COVID'},
+      {venue:'Casa dels Contes, Barcelona',date:'14/05/2020',cancelled:true,note:'COVID'},
+      {venue:'Societat El Centru, Vila-seca',date:'16/05/2020',cancelled:true,note:'COVID'},
+      {venue:'Sala Santa Llúcia, Reus',date:'17/05/2020',cancelled:true,note:'COVID'},
+      {venue:'La Bòbila, L\'Hospitalet de Llobregat',date:'17/07/2020',cancelled:true,note:'COVID'},
     ],
-    photos: [
-      {src:'https://picsum.photos/seed/festa1/600/450', cap:'La Festa · Envers Teatre'},
-      {src:'https://picsum.photos/seed/festa2/600/450', cap:'Centre Cívic Tomasa Cuevas'},
-      {src:'https://picsum.photos/seed/festa3/600/450', cap:''},
-      {src:'https://picsum.photos/seed/festa4/600/450', cap:''},
-      {src:'https://picsum.photos/seed/festa5/600/450', cap:''},
-      {src:'https://picsum.photos/seed/festa6/600/450', cap:''},
+    photos:[
+      {src:'https://picsum.photos/seed/festa1/600/450',cap:'La Festa · Envers Teatre'},
+      {src:'https://picsum.photos/seed/festa2/600/450',cap:'Centre Cívic Tomasa Cuevas'},
+      {src:'https://picsum.photos/seed/festa3/600/450',cap:''},
+      {src:'https://picsum.photos/seed/festa4/600/450',cap:''},
+      {src:'https://picsum.photos/seed/festa5/600/450',cap:''},
+      {src:'https://picsum.photos/seed/festa6/600/450',cap:''},
     ],
-    videos: [
-      {src:'https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a', label:'Exemple · substitueix l\'ID de Vimeo'},
+    videos:[
+      {src:'https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a',label:'Exemple · substitueix l\'ID de Vimeo'},
       null
     ]
   },
   {
-    abstract: {
-      ca: 'Quatre peces breus que fusionen el teatre èpic brechtià amb l\'humor àcid porteny. Micos que es tornen homes, treballadors atrapats en sistemes absurds, dignitats cedides per supervivència. L\'home incapaç de dominar el món que ell mateix ha creat. Seleccionada per la Mostra Nacional Itinera de Grups Amateurs de Catalunya.',
-      es: 'Cuatro piezas breves que fusionan el teatro épico brechtiano con el humor ácido porteño. Monos que se vuelven hombres, trabajadores atrapados en sistemas absurdos. Seleccionada por la Mostra Nacional Itinera de Grups Amateurs de Catalunya.',
-      en: 'Four short pieces fusing Brechtian epic theatre with sharp Buenos Aires humour. Monkeys becoming men, workers trapped in absurd systems. Selected for the Mostra Nacional Itinera de Grups Amateurs de Catalunya.'
-    },
-    meta: {
-      ca: [['Personatge','Diverses rols'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Traducció','Envers Teatre']],
-      es: [['Personaje','Varios roles'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Traducción','Envers Teatre']],
-      en: [['Character','Multiple roles'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Translation','Envers Teatre']]
-    },
-    bolos: [
-      {venue:'La Bàscula, Barcelona', date:'17/03/2023'},
-      {venue:'Teatre Pere Serrat · Mostra Itinera, Olot', date:'24/09/2022'},
-      {venue:'Casa dels Contes, Barcelona', date:'09–16/06/2022'},
-      {venue:'Sala Ars, Barcelona', date:'05–19/05/2022'},
-      {venue:'Casa dels Contes, Barcelona', date:'10–31/03/2022'},
-      {venue:'Sala Diagonal · Mostra Itinera, Campdevànol', date:'23/10/2021'},
-      {venue:'Centre Cívic Tomasa Cuevas, Barcelona', date:'27/06/2021'},
-      {venue:'Plaça Comas, Barcelona', date:'16/06/2021'},
-      {venue:'Sala Santa Llúcia, Reus', date:'28/03/2021'},
+    year:'2021–2023',
+    name:{ca:'Històries per a ser explicades',es:'Històries per a ser explicades',en:'Històries per a ser explicades'},
+    sub:{ca:'Diverses rols · Osvaldo Dragún',es:'Varios roles · Osvaldo Dragún',en:'Multiple roles · Osvaldo Dragún'},
+    cartells:[
+      'assets/envers_histories/cartells/cartell1.jpg',
+      'assets/envers_histories/cartells/cartell2.jpg',
+      'assets/envers_histories/cartells/cartell3.jpg',
+      'assets/envers_histories/cartells/cartell4.jpg',
     ],
-    photos: [
-      {src:'https://picsum.photos/seed/hist1/600/450', cap:'Històries per a ser explicades'},
-      {src:'https://picsum.photos/seed/hist2/600/450', cap:'Mostra Itinera, Olot 2022'},
-      {src:'https://picsum.photos/seed/hist3/600/450', cap:''},
-      {src:'https://picsum.photos/seed/hist4/600/450', cap:''},
-      {src:'https://picsum.photos/seed/hist5/600/450', cap:''},
-      {src:'https://picsum.photos/seed/hist6/600/450', cap:''},
+    abstract:{
+      ca:'Quatre peces breus que fusionen el teatre èpic brechtià amb l\'humor àcid porteny. Micos que es tornen homes, treballadors atrapats en sistemes absurds, dignitats cedides per supervivència. L\'home incapaç de dominar el món que ell mateix ha creat. Seleccionada per la Mostra Nacional Itinera de Grups Amateurs de Catalunya.',
+      es:'Cuatro piezas breves que fusionan el teatro épico brechtiano con el humor ácido porteño. Monos que se vuelven hombres, trabajadores atrapados en sistemas absurdos. Seleccionada por la Mostra Nacional Itinera de Grups Amateurs de Catalunya.',
+      en:'Four short pieces fusing Brechtian epic theatre with sharp Buenos Aires humour. Monkeys becoming men, workers trapped in absurd systems. Selected for the Mostra Nacional Itinera de Grups Amateurs de Catalunya.'
+    },
+    meta:{
+      ca:[['Personatge','Diverses rols'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Traducció','Envers Teatre']],
+      es:[['Personaje','Varios roles'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Traducción','Envers Teatre']],
+      en:[['Character','Multiple roles'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Translation','Envers Teatre']]
+    },
+    bolos:[
+      {venue:'La Bàscula, Barcelona',date:'17/03/2023'},
+      {venue:'Teatre Pere Serrat · Mostra Itinera, Olot',date:'24/09/2022'},
+      {venue:'Casa dels Contes, Barcelona',date:'09–16/06/2022'},
+      {venue:'Sala Ars, Barcelona',date:'05–19/05/2022'},
+      {venue:'Casa dels Contes, Barcelona',date:'10–31/03/2022'},
+      {venue:'Sala Diagonal · Mostra Itinera, Campdevànol',date:'23/10/2021'},
+      {venue:'Centre Cívic Tomasa Cuevas, Barcelona',date:'27/06/2021'},
+      {venue:'Plaça Comas, Barcelona',date:'16/06/2021'},
+      {venue:'Sala Santa Llúcia, Reus',date:'28/03/2021'},
     ],
-    videos: [
-      {src:'https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a', label:'Exemple · substitueix l\'ID de Vimeo'},
+    photos:[
+      {src:'https://picsum.photos/seed/hist1/600/450',cap:'Històries per a ser explicades'},
+      {src:'https://picsum.photos/seed/hist2/600/450',cap:'Mostra Itinera, Olot 2022'},
+      {src:'https://picsum.photos/seed/hist3/600/450',cap:''},
+      {src:'https://picsum.photos/seed/hist4/600/450',cap:''},
+      {src:'https://picsum.photos/seed/hist5/600/450',cap:''},
+      {src:'https://picsum.photos/seed/hist6/600/450',cap:''},
+    ],
+    videos:[
+      {src:'https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a',label:'Exemple · substitueix l\'ID de Vimeo'},
       null
     ]
   },
   {
-    abstract: {
-      ca: 'Adaptació teatral del conte de R.L. Stevenson. Un mariner hawaià, una ampolla màgica i un diable que ho atorga tot — menys la vida. Un espectacle per a públic familiar que navega entre la fascinació i l\'advertència moral.',
-      es: 'Adaptación teatral del cuento de R.L. Stevenson. Un marinero hawaiano, una botella mágica y un diablo que lo otorga todo — menos la vida. Espectáculo familiar.',
-      en: 'Theatrical adaptation of R.L. Stevenson\'s tale. A Hawaiian sailor, a magic bottle and a devil who grants everything — except life. A family show navigating between fascination and moral warning.'
+    year:'2024–2025',
+    name:{ca:'El Diable de l\'Ampolla',es:'El Diable de l\'Ampolla',en:'El Diable de l\'Ampolla'},
+    sub:{ca:'Lopaka · R.L. Stevenson',es:'Lopaka · R.L. Stevenson',en:'Lopaka · R.L. Stevenson'},
+    cartells:['assets/envers_diable/cartells/cartell1.jpg'],
+    abstract:{
+      ca:'Adaptació teatral del conte de R.L. Stevenson. Un mariner hawaià, una ampolla màgica i un diable que ho atorga tot — menys la vida. Un espectacle per a públic familiar que navega entre la fascinació i l\'advertència moral.',
+      es:'Adaptación teatral del cuento de R.L. Stevenson. Un marinero hawaiano, una botella mágica y un diablo que lo otorga todo — menos la vida. Espectáculo familiar.',
+      en:'Theatrical adaptation of R.L. Stevenson\'s tale. A Hawaiian sailor, a magic bottle and a devil who grants everything — except life. A family show navigating between fascination and moral warning.'
     },
-    meta: {
-      ca: [['Personatge','Lopaka · Habitant de Honolulu · Contramestre'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Adaptació','Envers Teatre']],
-      es: [['Personaje','Lopaka · Habitante de Honolulu · Contramaestre'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Adaptación','Envers Teatre']],
-      en: [['Character','Lopaka · Honolulu Resident · Bosun'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Adaptation','Envers Teatre']]
+    meta:{
+      ca:[['Personatge','Lopaka · Habitant de Honolulu · Contramestre'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Adaptació','Envers Teatre']],
+      es:[['Personaje','Lopaka · Habitante de Honolulu · Contramaestre'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Adaptación','Envers Teatre']],
+      en:[['Character','Lopaka · Honolulu Resident · Bosun'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Adaptation','Envers Teatre']]
     },
-    bolos: [
-      {venue:'Espai Jove Boca Nord, Barcelona', date:'10/05/2025'},
-      {venue:'Ca la Panarra, Barcelona', date:'22/06/2024'},
+    bolos:[
+      {venue:'Espai Jove Boca Nord, Barcelona',date:'10/05/2025'},
+      {venue:'Ca la Panarra, Barcelona',date:'22/06/2024'},
     ],
-    photos: [
-      {src:'https://picsum.photos/seed/diab1/600/450', cap:'El Diable de l\'Ampolla'},
-      {src:'https://picsum.photos/seed/diab2/600/450', cap:'Espai Jove Boca Nord, 2025'},
-      {src:'https://picsum.photos/seed/diab3/600/450', cap:''},
+    photos:[
+      {src:'https://picsum.photos/seed/diab1/600/450',cap:'El Diable de l\'Ampolla'},
+      {src:'https://picsum.photos/seed/diab2/600/450',cap:'Espai Jove Boca Nord, 2025'},
+      {src:'https://picsum.photos/seed/diab3/600/450',cap:''},
     ],
-    videos: [
-      {src:'https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a', label:'Exemple · substitueix l\'ID de Vimeo'},
+    videos:[
+      {src:'https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a',label:'Exemple · substitueix l\'ID de Vimeo'},
       null
     ]
   },
   {
-    abstract: {
-      ca: 'Accions teatrals improvisades i interactives a l\'espai públic, en el marc del Park(ing) Day de l\'Ajuntament de Barcelona. La plaça com a escenari obert, el viandant com a espectador inesperat.',
-      es: 'Acciones teatrales improvisadas e interactivas en el espacio público, en el marco del Park(ing) Day del Ajuntament de Barcelona.',
-      en: 'Improvised, interactive theatrical actions in public space, as part of Barcelona City Council\'s Park(ing) Day initiative. The square as open stage, the passerby as unexpected spectator.'
+    year:'2019–2020',
+    name:{ca:'Accions Performatives',es:'Acciones Performativas',en:'Performative Actions'},
+    sub:{ca:'Park(ing) Day · Ajuntament Barcelona',es:'Park(ing) Day · Ajuntament Barcelona',en:'Park(ing) Day · Barcelona City Council'},
+    cartells:['assets/envers_parking_day/cartells/cartell1.jpg'],
+    abstract:{
+      ca:'Accions teatrals improvisades i interactives a l\'espai públic, en el marc del Park(ing) Day de l\'Ajuntament de Barcelona. La plaça com a escenari obert, el viandant com a espectador inesperat.',
+      es:'Acciones teatrales improvisadas e interactivas en el espacio público, en el marco del Park(ing) Day del Ajuntament de Barcelona.',
+      en:'Improvised, interactive theatrical actions in public space, as part of Barcelona City Council\'s Park(ing) Day initiative. The square as open stage, the passerby as unexpected spectator.'
     },
-    meta: {
-      ca: [['Companyia','Envers Teatre'],['Espai','Plaça Comas, Les Corts'],['Anys','2019 · 2020']],
-      es: [['Compañía','Envers Teatre'],['Espacio','Plaça Comas, Les Corts'],['Años','2019 · 2020']],
-      en: [['Company','Envers Teatre'],['Space','Plaça Comas, Les Corts'],['Years','2019 · 2020']]
+    meta:{
+      ca:[['Companyia','Envers Teatre'],['Espai','Plaça Comas, Les Corts'],['Anys','2019 · 2020']],
+      es:[['Compañía','Envers Teatre'],['Espacio','Plaça Comas, Les Corts'],['Años','2019 · 2020']],
+      en:[['Company','Envers Teatre'],['Space','Plaça Comas, Les Corts'],['Years','2019 · 2020']]
     },
-    bolos: [
-      {venue:'Plaça Comas, Les Corts, Barcelona', date:'09/2019'},
-      {venue:'Plaça Comas, Les Corts, Barcelona', date:'09/2020'},
+    bolos:[
+      {venue:'Plaça Comas, Les Corts, Barcelona',date:'09/2019'},
+      {venue:'Plaça Comas, Les Corts, Barcelona',date:'09/2020'},
     ],
-    photos: [
-      {src:'https://picsum.photos/seed/park1/600/450', cap:'Park(ing) Day 2019'},
-      {src:'https://picsum.photos/seed/park2/600/450', cap:'Plaça Comas, Les Corts'},
+    photos:[
+      {src:'https://picsum.photos/seed/park1/600/450',cap:'Park(ing) Day 2019'},
+      {src:'https://picsum.photos/seed/park2/600/450',cap:'Plaça Comas, Les Corts'},
     ],
-    videos: []
+    videos:[]
   }
 ];
 
-/* ══════════════════════════════════════════
-   ACCORDION LOGIC
-══════════════════════════════════════════ */
-let currentLang = 'ca';
-let activeProj = -1;
+const TRAINING=[
+  {period:'2025–26',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Interpretació · Teatre de l\'Absurd (Beckett)',es:'Interpretación · Teatro del Absurdo (Beckett)',en:'Acting · Theatre of the Absurd (Beckett)'},tutors:[{name:'Ferran Màdico',url:'https://www.eolia.cat/portfolio-items/ferran-madico/'}],photos:[],videos:[]},
+  {period:'2025',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Clown',es:'Clown',en:'Clown'},tutors:[{name:'Arnau Marín',url:'https://www.eolia.cat/portfolio-items/arnau-marin/'}],photos:[],videos:[]},
+  {period:'2024–25',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Interpretació',es:'Interpretación',en:'Acting'},tutors:[{name:'Rosa May',url:'https://www.eolia.cat/portfolio-items/rosa-may/'},{name:'Carla Torres',url:'https://www.eolia.cat/portfolio-items/carla-torres/'},{name:'Salva Soler',url:'https://www.eolia.cat/portfolio-items/salva-soler/'}],photos:[{src:'https://picsum.photos/seed/eolia1/600/450',cap:'Eòlia Interpretació 2024–25'},{src:'https://picsum.photos/seed/eolia2/600/450',cap:''}],videos:[]},
+  {period:'2023–25',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Moviment, Viewpoints i Creació Escènica',es:'Movimiento, Viewpoints y Creación Escénica',en:'Movement, Viewpoints & Scenic Creation'},tutors:[{name:'Mar Medina',url:'https://www.eolia.cat/portfolio-items/mar-medina/'},{name:'Georgia Vardarou',url:'https://www.eolia.cat/portfolio-items/georgia-vardarou/'}],photos:[{src:'https://picsum.photos/seed/move1/600/450',cap:'Moviment i Viewpoints · Eòlia'},{src:'https://picsum.photos/seed/move2/600/450',cap:''}],videos:[]},
+  {period:'2016–17',inst:{ca:'Lazzigags',es:'Lazzigags',en:'Lazzigags'},instUrl:'https://www.lazzigags.cat/',name:{ca:'Teatre Musical',es:'Teatro Musical',en:'Musical Theatre'},tutors:[{name:'Lluís Garrido',url:null}],photos:[],videos:[]},
+  {period:'—',inst:{ca:'Col·legi Major Penyafort-Montserrat',es:'Col·legi Major Penyafort-Montserrat',en:'Col·legi Major Penyafort-Montserrat'},instUrl:null,name:{ca:'Interpretació Teatral',es:'Interpretación Teatral',en:'Acting'},tutors:[{name:'Laura Larrègle',url:null}],photos:[],videos:[]},
+];
 
-const accordion = document.getElementById('projectsAccordion');
-const detail = document.getElementById('projectDetail');
-const tabs = Array.from(accordion.querySelectorAll('.proj-tab'));
+/* ── ACCORDION FACTORY ── */
+function createAccordion({gridEl,data,buildTabHTML,buildDetailHTML}){
+  const acc={activeIdx:-1,detailEls:[],tabEls:[]};
 
-function renderDetail(idx) {
-  const p = PROJECTS[idx];
-  const lang = currentLang;
+  data.forEach((item,idx)=>{
+    const tab=document.createElement('div');
+    tab.className='acc-tab';
+    tab.dataset.idx=idx;
+    tab.innerHTML=buildTabHTML(item,idx);
+    gridEl.appendChild(tab);
+    acc.tabEls.push(tab);
 
-  // Abstract + meta
-  document.getElementById('detailAbstract').innerHTML = p.abstract[lang];
-  const metaEl = document.getElementById('detailMeta');
-  metaEl.innerHTML = p.meta[lang].map(([k,v]) =>
-    `<div class="detail-meta-item"><strong>${k}</strong>${v}</div>`
-  ).join('');
+    // Cartell cycling
+    const visual=tab.querySelector('.acc-tab-visual');
+    if(visual&&visual.dataset.cartells){
+      let cartells,ci=0;
+      try{cartells=JSON.parse(visual.dataset.cartells);}catch(e){cartells=[];}
+      const img=visual.querySelector('img');
+      const counter=visual.querySelector('.cartell-counter-overlay');
+      const btnL=visual.querySelector('.cartell-btn-left');
+      const btnR=visual.querySelector('.cartell-btn-right');
+      if(cartells.length<=1){
+        const arrows=visual.querySelector('.cartell-arrows');
+        if(arrows)arrows.style.display='none';
+        if(counter)counter.style.display='none';
+      } else {
+        const cycle=(dir)=>{
+          ci=(ci+dir+cartells.length)%cartells.length;
+          if(img){img.style.opacity='0';setTimeout(()=>{img.src=cartells[ci];img.style.opacity='1';},180);}
+          if(counter)counter.textContent=`${ci+1} / ${cartells.length}`;
+        };
+        if(btnL)btnL.addEventListener('click',(e)=>{e.stopPropagation();cycle(-1);});
+        if(btnR)btnR.addEventListener('click',(e)=>{e.stopPropagation();cycle(1);});
+        if(img)img.style.transition='opacity .18s ease';
+      }
+    }
 
-  // Bolos
-  const bolosEl = document.getElementById('detailBolos');
-  bolosEl.innerHTML = p.bolos.map(b => {
-    const cls = b.cancelled ? ' bolo-cancelled' : '';
-    const note = b.note ? ` <span style="font-size:9px;color:var(--border)">· ${b.note}</span>` : '';
+    tab.addEventListener('mouseenter',()=>{if(acc.activeIdx!==idx)acc.open(idx);});
+    tab.addEventListener('click',(e)=>{if(!e.target.closest('.cartell-btn')){acc.activeIdx===idx?acc.close():acc.open(idx);}});
+  });
+
+  function rebuildPanels(){
+    acc.detailEls.forEach(el=>el.remove());
+    acc.detailEls=[];
+    if(!acc.tabEls.length)return;
+    const rows=[];
+    let curRow=[],curTop=acc.tabEls[0].offsetTop;
+    acc.tabEls.forEach((tab,i)=>{
+      if(Math.abs(tab.offsetTop-curTop)>4){rows.push(curRow);curRow=[];curTop=tab.offsetTop;}
+      curRow.push({tab,idx:i});
+    });
+    rows.push(curRow);
+    rows.forEach(row=>{
+      const lastTab=row[row.length-1].tab;
+      const panel=document.createElement('div');
+      panel.className='acc-detail';
+      panel._rowIndices=row.map(r=>r.idx);
+      lastTab.insertAdjacentElement('afterend',panel);
+      acc.detailEls.push(panel);
+    });
+    if(acc.activeIdx>=0){
+      const panel=acc.panelForIdx(acc.activeIdx);
+      if(panel){
+        panel.innerHTML=`<div class="detail-inner">${buildDetailHTML(data[acc.activeIdx],acc.activeIdx,currentLang)}</div>`;
+        panel.classList.add('open');
+      }
+    }
+  }
+
+  acc.panelForIdx=(idx)=>acc.detailEls.find(p=>p._rowIndices&&p._rowIndices.includes(idx));
+
+  acc.open=(idx)=>{
+    if(acc.activeIdx>=0){
+      const prev=acc.panelForIdx(acc.activeIdx);
+      if(prev)prev.classList.remove('open');
+      acc.tabEls[acc.activeIdx].classList.remove('active');
+    }
+    acc.activeIdx=idx;
+    acc.tabEls[idx].classList.add('active');
+    if(!acc.detailEls.length)rebuildPanels();
+    const panel=acc.panelForIdx(idx);
+    if(panel){
+      panel.innerHTML=`<div class="detail-inner">${buildDetailHTML(data[idx],idx,currentLang)}</div>`;
+      panel.classList.add('open');
+    }
+  };
+
+  acc.close=()=>{
+    if(acc.activeIdx>=0){
+      const prev=acc.panelForIdx(acc.activeIdx);
+      if(prev)prev.classList.remove('open');
+      acc.tabEls[acc.activeIdx].classList.remove('active');
+      acc.activeIdx=-1;
+    }
+  };
+
+  acc.renderDetail=(idx)=>{
+    const panel=acc.panelForIdx(idx);
+    if(panel&&panel.classList.contains('open'))
+      panel.innerHTML=`<div class="detail-inner">${buildDetailHTML(data[idx],idx,currentLang)}</div>`;
+  };
+
+  requestAnimationFrame(()=>requestAnimationFrame(rebuildPanels));
+  let rsz;window.addEventListener('resize',()=>{clearTimeout(rsz);rsz=setTimeout(rebuildPanels,200);});
+  return acc;
+}
+
+const svgL=`<svg width="10" height="14" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="8,1 2,8 8,15"/></svg>`;
+const svgR=`<svg width="10" height="14" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,1 8,8 2,15"/></svg>`;
+
+function projectTabHTML(p){
+  const cartells=p.cartells||[];
+  const first=cartells[0]||'';
+  const cJSON=JSON.stringify(cartells).replace(/'/g,'&#39;');
+  return `
+    <div class="acc-tab-visual" data-cartells='${cJSON}'>
+      ${first?`<img src="${first}" alt="${p.name.ca}" loading="lazy">`:''}
+      <div class="cartell-arrows">
+        <button class="cartell-btn cartell-btn-left">${svgL}</button>
+        <button class="cartell-btn cartell-btn-right">${svgR}</button>
+      </div>
+      ${cartells.length>1?`<div class="cartell-counter-overlay">1 / ${cartells.length}</div>`:''}
+    </div>
+    <div class="acc-tab-info">
+      <div>
+        <div class="acc-tab-year">${p.year}</div>
+        <div class="acc-tab-name">${p.name.ca}</div>
+        <div class="acc-tab-sub">${p.sub.ca}</div>
+      </div>
+      <div class="acc-tab-indicator"></div>
+    </div>`;
+}
+
+function projectDetailHTML(p,idx,lang){
+  const t=T[lang];
+  const meta=p.meta[lang].map(([k,v])=>`<div class="detail-meta-item"><strong>${k}</strong>${v}</div>`).join('');
+  const bolos=p.bolos.map(b=>{
+    const cls=b.cancelled?' bolo-cancelled':'';
+    const note=b.note?` <span style="font-size:9px;opacity:.6">· ${b.note}</span>`:'';
     return `<div class="bolo-item${cls}"><span class="bolo-venue">${b.venue}${note}</span><span class="bolo-date">${b.date}</span></div>`;
   }).join('');
-
-  // Media
-  const mediaEl = document.getElementById('detailMedia');
-  let html = '';
-  if (p.photos.length) {
-    const label = {ca:'Fotografies', es:'Fotografías', en:'Photography'}[lang];
-    html += `<div class="detail-media-label">${label}</div>`;
-    html += `<div class="photos-grid">`;
-    html += p.photos.map(ph =>
-      `<div class="photo-slot" data-caption="${ph.cap}"><img src="${ph.src}" alt="${ph.cap}" loading="lazy"></div>`
+  let photos='';
+  if(p.photos.length){
+    photos+=`<div class="detail-media-label">${t.photoLabel}</div><div class="photos-grid">`;
+    photos+=p.photos.map(ph=>`<div class="photo-slot" data-caption="${ph.cap}"><img src="${ph.src}" alt="${ph.cap}" loading="lazy"></div>`).join('');
+    photos+=`</div>`;
+  }
+  let videos='';
+  if(p.videos.length){
+    videos+=`<div class="detail-media-label" style="margin-top:16px">${t.videoLabel}</div><div class="videos-grid">`;
+    videos+=p.videos.map(v=>v
+      ?`<div class="video-slot"><iframe src="${v.src}" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe><div class="video-label">${v.label}</div></div>`
+      :`<div class="video-slot"><div class="video-placeholder"><div class="video-placeholder-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div><span>${t.addVideo}</span></div></div>`
     ).join('');
-    html += `</div>`;
+    videos+=`</div>`;
   }
-  if (p.videos.length) {
-    const label = {ca:'Vídeo', es:'Vídeo', en:'Video'}[lang];
-    html += `<div class="detail-media-label" style="margin-top:18px">${label}</div>`;
-    html += `<div class="videos-grid">`;
-    html += p.videos.map(v => {
-      if (!v) return `<div class="video-slot"><div class="video-placeholder"><div class="video-placeholder-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div><span>${{ca:'Afegir vídeo',es:'Añadir vídeo',en:'Add video'}[lang]}</span></div></div>`;
-      return `<div class="video-slot"><iframe src="${v.src}" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe><div class="video-label">${v.label}</div></div>`;
-    }).join('');
-    html += `</div>`;
-  }
-  mediaEl.innerHTML = html;
+  return `
+    <div class="detail-top">
+      <div><div class="detail-abstract">${p.abstract[lang]}</div><div class="detail-meta">${meta}</div></div>
+      <div><div class="detail-bolos-title">${t.bolosLabel}</div>${bolos}</div>
+    </div>
+    <div class="detail-media">${photos}${videos}</div>`;
 }
 
-function openProject(idx) {
-  if (activeProj === idx) {
-    // Toggle close
-    detail.classList.remove('open');
-    tabs[idx].classList.remove('active');
-    activeProj = -1;
-    return;
-  }
-  activeProj = idx;
-  tabs.forEach((t,i) => t.classList.toggle('active', i===idx));
-  renderDetail(idx);
-  detail.classList.add('open');
-  // Scroll detail into view smoothly
-  setTimeout(() => detail.scrollIntoView({behavior:'smooth', block:'nearest'}), 50);
+const projAccordion=createAccordion({gridEl:document.getElementById('projectsGrid'),data:PROJECTS,buildTabHTML:projectTabHTML,buildDetailHTML:projectDetailHTML});
+
+function trainingTabHTML(tr){
+  const inst=tr.inst.ca;
+  const name=tr.name.ca;
+  return `
+    <div class="acc-tab-visual no-img">
+      <div class="vis-period">${tr.period}</div>
+      <div class="vis-inst">${inst}</div>
+    </div>
+    <div class="acc-tab-info">
+      <div>
+        <div class="acc-tab-year">${inst}</div>
+        <div class="acc-tab-name">${name}</div>
+        <div class="acc-tab-sub">${tr.tutors.map(t=>t.name).join(' · ')}</div>
+      </div>
+      <div class="acc-tab-indicator"></div>
+    </div>`;
 }
 
-tabs.forEach((tab, idx) => {
-  // Hover to open
-  tab.addEventListener('mouseenter', () => { if(activeProj !== idx) openProject(idx); });
-  // Click for keyboard / touch
-  tab.addEventListener('click', (e) => {
-    // Don't toggle if click was on the cartell (that's for cycling)
-    if(!e.target.closest('.proj-tab-cartell')) openProject(idx);
-  });
-});
-
-/* ══════════════════════════════════════════
-   CARTELL CYCLING (click on cartell area)
-══════════════════════════════════════════ */
-tabs.forEach(tab => {
-  const cartellEl = tab.querySelector('.proj-tab-cartell');
-  const img = cartellEl.querySelector('img');
-  const counter = cartellEl.querySelector('.cartell-counter');
-  let cartells, ci = 0;
-
-  try { cartells = JSON.parse(cartellEl.dataset.cartells); } catch(e) { cartells = [img.src]; }
-
-  cartellEl.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (cartells.length <= 1) return;
-    ci = (ci + 1) % cartells.length;
-    img.style.opacity = '0';
-    setTimeout(() => { img.src = cartells[ci]; img.style.opacity = '1'; }, 200);
-    if (counter) counter.textContent = `${ci+1} / ${cartells.length}`;
-  });
-
-  // Show counter only if multiple cartells
-  if (cartells.length <= 1 && counter) counter.style.display = 'none';
-  else if (counter) counter.style.display = 'block';
-
-  // Smooth img opacity transition
-  img.style.transition = 'opacity .2s ease';
-});
-
-/* ══════════════════════════════════════════
-   HERO PHOTO SLIDER
-══════════════════════════════════════════ */
-(function initHeroSlider() {
-  const display = document.getElementById('heroDisplay');
-  const thumbsContainer = document.getElementById('heroThumbs');
-  const counter = document.getElementById('heroCounter');
-  const imgs = Array.from(display.querySelectorAll('img'));
-  if (!imgs.length) return;
-
-  // Build thumb strip
-  imgs.forEach((img, i) => {
-    const thumb = document.createElement('div');
-    thumb.className = 'hero-thumb' + (i===0?' active':'');
-    const tImg = document.createElement('img');
-    tImg.src = img.src;
-    tImg.alt = img.alt;
-    thumb.appendChild(tImg);
-    thumb.addEventListener('mouseenter', () => goTo(i));
-    thumb.addEventListener('click', () => goTo(i));
-    thumbsContainer.appendChild(thumb);
-  });
-
-  const thumbEls = Array.from(thumbsContainer.querySelectorAll('.hero-thumb'));
-
-  function goTo(idx) {
-    imgs.forEach((img,i) => img.classList.toggle('active', i===idx));
-    thumbEls.forEach((t,i) => t.classList.toggle('active', i===idx));
-    if (counter) counter.textContent = `${idx+1} / ${imgs.length}`;
+function trainingDetailHTML(tr,idx,lang){
+  const t=T[lang];
+  const name=tr.name[lang];
+  const inst=tr.inst[lang];
+  const instLink=tr.instUrl?`<a href="${tr.instUrl}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,184,154,.3)">${inst}</a>`:inst;
+  const tutorLabel={ca:'Professorat',es:'Profesorado',en:'Tutors'}[lang];
+  const tutors=tr.tutors.map(tu=>tu.url?`<a href="${tu.url}" target="_blank" rel="noopener" style="color:var(--light);text-decoration:none;border-bottom:1px solid var(--border)">${tu.name}</a>`:tu.name).join(' · ');
+  let photos='';
+  if(tr.photos&&tr.photos.length){
+    photos=`<div class="detail-media-label" style="margin-top:20px">${t.photoLabel}</div><div class="photos-grid">`;
+    photos+=tr.photos.map(ph=>`<div class="photo-slot" data-caption="${ph.cap}"><img src="${ph.src}" alt="${ph.cap}" loading="lazy"></div>`).join('');
+    photos+=`</div>`;
   }
+  return `
+    <div class="detail-top no-bolos">
+      <div>
+        <div class="detail-abstract" style="font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--white)">${name}</div>
+        <div class="detail-meta" style="margin-top:20px">
+          <div class="detail-meta-item"><strong>${{ca:'Institució',es:'Institución',en:'Institution'}[lang]}</strong>${instLink}</div>
+          <div class="detail-meta-item"><strong>${{ca:'Període',es:'Período',en:'Period'}[lang]}</strong>${tr.period}</div>
+          <div class="detail-meta-item"><strong>${tutorLabel}</strong>${tutors}</div>
+        </div>
+        ${photos}
+      </div>
+    </div>`;
+}
 
+const trainAccordion=createAccordion({gridEl:document.getElementById('trainingGrid'),data:TRAINING,buildTabHTML:trainingTabHTML,buildDetailHTML:trainingDetailHTML});
+
+/* ── HERO SLIDER ── */
+(function(){
+  const display=document.getElementById('heroDisplay');
+  const thumbsC=document.getElementById('heroThumbs');
+  const counter=document.getElementById('heroCounter');
+  const imgs=Array.from(display.querySelectorAll('img'));
+  if(!imgs.length)return;
+  imgs.forEach((img,i)=>{
+    const th=document.createElement('div');
+    th.className='hero-thumb'+(i===0?' active':'');
+    const ti=document.createElement('img');ti.src=img.src;ti.alt=img.alt;
+    th.appendChild(ti);
+    th.addEventListener('mouseenter',()=>goTo(i));
+    th.addEventListener('click',()=>goTo(i));
+    thumbsC.appendChild(th);
+  });
+  const thumbEls=Array.from(thumbsC.querySelectorAll('.hero-thumb'));
+  function goTo(idx){
+    imgs.forEach((img,i)=>img.classList.toggle('active',i===idx));
+    thumbEls.forEach((t,i)=>t.classList.toggle('active',i===idx));
+    if(counter)counter.textContent=`${idx+1} / ${imgs.length}`;
+  }
   goTo(0);
 })();
 
-/* ══════════════════════════════════════════
-   SCROLL REVEAL
-══════════════════════════════════════════ */
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; obs.unobserve(e.target); }
-  });
-}, {threshold:.07, rootMargin:'0px 0px -30px 0px'});
-
-document.querySelectorAll('.training-item, .proj-tab').forEach((el,i) => {
-  el.style.opacity='0'; el.style.transform='translateY(16px)';
-  el.style.transition=`opacity .6s ease ${i*.05}s, transform .6s ease ${i*.05}s, border-color .4s, background .3s`;
+/* ── SCROLL REVEAL ── */
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});
+},{threshold:0.06,rootMargin:'0px 0px -24px 0px'});
+document.querySelectorAll('.acc-tab').forEach((el,i)=>{
+  el.style.opacity='0';el.style.transform='translateY(14px)';
+  el.style.transition=`opacity .55s ease ${i*.04}s,transform .55s ease ${i*.04}s,background .3s`;
   obs.observe(el);
 });
-
-/* Rerender detail on lang change */
-const _origSetLang = setLang;
-window.setLang = function(lang) {
-  currentLang = lang; _origSetLang(lang);
-  if (activeProj >= 0) renderDetail(activeProj);
-};
 </script>
 </body>
 </html>
