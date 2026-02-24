@@ -13,35 +13,25 @@
       --black: #0a0a0a;
       --off-black: #111111;
       --dark: #161616;
-      --border: #2e2e2e;
+      --border: #3e3e3e;
       --muted: #666;
       --light: #b0b0b0;
       --white: #f0ede8;
       --accent: #c8b89a;
-
-      /* ── CARTELL SIZE ──────────────────────────
-         Change these two values to resize cartells.
-         --cartell-h : fixed height of the image area.
-         --cartell-min-w : minimum cell width before row-wrap triggers.
-         At 4 projects × 200px min each → wraps below ~800px container.
-      ────────────────────────────────────────── */
-      --cartell-h: 320px;
-      --cartell-min-w: 200px;
-
-      /* Training visual area height */
+      --cartell-h: 360px;
+      --cartell-min-w: 230px;
       --training-vis-h: 110px;
       --training-min-w: 180px;
     }
-
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{background:var(--black);color:var(--white);font-family:'Raleway',sans-serif;font-weight:300;font-size:15px;line-height:1.7;overflow-x:hidden;cursor:crosshair}
+    /* scroll-behavior intentionally left as auto so instant scroll compensation works */
+    body{background:var(--black);color:var(--white);font-family:'Raleway',sans-serif;font-weight:300;font-size:16px;line-height:1.75;overflow-x:hidden;cursor:crosshair}
     ::selection{background:var(--accent);color:var(--black)}
     ::-webkit-scrollbar{width:2px}
     ::-webkit-scrollbar-track{background:var(--black)}
     ::-webkit-scrollbar-thumb{background:var(--border)}
 
-    /* ── NAV ── */
+    /* ── DESKTOP NAV ── */
     nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:28px 48px;background:linear-gradient(to bottom,rgba(10,10,10,.97) 60%,transparent)}
     .nav-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:18px;letter-spacing:.12em;color:var(--white);text-decoration:none}
     .nav-right{display:flex;align-items:center;gap:36px}
@@ -51,6 +41,52 @@
     .nav-links{display:flex;gap:28px}
     .nav-links a{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.18em;text-transform:uppercase;transition:color .3s}
     .nav-links a:hover{color:var(--white)}
+    /* Active section highlight in desktop nav */
+    .nav-links a.nav-active{color:var(--accent)}
+
+    /* ── MOBILE NAV BAR ── */
+    /* Shown only on mobile, sits below the name bar */
+    .mobile-nav{
+      display:none;
+      position:fixed;top:64px;left:0;right:0;z-index:199;
+      background:rgba(10,10,10,.97);
+      border-bottom:1px solid var(--border);
+      padding:0 20px;
+      height:40px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    /* Each pill: current value + chevron, click opens dropdown */
+    .mob-pill{
+      position:relative;
+      display:flex;align-items:center;gap:6px;
+      font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--light);cursor:crosshair;
+      padding:4px 0;
+      user-select:none;
+    }
+    .mob-pill .mob-val{color:var(--accent)}
+    .mob-pill .mob-chevron{font-size:8px;color:var(--muted);transition:transform .2s}
+    .mob-pill.open .mob-chevron{transform:rotate(180deg)}
+    /* Dropdown list */
+    .mob-dropdown{
+      position:absolute;top:calc(100% + 8px);left:0;
+      background:rgba(16,16,16,.98);
+      border:1px solid var(--border);
+      min-width:180px;
+      display:none;
+      flex-direction:column;
+      z-index:300;
+    }
+    .mob-pill.open .mob-dropdown{display:flex}
+    .mob-dropdown-item{
+      padding:10px 16px;
+      font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--muted);cursor:crosshair;
+      transition:color .2s,background .2s;
+      white-space:nowrap;
+    }
+    .mob-dropdown-item:hover,.mob-dropdown-item.active{color:var(--accent);background:rgba(200,184,154,.05)}
 
     /* ── HERO ── */
     .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:80px 48px 60px;gap:60px;position:relative}
@@ -59,9 +95,9 @@
     .hero-tag{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--accent);margin-bottom:28px;opacity:0;animation:fadeUp 1s ease forwards .3s}
     .hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(52px,7vw,100px);line-height:.9;letter-spacing:-.01em;color:var(--white);opacity:0;animation:fadeUp 1.1s ease forwards .5s}
     .hero-title em{font-style:italic;color:var(--accent)}
-    .hero-statement{margin-top:36px;max-width:380px;font-size:13px;line-height:1.9;color:var(--light);opacity:0;animation:fadeUp 1.1s ease forwards .8s}
+    .hero-statement{margin-top:36px;max-width:380px;font-size:14px;line-height:1.95;color:var(--light);opacity:0;animation:fadeUp 1.1s ease forwards .8s}
 
-    /* ── HERO PHOTO COLUMN ── */
+    /* ── HERO PHOTO ── */
     .hero-photo-col{position:relative;opacity:0;animation:fadeIn 1.4s ease forwards .9s;display:flex;flex-direction:column;align-items:center;gap:10px}
     .hero-photo-col::before{content:'';position:absolute;inset:0;background:var(--dark);z-index:0;border:1px solid var(--border)}
     .hero-display,.hero-thumbs{position:relative;z-index:1}
@@ -75,171 +111,125 @@
     .hero-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;pointer-events:none}
     .hero-thumb.active,.hero-thumb:hover{opacity:1;border-color:var(--accent)}
 
-    /* ── SECTION COMMONS ── */
+    /* ── SECTIONS ── */
     section{padding:100px 48px}
     .section-header{display:flex;align-items:baseline;gap:24px;margin-bottom:56px}
     .section-label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
     .section-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:40px;color:var(--white);font-style:italic}
     .section-rule{flex:1;height:1px;background:var(--border)}
 
-    /* ── ACCORDION GRID ──────────────────────────
-       Projects: auto-fill with fixed min-width.
-       The cell width grows to fill available space
-       but never shrinks below --cartell-min-w,
-       at which point it wraps to a new row.
-       This keeps the cartell image at its fixed
-       --cartell-h regardless of window width.
-    ────────────────────────────────────────── */
-    .acc-grid{
-      display:grid;
-      gap:0;
-      border-left:1px solid var(--border);
-      border-top:1px solid var(--border);
-    }
-
-    /* Projects: auto-fill, min-width triggers wrap */
-    .acc-grid.proj-grid{
-      grid-template-columns: repeat(auto-fill, minmax(var(--cartell-min-w), 1fr));
-    }
-
-    /* Training: same idea but narrower minimum */
-    .acc-grid.train-grid{
-      grid-template-columns: repeat(auto-fill, minmax(var(--training-min-w), 1fr));
-    }
+    /* ── ACCORDION GRIDS ── */
+    .acc-grid{display:grid;gap:0;border-left:1px solid var(--border);border-top:1px solid var(--border)}
+    .acc-grid.proj-grid{grid-template-columns:repeat(auto-fill,minmax(var(--cartell-min-w),1fr))}
+    .acc-grid.train-grid{grid-template-columns:repeat(auto-fill,minmax(var(--training-min-w),1fr))}
 
     .acc-tab{position:relative;border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;cursor:crosshair;background:var(--off-black);transition:background .3s;display:flex;flex-direction:column}
     .acc-tab:hover,.acc-tab.active{background:var(--dark)}
 
-    /* ── VISUAL AREA ──────────────────────────
-       Fixed pixel height — this is the key change.
-       The image fills 100% of this fixed-height box.
-       No matter how wide the cell gets, height stays.
-       object-fit:cover ensures correct framing.
-    ────────────────────────────────────────── */
-    .acc-tab-visual{
-      position:relative;
-      overflow:hidden;
-      flex-shrink:0;
-      background:var(--black);
-      /* Projects: fixed cartell height */
-      height: var(--cartell-h);
-    }
+    .acc-tab-visual{position:relative;overflow:hidden;flex-shrink:0;background:var(--black);height:var(--cartell-h)}
+    .train-grid .acc-tab-visual{height:var(--training-vis-h)}
+    .acc-tab-visual img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .6s ease,filter .5s;filter:brightness(.75) grayscale(25%)}
+    .acc-tab:hover .acc-tab-visual img,.acc-tab.active .acc-tab-visual img{transform:scale(1.04);filter:brightness(1) grayscale(0%)}
 
-    /* Training visual overrides to shorter fixed height */
-    .train-grid .acc-tab-visual{
-      height: var(--training-vis-h);
-    }
-
-    .acc-tab-visual img{
-      /* Fill the fixed-height box entirely */
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      object-position:top center;
-      display:block;
-      transition:transform .6s ease,filter .5s;
-      filter:brightness(.75) grayscale(25%);
-    }
-    .acc-tab:hover .acc-tab-visual img,
-    .acc-tab.active .acc-tab-visual img{transform:scale(1.04);filter:brightness(1) grayscale(0%)}
-
-    /* Training: no-image placeholder */
     .acc-tab-visual.no-img{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--black);border-bottom:1px solid var(--border)}
     .acc-tab-visual.no-img .vis-period{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,32px);font-weight:300;font-style:italic;color:rgba(200,184,154,.35);letter-spacing:.02em}
     .acc-tab-visual.no-img .vis-inst{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,184,154,.5)}
 
-    /* Arrow navigation */
-    .cartell-arrows{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:5}
+    .cartell-arrows{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;opacity:0.3;transition:opacity .25s;pointer-events:none;z-index:5}
     .acc-tab-visual:hover .cartell-arrows{opacity:1;pointer-events:auto}
-    .cartell-btn{width:32px;height:32px;background:rgba(10,10,10,.65);border:1px solid rgba(240,237,232,.2);display:flex;align-items:center;justify-content:center;cursor:crosshair;transition:background .2s,border-color .2s;flex-shrink:0}
+    .cartell-btn{width:32px;height:32px;background:rgba(100,100,100,.65);border:1px solid rgba(240,237,232,.2);display:flex;align-items:center;justify-content:center;cursor:crosshair;transition:background .2s,border-color .2s;flex-shrink:0}
     .cartell-btn:hover{background:rgba(10,10,10,.9);border-color:var(--accent)}
     .cartell-btn svg{pointer-events:none}
-    .cartell-counter-overlay{position:absolute;bottom:8px;right:10px;font-size:9px;letter-spacing:.15em;color:rgba(240,237,232,.5);pointer-events:none;z-index:4}
+    .cartell-counter-overlay{position:absolute;bottom:8px;right:10px;font-size:9px;letter-spacing:.15em;color:rgba(100,100,100,1.0);pointer-events:none;z-index:4}
 
-    /* Tab info strip */
     .acc-tab-info{padding:18px 20px 16px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
-    .acc-tab-year{font-size:9px;letter-spacing:.2em;color:var(--accent);margin-bottom:5px}
-    .acc-tab-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:15px;color:var(--white);line-height:1.25}
+    .acc-tab-year{font-size:12px;letter-spacing:.2em;color:var(--accent);margin-bottom:5px}
+    .acc-tab-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:20px;color:var(--white);line-height:1.25}
     .acc-tab:hover .acc-tab-name,.acc-tab.active .acc-tab-name{color:var(--accent)}
-    .acc-tab-sub{font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:.03em;line-height:1.4}
+    .acc-tab-sub{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:.03em;line-height:1.4}
     .acc-tab-indicator{margin-top:12px;width:16px;height:1px;background:var(--border);transition:width .3s,background .3s}
     .acc-tab:hover .acc-tab-indicator,.acc-tab.active .acc-tab-indicator{width:32px;background:var(--accent)}
 
-    /* Detail panel */
+    /* ── DETAIL PANEL ── */
     .acc-detail{grid-column:1/-1;border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;max-height:0;transition:max-height .55s cubic-bezier(.4,0,.2,1);background:var(--off-black)}
     .acc-detail.open{max-height:2400px}
     .detail-inner{padding:44px 48px}
-    .detail-top{display:grid;grid-template-columns:1fr 300px;gap:48px;margin-bottom:36px;padding-bottom:36px;border-bottom:1px solid var(--border)}
+    .detail-top{display:grid;grid-template-columns:1fr 370px;gap:48px;margin-bottom:36px;padding-bottom:36px;border-bottom:1px solid var(--border)}
     .detail-top.no-bolos{grid-template-columns:1fr}
-    .detail-abstract{font-size:13px;color:var(--light);line-height:1.9}
+    .detail-abstract{font-size:1  4px;color:var(--light);line-height:1.95}
     .detail-meta{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
-    .detail-meta-item{font-size:12px;color:var(--muted);line-height:1.6}
-    .detail-meta-item strong{display:block;font-weight:400;color:var(--light);font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:2px}
-    .detail-bolos-title{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
-    .bolo-item{font-size:11px;color:var(--light);padding:5px 0;border-bottom:1px solid rgba(46,46,46,.5);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+    .detail-meta-item{font-size:15px;color:var(--muted);line-height:1.65}
+    .detail-meta-item strong{display:block;font-weight:400;color:var(--light);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:2px}
+    .detail-bolos-title{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+    .bolo-item{font-size:13px;color:var(--light);padding:5px 0;border-bottom:1px solid rgba(46,46,46,.5);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
     .bolo-item:last-child{border-bottom:none}
     .bolo-venue{color:var(--light)}
-    .bolo-date{color:var(--accent);white-space:nowrap;font-size:10px;flex-shrink:0}
-    .bolo-cancelled .bolo-venue,.bolo-cancelled .bolo-date{text-decoration:line-through;opacity:.38;color:var(--muted)}
-    .detail-media-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--border);margin-bottom:12px}
+    .bolo-date{color:var(--accent);white-space:nowrap;font-size:11px;flex-shrink:0}
+    .bolo-cancelled .bolo-venue{text-decoration:line-through;opacity:.38;color:var(--light)}
+    .bolo-cancelled .bolo-date{text-decoration:line-through;opacity:.38;color:var(--accent)}
+    .detail-media-label{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--border);margin-bottom:12px}
     .photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px}
     .photo-slot{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--dark);cursor:crosshair}
     .photo-slot img{width:100%;height:100%;object-fit:cover;filter:grayscale(12%);transition:filter .4s,transform .5s;display:block}
     .photo-slot:hover img{filter:grayscale(0%);transform:scale(1.04)}
-    .photo-slot::after{content:attr(data-caption);position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:var(--light);font-size:10px;letter-spacing:.08em;padding:20px 12px 10px;opacity:0;transition:opacity .3s}
+    .photo-slot::after{content:attr(data-caption);position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:var(--light);font-size:11px;letter-spacing:.08em;padding:20px 12px 10px;opacity:0;transition:opacity .3s}
     .photo-slot:hover::after{opacity:1}
     .videos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:4px}
     .video-slot{position:relative;aspect-ratio:16/9;background:var(--dark);overflow:hidden}
     .video-slot iframe{width:100%;height:100%;border:none;display:block}
     .video-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--border);border:1px dashed rgba(46,46,46,.5)}
     .video-placeholder-icon{width:40px;height:40px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
-    .video-placeholder span{font-size:9px;letter-spacing:.2em;text-transform:uppercase}
-    .video-label{position:absolute;bottom:0;left:0;right:0;padding:5px 10px;background:rgba(10,10,10,.8);font-size:10px;color:var(--muted);letter-spacing:.06em}
+    .video-placeholder span{font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+    .video-label{position:absolute;bottom:0;left:0;right:0;padding:5px 10px;background:rgba(10,10,10,.8);font-size:11px;color:var(--muted);letter-spacing:.06em}
 
-    /* About */
+    /* ── ABOUT ── */
     #about{background:var(--off-black)}
     .about-inner{max-width:960px;margin:0 auto}
     .about-content{display:grid;grid-template-columns:1fr 320px;gap:72px;align-items:start}
-    .about-text{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;line-height:1.75;color:var(--light)}
+    .about-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;line-height:1.75;color:var(--light)}
     .about-text em{color:var(--white);font-style:italic}
     .about-detail-group{margin-bottom:30px}
     .about-detail-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-    .about-detail-value{font-size:12px;color:var(--light);line-height:2}
+    .about-detail-value{font-size:13px;color:var(--light);line-height:2.1}
     .about-detail-value a{color:var(--light);text-decoration:none;border-bottom:1px solid var(--border);transition:color .3s,border-color .3s}
     .about-detail-value a:hover{color:var(--accent);border-color:var(--accent)}
-    .skill-tag{display:inline-block;border:1px solid var(--border);padding:3px 10px;font-size:10px;letter-spacing:.1em;color:var(--muted);margin:2px 3px 2px 0;transition:border-color .3s,color .3s}
+    .skill-tag{display:inline-block;border:1px solid var(--border);padding:3px 10px;font-size:11px;letter-spacing:.1em;color:var(--muted);margin:2px 3px 2px 0;transition:border-color .3s,color .3s}
     .skill-tag:hover{border-color:var(--accent);color:var(--accent)}
 
-    /* Contact */
+    /* ── CONTACT ── */
     #contact{border-top:1px solid var(--border);padding:80px 48px;display:flex;justify-content:space-between;align-items:center}
     .contact-left{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;font-style:italic;color:var(--white);line-height:1.4}
     .contact-email{color:var(--accent);text-decoration:none;font-style:normal;border-bottom:1px solid transparent;transition:border-color .3s}
     .contact-email:hover{border-color:var(--accent)}
-    .contact-right{text-align:right;font-size:11px;color:var(--muted);line-height:2.5}
+    .contact-right{text-align:right;font-size:12px;color:var(--muted);line-height:2.5}
     .contact-right a{color:var(--muted);text-decoration:none;transition:color .3s}
     .contact-right a:hover{color:var(--accent)}
 
-    /* Footer */
+    /* ── FOOTER ── */
     footer{padding:28px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    .footer-copy,.footer-tag{font-size:10px;color:var(--border);letter-spacing:.15em}
+    .footer-copy,.footer-tag{font-size:11px;color:var(--border);letter-spacing:.15em}
 
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn{to{opacity:1}}
 
-    /* Responsive */
+    /* ── RESPONSIVE ── */
     @media(max-width:720px){
-      nav{padding:20px 24px}
+      /* Show mobile nav bar, hide desktop links */
+      nav{padding:14px 20px}
       .nav-links{display:none}
-      .hero{grid-template-columns:1fr;padding:90px 24px 56px;gap:40px}
+      .mobile-nav{display:flex}
+
+      .hero{grid-template-columns:1fr;padding:110px 20px 56px;gap:40px}
       .hero-display{max-width:280px}
       .hero-thumbs{max-width:280px}
-      section{padding:72px 24px}
+      section{padding:72px 20px}
       .detail-top{grid-template-columns:1fr!important;gap:28px}
       .about-content{grid-template-columns:1fr;gap:40px}
       #contact{flex-direction:column;gap:32px;text-align:center}
       .contact-right{text-align:center}
       footer{flex-direction:column;gap:12px;text-align:center}
       .photos-grid{grid-template-columns:repeat(2,1fr)}
+      .detail-inner{padding:28px 20px}
     }
     @media(max-width:440px){
       .photos-grid,.videos-grid{grid-template-columns:1fr}
@@ -248,23 +238,48 @@
 </head>
 <body>
 
+<!-- DESKTOP NAV -->
 <nav>
-  <a href="#" class="nav-name">Marc Dalmasso</a>
+  <a href="#home" class="nav-name">Marc Dalmasso</a>
   <div class="nav-right">
     <div class="lang-switcher">
-      <button class="lang-btn active" onclick="setLang('ca')">CAT</button>
+      <button class="lang-btn active" onclick="setLang('ca')">CA</button>
       <button class="lang-btn" onclick="setLang('es')">ES</button>
       <button class="lang-btn" onclick="setLang('en')">EN</button>
     </div>
-    <div class="nav-links">
-      <a href="#formacio" id="nav-training">Formació</a>
-      <a href="#projectes" id="nav-projects">Projectes</a>
-      <a href="#about" id="nav-about">Sobre mi</a>
-      <a href="#contact" id="nav-contact">Contacte</a>
+    <div class="nav-links" id="desktopNavLinks">
+      <a href="#home" data-section="home" id="hero">Inici</a>
+      <a href="#formacio" data-section="formacio" id="nav-training">Formació</a>
+      <a href="#projectes" data-section="projectes" id="nav-projects">Projectes</a>
+      <a href="#about" data-section="about" id="nav-about">Sobre mi</a>
+      <a href="#contact" data-section="contact" id="nav-contact">Contacte</a>
     </div>
   </div>
 </nav>
 
+<!-- MOBILE NAV BAR -->
+<div class="mobile-nav" id="mobileNav">
+  <!-- Section selector -->
+  <div class="mob-pill" id="mobSectionPill">
+    <span id="mobSectionVal" class="mob-val">—</span>
+    <span class="mob-chevron">▾</span>
+    <div class="mob-dropdown" id="mobSectionDropdown">
+      <!-- filled by JS -->
+    </div>
+  </div>
+  <!-- Language selector -->
+  <div class="mob-pill" id="mobLangPill">
+    <span id="mobLangVal" class="mob-val">CAT</span>
+    <span class="mob-chevron">▾</span>
+    <div class="mob-dropdown" id="mobLangDropdown">
+      <div class="mob-dropdown-item active" data-lang="ca">Català</div>
+      <div class="mob-dropdown-item" data-lang="es">Español</div>
+      <div class="mob-dropdown-item" data-lang="en">English</div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-main">
     <p class="hero-tag" id="hero-tag">Dossier Artístic</p>
@@ -283,6 +298,7 @@
   </div>
 </section>
 
+<!-- FORMACIÓ -->
 <section id="formacio" style="background:var(--off-black)">
   <div class="section-header">
     <span class="section-label">— 01</span>
@@ -292,6 +308,7 @@
   <div class="acc-grid train-grid" id="trainingGrid"></div>
 </section>
 
+<!-- PROJECTES -->
 <section id="projectes">
   <div class="section-header">
     <span class="section-label">— 02</span>
@@ -301,6 +318,7 @@
   <div class="acc-grid proj-grid" id="projectsGrid"></div>
 </section>
 
+<!-- SOBRE MI -->
 <section id="about" style="background:var(--off-black)">
   <div class="about-inner">
     <div class="section-header">
@@ -319,7 +337,10 @@
         </div>
         <div class="about-detail-group">
           <div class="about-detail-label" id="about-label-school">Escola</div>
-          <div class="about-detail-value"><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia, Barcelona</a></div>
+          <div class="about-detail-value">
+            <a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia, Barcelona</a><br>
+            <a href="https://www.lazzigags.cat/" target="_blank" rel="noopener">Lazzigags, Barcelona</a>
+          </div>
         </div>
         <div class="about-detail-group">
           <div class="about-detail-label" id="about-label-skills">Habilitats escèniques</div>
@@ -330,8 +351,8 @@
           </div>
         </div>
         <div class="about-detail-group">
-          <div class="about-detail-label" id="about-label-lang">Idiomes d'actuació</div>
-          <div class="about-detail-value" id="about-langs">Català (natiu) · Castellà · Anglès</div>
+          <div class="about-detail-label" id="about-label-lang">Idiomes</div>
+          <div class="about-detail-value" id="about-langs">Català · Castellà (Espanya) · Anglès</div>
         </div>
         <div class="about-detail-group">
           <div class="about-detail-label" id="about-label-avail">Disponibilitat</div>
@@ -342,10 +363,11 @@
   </div>
 </section>
 
+<!-- CONTACT -->
 <div id="contact">
   <div class="contact-left" id="contact-phrase">
     Parlem.<br>
-    <a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>
+    <a href="mailto:marcdabl.tux@gmail.com" class="contact-email">marcdabl.tux@gmail.com</a>
   </div>
   <div class="contact-right">
     <div><a href="https://www.instagram.com/envers.teatre/" target="_blank" rel="noopener">@envers.teatre</a></div>
@@ -362,59 +384,85 @@
 <script>
 'use strict';
 
+/* ══ TRANSLATIONS ══ */
 const T = {
   ca:{
     'hero-tag':'Dossier Artístic',
     'hero-statement':'Actor format entre la companyia i l\'escola, entre el text clàssic i la creació col·lectiva. Una presència construïda en la col·laboració, el risc i la precisió.',
-    'nav-training':'Formació','nav-projects':'Projectes','nav-about':'Sobre mi','nav-contact':'Contacte',
+    'hero': 'Inici','nav-training':'Formació','nav-projects':'Projectes','nav-about':'Sobre mi','nav-contact':'Contacte',
     'title-training':'Formació','title-projects':'Projectes','title-about':'Sobre mi',
     'about-text':'Actor format entre la <em>companyia amateur</em> i l\'escola professional. El treball col·lectiu d\'Envers Teatre, la mirada del teatre èpic i la recerca del moviment escènic conviven amb la formació continuada a Eòlia.<br><br>Un recorregut que va del Shakespeare al Beckett, del Vinterberg al Dragún: textos que exigeixen presència, risc i precisió.',
     'about-label-company':'Companyia','about-label-school':'Escola','about-label-skills':'Habilitats escèniques',
-    'about-label-lang':'Idiomes d\'actuació','about-langs':'Català (natiu) · Castellà · Anglès',
+    'about-label-lang':'Idiomes','about-langs':'Català · Castellà (Espanya) · Anglès',
     'about-label-avail':'Disponibilitat','about-avail':'Barcelona · Catalunya',
-    'contact-phrase':'Parlem.<br><a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>',
+    'contact-phrase':'Parlem.<br><a href="mailto:marcdabl.tux@gmail.com" class="contact-email">marcdabl.tux@gmail.com</a>',
     'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístic','lang':'ca',
     bolosLabel:'Representacions',photoLabel:'Fotografies',videoLabel:'Vídeo',addVideo:'Afegir vídeo',
+    mobSections:{home:'Inici',formacio:'Formació',projectes:'Projectes',about:'Sobre mi',contact:'Contacte'},
   },
   es:{
     'hero-tag':'Dossier Artístico',
     'hero-statement':'Actor formado entre la compañía y la escuela, entre el texto clásico y la creación colectiva. Una presencia construida en la colaboración, el riesgo y la precisión.',
-    'nav-training':'Formación','nav-projects':'Proyectos','nav-about':'Sobre mí','nav-contact':'Contacto',
+    'hero': 'Inicio','nav-training':'Formación','nav-projects':'Proyectos','nav-about':'Sobre mí','nav-contact':'Contacto',
     'title-training':'Formación','title-projects':'Proyectos','title-about':'Sobre mí',
     'about-text':'Actor formado entre la <em>compañía amateur</em> y la escuela profesional. El trabajo colectivo de Envers Teatre, la mirada del teatro épico y la investigación del movimiento escénico conviven con la formación continuada en Eòlia.<br><br>Un recorrido que va de Shakespeare a Beckett, de Vinterberg a Dragún: textos que exigen presencia, riesgo y precisión.',
     'about-label-company':'Compañía','about-label-school':'Escuela','about-label-skills':'Habilidades escénicas',
-    'about-label-lang':'Idiomas de actuación','about-langs':'Catalán (nativo) · Castellano · Inglés',
+    'about-label-lang':'Idiomas','about-langs':'Catalán · Castellano (España) · Inglés',
     'about-label-avail':'Disponibilidad','about-avail':'Barcelona · Cataluña',
-    'contact-phrase':'Hablemos.<br><a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>',
+    'contact-phrase':'Hablemos.<br><a href="mailto:marcdabl.tux@gmail.com" class="contact-email">marcdabl.tux@gmail.com</a>',
     'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístico','lang':'es',
     bolosLabel:'Representaciones',photoLabel:'Fotografías',videoLabel:'Vídeo',addVideo:'Añadir vídeo',
+    mobSections:{home:'Inicio',formacio:'Formación',projectes:'Proyectos',about:'Sobre mí',contact:'Contacto'},
   },
   en:{
     'hero-tag':'Artistic Dossier',
     'hero-statement':'Actor trained between the company and the school, between the classical text and collective creation. A presence built on collaboration, risk and precision.',
-    'nav-training':'Training','nav-projects':'Projects','nav-about':'About','nav-contact':'Contact',
+    'hero': 'Home','nav-training':'Training','nav-projects':'Projects','nav-about':'About','nav-contact':'Contact',
     'title-training':'Training','title-projects':'Projects','title-about':'About',
     'about-text':'Actor trained between <em>amateur company</em> and professional school. The collective work of Envers Teatre, the lens of epic theatre and the exploration of scenic movement coexist with ongoing training at Eòlia.<br><br>A journey from Shakespeare to Beckett, from Vinterberg to Dragún: texts that demand presence, risk and precision.',
     'about-label-company':'Company','about-label-school':'School','about-label-skills':'Stage skills',
-    'about-label-lang':'Acting languages','about-langs':'Catalan (native) · Spanish · English',
+    'about-label-lang':'Languages','about-langs':'Catalan · Spanish (Spain) · English',
     'about-label-avail':'Availability','about-avail':'Barcelona · Catalonia',
-    'contact-phrase':'Let\'s talk.<br><a href="mailto:el.teu.email@example.com" class="contact-email">el.teu.email@example.com</a>',
+    'contact-phrase':'Let\'s talk.<br><a href="mailto:marcdabl.tux@gmail.com" class="contact-email">marcdabl.tux@gmail.com</a>',
     'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Artistic Dossier','lang':'en',
     bolosLabel:'Performances',photoLabel:'Photography',videoLabel:'Video',addVideo:'Add video',
+    mobSections:{home:'Home',formacio:'Training',projectes:'Projects',about:'About',contact:'Contact'},
   }
 };
 
 let currentLang = 'ca';
-function setLang(lang){
-  currentLang=lang;
-  document.documentElement.lang=T[lang].lang;
-  Object.keys(T[lang]).forEach(k=>{const el=document.getElementById(k);if(el)el.innerHTML=T[lang][k];});
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===lang));
-  if(projAccordion.activeIdx>=0)projAccordion.renderDetail(projAccordion.activeIdx);
-  if(trainAccordion.activeIdx>=0)trainAccordion.renderDetail(trainAccordion.activeIdx);
+
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = T[lang].lang;
+  // Update all id-keyed elements
+  Object.keys(T[lang]).forEach(k => {
+    if (typeof T[lang][k] !== 'string') return;
+    const el = document.getElementById(k);
+    if (el) el.innerHTML = T[lang][k];
+  });
+  // Desktop lang buttons
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.textContent.toLowerCase() === lang)
+  );
+  // Mobile lang pill
+  const langLabels = {ca:'CAT', es:'ES', en:'EN'};
+  const mobLangVal = document.getElementById('mobLangVal');
+  if (mobLangVal) mobLangVal.textContent = langLabels[lang];
+  document.querySelectorAll('#mobLangDropdown .mob-dropdown-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.lang === lang)
+  );
+  // Rebuild accordion tab labels (they're built from JS, not id-keyed)
+  rebuildTabLabels();
+  // Re-render open detail panels
+  if (projAccordion.activeIdx >= 0) projAccordion.renderDetail(projAccordion.activeIdx);
+  if (trainAccordion.activeIdx >= 0) trainAccordion.renderDetail(trainAccordion.activeIdx);
+  // Update mobile section dropdown labels
+  buildMobSectionDropdown();
 }
 
-const PROJECTS=[
+/* ══ DATA ══ */
+const PROJECTS = [
   {
     year:'2019–2020',
     name:{ca:'La Festa',es:'La Festa',en:'La Festa'},
@@ -541,8 +589,8 @@ const PROJECTS=[
       en:[['Company','Envers Teatre'],['Space','Plaça Comas, Les Corts'],['Years','2019 · 2020']]
     },
     bolos:[
-      {venue:'Plaça Comas, Les Corts, Barcelona',date:'09/2019'},
-      {venue:'Plaça Comas, Les Corts, Barcelona',date:'09/2020'},
+      {venue:'Plaça Comas, Les Corts, Barcelona',date:'20/09/2019'},
+      {venue:'Plaça Comas, Les Corts, Barcelona',date:'24/09/2020'},
     ],
     photos:[
       {src:'https://picsum.photos/seed/park1/600/450',cap:'Park(ing) Day 2019'},
@@ -552,137 +600,188 @@ const PROJECTS=[
   }
 ];
 
-const TRAINING=[
-  {period:'2025–26',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Interpretació · Teatre de l\'Absurd (Beckett)',es:'Interpretación · Teatro del Absurdo (Beckett)',en:'Acting · Theatre of the Absurd (Beckett)'},tutors:[{name:'Ferran Màdico',url:'https://www.eolia.cat/portfolio-items/ferran-madico/'}],photos:[],videos:[]},
+const TRAINING = [
+  {period:'2025–26',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Teatre de l\'Absurd · Beckett',es:'Teatro del Absurdo · Beckett',en:'Theatre of the Absurd · Beckett'},tutors:[{name:'Ferran Màdico',url:'https://www.eolia.cat/portfolio-items/ferran-madico/'}],photos:[],videos:[]},
   {period:'2025',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Clown',es:'Clown',en:'Clown'},tutors:[{name:'Arnau Marín',url:'https://www.eolia.cat/portfolio-items/arnau-marin/'}],photos:[],videos:[]},
   {period:'2024–25',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Interpretació',es:'Interpretación',en:'Acting'},tutors:[{name:'Rosa May',url:'https://www.eolia.cat/portfolio-items/rosa-may/'},{name:'Carla Torres',url:'https://www.eolia.cat/portfolio-items/carla-torres/'},{name:'Salva Soler',url:'https://www.eolia.cat/portfolio-items/salva-soler/'}],photos:[{src:'https://picsum.photos/seed/eolia1/600/450',cap:'Eòlia Interpretació 2024–25'},{src:'https://picsum.photos/seed/eolia2/600/450',cap:''}],videos:[]},
   {period:'2023–25',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Moviment, Viewpoints i Creació Escènica',es:'Movimiento, Viewpoints y Creación Escénica',en:'Movement, Viewpoints & Scenic Creation'},tutors:[{name:'Mar Medina',url:'https://www.eolia.cat/portfolio-items/mar-medina/'},{name:'Georgia Vardarou',url:'https://www.eolia.cat/portfolio-items/georgia-vardarou/'}],photos:[{src:'https://picsum.photos/seed/move1/600/450',cap:'Moviment i Viewpoints · Eòlia'},{src:'https://picsum.photos/seed/move2/600/450',cap:''}],videos:[]},
   {period:'2016–17',inst:{ca:'Lazzigags',es:'Lazzigags',en:'Lazzigags'},instUrl:'https://www.lazzigags.cat/',name:{ca:'Teatre Musical',es:'Teatro Musical',en:'Musical Theatre'},tutors:[{name:'Lluís Garrido',url:null}],photos:[],videos:[]},
-  {period:'2012-13',inst:{ca:'CMU Penyafort-Montserrat',es:'Col·legi Major Penyafort-Montserrat',en:'Col·legi Major Penyafort-Montserrat'},instUrl:null,name:{ca:'Interpretació Teatral',es:'Interpretación Teatral',en:'Acting'},tutors:[{name:'Laura Larrègle',url:null}],photos:[],videos:[]},
+  {period:'2012–13',inst:{ca:'CMU Penyafort-Montserrat',es:'CMU Penyafort-Montserrat',en:'CMU Penyafort-Montserrat'},instUrl:null,name:{ca:'Interpretació Teatral',es:'Interpretación Teatral',en:'Acting'},tutors:[{name:'Laura Larrègle',url:null}],photos:[],videos:[]},
 ];
 
-/* ── ACCORDION FACTORY ── */
-function createAccordion({gridEl,data,buildTabHTML,buildDetailHTML}){
-  const acc={activeIdx:-1,detailEls:[],tabEls:[]};
+/* ══ ACCORDION FACTORY ══ */
+function createAccordion({gridEl, data, buildTabHTML, buildDetailHTML}) {
+  const acc = {activeIdx:-1, detailEls:[], tabEls:[]};
 
-  data.forEach((item,idx)=>{
-    const tab=document.createElement('div');
-    tab.className='acc-tab';
-    tab.dataset.idx=idx;
-    tab.innerHTML=buildTabHTML(item,idx);
+  data.forEach((item, idx) => {
+    const tab = document.createElement('div');
+    tab.className = 'acc-tab';
+    tab.dataset.idx = idx;
+    tab.innerHTML = buildTabHTML(item, idx);
     gridEl.appendChild(tab);
     acc.tabEls.push(tab);
 
     // Cartell cycling
-    const visual=tab.querySelector('.acc-tab-visual');
-    if(visual&&visual.dataset.cartells){
-      let cartells,ci=0;
-      try{cartells=JSON.parse(visual.dataset.cartells);}catch(e){cartells=[];}
-      const img=visual.querySelector('img');
-      const counter=visual.querySelector('.cartell-counter-overlay');
-      const btnL=visual.querySelector('.cartell-btn-left');
-      const btnR=visual.querySelector('.cartell-btn-right');
-      if(cartells.length<=1){
-        const arrows=visual.querySelector('.cartell-arrows');
-        if(arrows)arrows.style.display='none';
-        if(counter)counter.style.display='none';
+    const visual = tab.querySelector('.acc-tab-visual');
+    if (visual && visual.dataset.cartells) {
+      let cartells, ci = 0;
+      try { cartells = JSON.parse(visual.dataset.cartells); } catch(e) { cartells = []; }
+      const img = visual.querySelector('img');
+      const counter = visual.querySelector('.cartell-counter-overlay');
+      const btnL = visual.querySelector('.cartell-btn-left');
+      const btnR = visual.querySelector('.cartell-btn-right');
+      if (cartells.length <= 1) {
+        const arrows = visual.querySelector('.cartell-arrows');
+        if (arrows) arrows.style.display = 'none';
+        if (counter) counter.style.display = 'none';
       } else {
-        const cycle=(dir)=>{
-          ci=(ci+dir+cartells.length)%cartells.length;
-          if(img){img.style.opacity='0';setTimeout(()=>{img.src=cartells[ci];img.style.opacity='1';},180);}
-          if(counter)counter.textContent=`${ci+1} / ${cartells.length}`;
+        const cycle = (dir) => {
+          ci = (ci + dir + cartells.length) % cartells.length;
+          if (img) { img.style.opacity='0'; setTimeout(()=>{ img.src=cartells[ci]; img.style.opacity='1'; }, 180); }
+          if (counter) counter.textContent = `${ci+1} / ${cartells.length}`;
         };
-        if(btnL)btnL.addEventListener('click',(e)=>{e.stopPropagation();cycle(-1);});
-        if(btnR)btnR.addEventListener('click',(e)=>{e.stopPropagation();cycle(1);});
-        if(img)img.style.transition='opacity .18s ease';
+        if (btnL) btnL.addEventListener('click', (e) => { e.stopPropagation(); cycle(-1); });
+        if (btnR) btnR.addEventListener('click', (e) => { e.stopPropagation(); cycle(1); });
+        if (img) img.style.transition = 'opacity .18s ease';
       }
     }
 
-    tab.addEventListener('mouseenter',()=>{if(acc.activeIdx!==idx)acc.open(idx);});
-    tab.addEventListener('click',(e)=>{if(!e.target.closest('.cartell-btn')){acc.activeIdx===idx?acc.close():acc.open(idx);}});
+    // Hover → open (no close on hover)
+    tab.addEventListener('mouseenter', () => { if (acc.activeIdx !== idx) acc.open(idx); });
+    // Click → open only, never close (prevents confusion on touch)
+    tab.addEventListener('click', (e) => {
+      if (!e.target.closest('.cartell-btn')) acc.open(idx);
+    });
   });
 
-  function rebuildPanels(){
-    acc.detailEls.forEach(el=>el.remove());
-    acc.detailEls=[];
-    if(!acc.tabEls.length)return;
-    const rows=[];
-    let curRow=[],curTop=acc.tabEls[0].offsetTop;
-    acc.tabEls.forEach((tab,i)=>{
-      if(Math.abs(tab.offsetTop-curTop)>4){rows.push(curRow);curRow=[];curTop=tab.offsetTop;}
-      curRow.push({tab,idx:i});
+  function rebuildPanels() {
+    acc.detailEls.forEach(el => el.remove());
+    acc.detailEls = [];
+    if (!acc.tabEls.length) return;
+    const rows = [];
+    let curRow = [], curTop = acc.tabEls[0].offsetTop;
+    acc.tabEls.forEach((tab, i) => {
+      if (Math.abs(tab.offsetTop - curTop) > 4) { rows.push(curRow); curRow = []; curTop = tab.offsetTop; }
+      curRow.push({tab, idx:i});
     });
     rows.push(curRow);
-    rows.forEach(row=>{
-      const lastTab=row[row.length-1].tab;
-      const panel=document.createElement('div');
-      panel.className='acc-detail';
-      panel._rowIndices=row.map(r=>r.idx);
-      lastTab.insertAdjacentElement('afterend',panel);
+    rows.forEach(row => {
+      const lastTab = row[row.length-1].tab;
+      const panel = document.createElement('div');
+      panel.className = 'acc-detail';
+      panel._rowIndices = row.map(r => r.idx);
+      lastTab.insertAdjacentElement('afterend', panel);
       acc.detailEls.push(panel);
     });
-    if(acc.activeIdx>=0){
-      const panel=acc.panelForIdx(acc.activeIdx);
-      if(panel){
-        panel.innerHTML=`<div class="detail-inner">${buildDetailHTML(data[acc.activeIdx],acc.activeIdx,currentLang)}</div>`;
+    if (acc.activeIdx >= 0) {
+      const panel = acc.panelForIdx(acc.activeIdx);
+      if (panel) {
+        panel.innerHTML = `<div class="detail-inner">${buildDetailHTML(data[acc.activeIdx], acc.activeIdx, currentLang)}</div>`;
         panel.classList.add('open');
       }
     }
   }
 
-  acc.panelForIdx=(idx)=>acc.detailEls.find(p=>p._rowIndices&&p._rowIndices.includes(idx));
+  acc.panelForIdx = (idx) => acc.detailEls.find(p => p._rowIndices && p._rowIndices.includes(idx));
 
-  acc.open=(idx)=>{
-    if(acc.activeIdx>=0){
-      const prev=acc.panelForIdx(acc.activeIdx);
-      if(prev)prev.classList.remove('open');
+  acc.open = (idx) => {
+    // ── SCROLL COMPENSATION ──────────────────────────────────────
+    // Record the hovered tab's viewport position BEFORE any DOM change.
+    // After closing the old panel (which may remove height above this tab),
+    // we correct scrollY by the exact drift so the tab stays visually still.
+    const anchorTab = acc.tabEls[idx];
+    const anchorBefore = anchorTab.getBoundingClientRect().top;
+
+    const prevPanel = acc.activeIdx >= 0 ? acc.panelForIdx(acc.activeIdx) : null;
+    const switchingRows = prevPanel && !prevPanel._rowIndices.includes(idx);
+
+    if (acc.activeIdx >= 0) {
+      if (prevPanel) prevPanel.classList.remove('open');
       acc.tabEls[acc.activeIdx].classList.remove('active');
     }
-    acc.activeIdx=idx;
+
+    // Compensate immediately after collapsing (synchronous — before paint)
+    if (switchingRows) {
+      const drift = anchorTab.getBoundingClientRect().top - anchorBefore;
+      if (drift !== 0) window.scrollBy({top: drift, behavior: 'instant'});
+    }
+
+    acc.activeIdx = idx;
     acc.tabEls[idx].classList.add('active');
-    if(!acc.detailEls.length)rebuildPanels();
-    const panel=acc.panelForIdx(idx);
-    if(panel){
-      panel.innerHTML=`<div class="detail-inner">${buildDetailHTML(data[idx],idx,currentLang)}</div>`;
+    if (!acc.detailEls.length) rebuildPanels();
+    const panel = acc.panelForIdx(idx);
+    if (panel) {
+      panel.innerHTML = `<div class="detail-inner">${buildDetailHTML(data[idx], idx, currentLang)}</div>`;
       panel.classList.add('open');
     }
   };
 
-  acc.close=()=>{
-    if(acc.activeIdx>=0){
-      const prev=acc.panelForIdx(acc.activeIdx);
-      if(prev)prev.classList.remove('open');
+  acc.close = () => {
+    if (acc.activeIdx >= 0) {
+      const prev = acc.panelForIdx(acc.activeIdx);
+      if (prev) prev.classList.remove('open');
       acc.tabEls[acc.activeIdx].classList.remove('active');
-      acc.activeIdx=-1;
+      acc.activeIdx = -1;
     }
   };
 
-  acc.renderDetail=(idx)=>{
-    const panel=acc.panelForIdx(idx);
-    if(panel&&panel.classList.contains('open'))
-      panel.innerHTML=`<div class="detail-inner">${buildDetailHTML(data[idx],idx,currentLang)}</div>`;
+  acc.renderDetail = (idx) => {
+    const panel = acc.panelForIdx(idx);
+    if (panel && panel.classList.contains('open'))
+      panel.innerHTML = `<div class="detail-inner">${buildDetailHTML(data[idx], idx, currentLang)}</div>`;
   };
 
-  requestAnimationFrame(()=>requestAnimationFrame(rebuildPanels));
-  let rsz;window.addEventListener('resize',()=>{clearTimeout(rsz);rsz=setTimeout(rebuildPanels,200);});
+  // Expose data ref for label rebuild
+  acc._data = data;
+  acc._buildTabHTML = buildTabHTML;
+
+  requestAnimationFrame(() => requestAnimationFrame(rebuildPanels));
+  let rsz;
+  window.addEventListener('resize', () => { clearTimeout(rsz); rsz = setTimeout(rebuildPanels, 200); });
   return acc;
 }
 
-const svgL=`<svg width="10" height="14" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="8,1 2,8 8,15"/></svg>`;
-const svgR=`<svg width="10" height="14" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,1 8,8 2,15"/></svg>`;
+/* ══ REBUILD TAB LABELS ON LANG CHANGE ══
+   Tabs are built by JS, not id-keyed, so we need to update them directly. */
+function rebuildTabLabels() {
+  // Projects
+  projAccordion.tabEls.forEach((tab, idx) => {
+    const p = PROJECTS[idx];
+    const nameEl = tab.querySelector('.acc-tab-name');
+    const subEl = tab.querySelector('.acc-tab-sub');
+    if (nameEl) nameEl.textContent = p.name[currentLang];
+    if (subEl) subEl.textContent = p.sub[currentLang];
+  });
+  // Training
+  trainAccordion.tabEls.forEach((tab, idx) => {
+    const tr = TRAINING[idx];
+    const instEl = tab.querySelector('.acc-tab-year');
+    const nameEl = tab.querySelector('.acc-tab-name');
+    const instVis = tab.querySelector('.vis-inst');
+    const inst = tr.inst[currentLang];
+    const name = tr.name[currentLang];
+    if (instEl) instEl.textContent = inst;
+    if (nameEl) nameEl.textContent = name;
+    if (instVis) instVis.textContent = inst;
+  });
+}
 
-function projectTabHTML(p){
-  const cartells=p.cartells||[];
-  const first=cartells[0]||'';
-  const cJSON=JSON.stringify(cartells).replace(/'/g,'&#39;');
+const svgL = `<svg width="10" height="14" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="8,1 2,8 8,15"/></svg>`;
+const svgR = `<svg width="10" height="14" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,1 8,8 2,15"/></svg>`;
+
+/* ══ PROJECT ACCORDION ══ */
+function projectTabHTML(p) {
+  const cartells = p.cartells || [];
+  const first = cartells[0] || '';
+  const cJSON = JSON.stringify(cartells).replace(/'/g, '&#39;');
   return `
     <div class="acc-tab-visual" data-cartells='${cJSON}'>
-      ${first?`<img src="${first}" alt="${p.name.ca}" loading="lazy">`:''}
+      ${first ? `<img src="${first}" alt="${p.name.ca}" loading="lazy">` : ''}
       <div class="cartell-arrows">
         <button class="cartell-btn cartell-btn-left">${svgL}</button>
         <button class="cartell-btn cartell-btn-right">${svgR}</button>
       </div>
-      ${cartells.length>1?`<div class="cartell-counter-overlay">1 / ${cartells.length}</div>`:''}
+      ${cartells.length > 1 ? `<div class="cartell-counter-overlay">1 / ${cartells.length}</div>` : ''}
     </div>
     <div class="acc-tab-info">
       <div>
@@ -694,28 +793,28 @@ function projectTabHTML(p){
     </div>`;
 }
 
-function projectDetailHTML(p,idx,lang){
-  const t=T[lang];
-  const meta=p.meta[lang].map(([k,v])=>`<div class="detail-meta-item"><strong>${k}</strong>${v}</div>`).join('');
-  const bolos=p.bolos.map(b=>{
-    const cls=b.cancelled?' bolo-cancelled':'';
-    const note=b.note?` <span style="font-size:9px;opacity:.6">· ${b.note}</span>`:'';
-    return `<div class="bolo-item${cls}"><span class="bolo-venue">${b.venue}${note}</span><span class="bolo-date">${b.date}</span></div>`;
+function projectDetailHTML(p, idx, lang) {
+  const t = T[lang];
+  const meta = p.meta[lang].map(([k,v]) => `<div class="detail-meta-item"><strong>${k}</strong>${v}</div>`).join('');
+  const bolos = p.bolos.map(b => {
+    const cls = b.cancelled ? ' bolo-cancelled' : '';
+    const note = b.note ? ` <span style="text-decoration:none,font-size:6px;opacity:.5">· ${b.note}</span>` : '';
+    return `<div class="bolo-item${cls}"> <span class="bolo-venue-note"> <span class="bolo-venue">${b.venue}</span> ${note}</span> <span class="bolo-date">${b.date}</span></div>`;
   }).join('');
-  let photos='';
-  if(p.photos.length){
-    photos+=`<div class="detail-media-label">${t.photoLabel}</div><div class="photos-grid">`;
-    photos+=p.photos.map(ph=>`<div class="photo-slot" data-caption="${ph.cap}"><img src="${ph.src}" alt="${ph.cap}" loading="lazy"></div>`).join('');
-    photos+=`</div>`;
+  let photos = '';
+  if (p.photos.length) {
+    photos += `<div class="detail-media-label">${t.photoLabel}</div><div class="photos-grid">`;
+    photos += p.photos.map(ph => `<div class="photo-slot" data-caption="${ph.cap}"><img src="${ph.src}" alt="${ph.cap}" loading="lazy"></div>`).join('');
+    photos += `</div>`;
   }
-  let videos='';
-  if(p.videos.length){
-    videos+=`<div class="detail-media-label" style="margin-top:16px">${t.videoLabel}</div><div class="videos-grid">`;
-    videos+=p.videos.map(v=>v
-      ?`<div class="video-slot"><iframe src="${v.src}" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe><div class="video-label">${v.label}</div></div>`
-      :`<div class="video-slot"><div class="video-placeholder"><div class="video-placeholder-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div><span>${t.addVideo}</span></div></div>`
+  let videos = '';
+  if (p.videos.length) {
+    videos += `<div class="detail-media-label" style="margin-top:16px">${t.videoLabel}</div><div class="videos-grid">`;
+    videos += p.videos.map(v => v
+      ? `<div class="video-slot"><iframe src="${v.src}" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe><div class="video-label">${v.label}</div></div>`
+      : `<div class="video-slot"><div class="video-placeholder"><div class="video-placeholder-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div><span>${t.addVideo}</span></div></div>`
     ).join('');
-    videos+=`</div>`;
+    videos += `</div>`;
   }
   return `
     <div class="detail-top">
@@ -725,11 +824,17 @@ function projectDetailHTML(p,idx,lang){
     <div class="detail-media">${photos}${videos}</div>`;
 }
 
-const projAccordion=createAccordion({gridEl:document.getElementById('projectsGrid'),data:PROJECTS,buildTabHTML:projectTabHTML,buildDetailHTML:projectDetailHTML});
+const projAccordion = createAccordion({
+  gridEl: document.getElementById('projectsGrid'),
+  data: PROJECTS,
+  buildTabHTML: projectTabHTML,
+  buildDetailHTML: projectDetailHTML
+});
 
-function trainingTabHTML(tr){
-  const inst=tr.inst.ca;
-  const name=tr.name.ca;
+/* ══ TRAINING ACCORDION ══ */
+function trainingTabHTML(tr) {
+  const inst = tr.inst.ca;
+  const name = tr.name.ca;
   return `
     <div class="acc-tab-visual no-img">
       <div class="vis-period">${tr.period}</div>
@@ -739,24 +844,29 @@ function trainingTabHTML(tr){
       <div>
         <div class="acc-tab-year">${inst}</div>
         <div class="acc-tab-name">${name}</div>
-        <div class="acc-tab-sub">${tr.tutors.map(t=>t.name).join(' · ')}</div>
+        <div class="acc-tab-sub">${tr.tutors.map(t => t.name).join(' · ')}</div>
       </div>
       <div class="acc-tab-indicator"></div>
     </div>`;
 }
 
-function trainingDetailHTML(tr,idx,lang){
-  const t=T[lang];
-  const name=tr.name[lang];
-  const inst=tr.inst[lang];
-  const instLink=tr.instUrl?`<a href="${tr.instUrl}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,184,154,.3)">${inst}</a>`:inst;
-  const tutorLabel={ca:'Professorat',es:'Profesorado',en:'Tutors'}[lang];
-  const tutors=tr.tutors.map(tu=>tu.url?`<a href="${tu.url}" target="_blank" rel="noopener" style="color:var(--light);text-decoration:none;border-bottom:1px solid var(--border)">${tu.name}</a>`:tu.name).join(' · ');
-  let photos='';
-  if(tr.photos&&tr.photos.length){
-    photos=`<div class="detail-media-label" style="margin-top:20px">${t.photoLabel}</div><div class="photos-grid">`;
-    photos+=tr.photos.map(ph=>`<div class="photo-slot" data-caption="${ph.cap}"><img src="${ph.src}" alt="${ph.cap}" loading="lazy"></div>`).join('');
-    photos+=`</div>`;
+function trainingDetailHTML(tr, idx, lang) {
+  const t = T[lang];
+  const name = tr.name[lang];
+  const inst = tr.inst[lang];
+  const instLink = tr.instUrl
+    ? `<a href="${tr.instUrl}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,184,154,.3)">${inst}</a>`
+    : inst;
+  const tutorLabel = {ca:'Professorat',es:'Profesorado',en:'Tutors'}[lang];
+  const tutors = tr.tutors.map(tu => tu.url
+    ? `<a href="${tu.url}" target="_blank" rel="noopener" style="color:var(--light);text-decoration:none;border-bottom:1px solid var(--border)">${tu.name}</a>`
+    : tu.name
+  ).join(' · ');
+  let photos = '';
+  if (tr.photos && tr.photos.length) {
+    photos = `<div class="detail-media-label" style="margin-top:20px">${t.photoLabel}</div><div class="photos-grid">`;
+    photos += tr.photos.map(ph => `<div class="photo-slot" data-caption="${ph.cap}"><img src="${ph.src}" alt="${ph.cap}" loading="lazy"></div>`).join('');
+    photos += `</div>`;
   }
   return `
     <div class="detail-top no-bolos">
@@ -772,40 +882,150 @@ function trainingDetailHTML(tr,idx,lang){
     </div>`;
 }
 
-const trainAccordion=createAccordion({gridEl:document.getElementById('trainingGrid'),data:TRAINING,buildTabHTML:trainingTabHTML,buildDetailHTML:trainingDetailHTML});
+const trainAccordion = createAccordion({
+  gridEl: document.getElementById('trainingGrid'),
+  data: TRAINING,
+  buildTabHTML: trainingTabHTML,
+  buildDetailHTML: trainingDetailHTML
+});
 
-/* ── HERO SLIDER ── */
-(function(){
-  const display=document.getElementById('heroDisplay');
-  const thumbsC=document.getElementById('heroThumbs');
-  const counter=document.getElementById('heroCounter');
-  const imgs=Array.from(display.querySelectorAll('img'));
-  if(!imgs.length)return;
-  imgs.forEach((img,i)=>{
-    const th=document.createElement('div');
-    th.className='hero-thumb'+(i===0?' active':'');
-    const ti=document.createElement('img');ti.src=img.src;ti.alt=img.alt;
+/* ══ HERO SLIDER ══ */
+(function() {
+  const display = document.getElementById('heroDisplay');
+  const thumbsC = document.getElementById('heroThumbs');
+  const counter = document.getElementById('heroCounter');
+  const imgs = Array.from(display.querySelectorAll('img'));
+  if (!imgs.length) return;
+  imgs.forEach((img, i) => {
+    const th = document.createElement('div');
+    th.className = 'hero-thumb' + (i === 0 ? ' active' : '');
+    const ti = document.createElement('img'); ti.src = img.src; ti.alt = img.alt;
     th.appendChild(ti);
-    th.addEventListener('mouseenter',()=>goTo(i));
-    th.addEventListener('click',()=>goTo(i));
+    th.addEventListener('mouseenter', () => goTo(i));
+    th.addEventListener('click', () => goTo(i));
     thumbsC.appendChild(th);
   });
-  const thumbEls=Array.from(thumbsC.querySelectorAll('.hero-thumb'));
-  function goTo(idx){
-    imgs.forEach((img,i)=>img.classList.toggle('active',i===idx));
-    thumbEls.forEach((t,i)=>t.classList.toggle('active',i===idx));
-    if(counter)counter.textContent=`${idx+1} / ${imgs.length}`;
+  const thumbEls = Array.from(thumbsC.querySelectorAll('.hero-thumb'));
+  function goTo(idx) {
+    imgs.forEach((img, i) => img.classList.toggle('active', i === idx));
+    thumbEls.forEach((t, i) => t.classList.toggle('active', i === idx));
+    if (counter) counter.textContent = `${idx+1} / ${imgs.length}`;
   }
   goTo(0);
 })();
 
-/* ── SCROLL REVEAL ── */
-const obs=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});
-},{threshold:0.06,rootMargin:'0px 0px -24px 0px'});
-document.querySelectorAll('.acc-tab').forEach((el,i)=>{
-  el.style.opacity='0';el.style.transform='translateY(14px)';
-  el.style.transition=`opacity .55s ease ${i*.04}s,transform .55s ease ${i*.04}s,background .3s`;
+/* ══ DESKTOP NAV: smooth scroll + active section highlight ══ */
+document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+// Sections to observe for active highlighting
+const navSections = ['home','formacio','projectes','about','contact'];
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      // Desktop nav
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.toggle('nav-active', a.dataset.section === id);
+      });
+      // Mobile section pill
+      updateMobSection(id);
+    }
+  });
+}, { threshold: 0.3 });
+
+navSections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) sectionObserver.observe(el);
+});
+
+/* ══ MOBILE NAV ══ */
+const SECTION_ORDER = ['home','formacio','projectes','about','contact'];
+let currentSection = 'home';
+
+function buildMobSectionDropdown() {
+  const dropdown = document.getElementById('mobSectionDropdown');
+  if (!dropdown) return;
+  const labels = T[currentLang].mobSections;
+  dropdown.innerHTML = SECTION_ORDER.map(id => `
+    <div class="mob-dropdown-item${id === currentSection ? ' active' : ''}"
+         data-section="${id}">${labels[id]}</div>
+  `).join('');
+  dropdown.querySelectorAll('.mob-dropdown-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.section);
+      if (target) target.scrollIntoView({behavior:'smooth'});
+      closeMobDropdowns();
+    });
+  });
+}
+
+function updateMobSection(id) {
+  currentSection = id;
+  const val = document.getElementById('mobSectionVal');
+  if (val) val.textContent = T[currentLang].mobSections[id] || id;
+  // Update active state in dropdown if open
+  document.querySelectorAll('#mobSectionDropdown .mob-dropdown-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.section === id)
+  );
+}
+
+function closeMobDropdowns() {
+  document.querySelectorAll('.mob-pill').forEach(p => p.classList.remove('open'));
+}
+
+// Toggle section pill
+document.getElementById('mobSectionPill').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const pill = document.getElementById('mobSectionPill');
+  const wasOpen = pill.classList.contains('open');
+  closeMobDropdowns();
+  if (!wasOpen) { buildMobSectionDropdown(); pill.classList.add('open'); }
+});
+
+// Toggle lang pill
+document.getElementById('mobLangPill').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const pill = document.getElementById('mobLangPill');
+  const wasOpen = pill.classList.contains('open');
+  closeMobDropdowns();
+  if (!wasOpen) pill.classList.add('open');
+});
+
+// Lang dropdown items
+document.querySelectorAll('#mobLangDropdown .mob-dropdown-item').forEach(item => {
+  item.addEventListener('click', () => {
+    setLang(item.dataset.lang);
+    closeMobDropdowns();
+  });
+});
+
+// Close dropdowns on outside click
+document.addEventListener('click', closeMobDropdowns);
+
+// Init mobile section label
+buildMobSectionDropdown();
+
+/* ══ SCROLL REVEAL ══ */
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      obs.unobserve(e.target);
+    }
+  });
+}, {threshold:0.06, rootMargin:'0px 0px -24px 0px'});
+
+document.querySelectorAll('.acc-tab').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(14px)';
+  el.style.transition = `opacity .55s ease ${i*.04}s, transform .55s ease ${i*.04}s, background .3s`;
   obs.observe(el);
 });
 </script>
