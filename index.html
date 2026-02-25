@@ -131,9 +131,9 @@
     .acc-tab-visual img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .6s ease,filter .5s;filter:brightness(.75) grayscale(25%)}
     .acc-tab:hover .acc-tab-visual img,.acc-tab.active .acc-tab-visual img{transform:scale(1.04);filter:brightness(1) grayscale(0%)}
 
-    .acc-tab-visual.no-img{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--black);border-bottom:1px solid var(--border)}
-    .acc-tab-visual.no-img .vis-period{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,32px);font-weight:300;font-style:italic;color:rgba(200,184,154,.35);letter-spacing:.02em}
-    .acc-tab-visual.no-img .vis-inst{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,184,154,.5)}
+    //.acc-tab-visual.no-img{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--black);border-bottom:1px solid var(--border)}
+    //.acc-tab-visual.no-img .vis-period{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,32px);font-weight:300;font-style:italic;color:rgba(200,184,154,.35);letter-spacing:.02em}
+    //.acc-tab-visual.no-img .vis-inst{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,184,154,.5)}
 
     .cartell-arrows{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;opacity:0.3;transition:opacity .25s;pointer-events:none;z-index:5}
     .acc-tab-visual:hover .cartell-arrows{opacity:1;pointer-events:auto}
@@ -144,6 +144,7 @@
 
     .acc-tab-info{padding:18px 20px 16px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
     .acc-tab-year{font-size:12px;letter-spacing:.2em;color:var(--accent);margin-bottom:5px}
+    .acc-tab-period{font-size:12px;letter-spacing:.2em;color:var(--accent);margin-bottom:5px}
     .acc-tab-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:20px;color:var(--white);line-height:1.25}
     .acc-tab:hover .acc-tab-name,.acc-tab.active .acc-tab-name{color:var(--accent)}
     .acc-tab-sub{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:.03em;line-height:1.4}
@@ -169,12 +170,12 @@
     .bolo-cancelled .bolo-date{text-decoration:line-through;opacity:.38;color:var(--accent)}
     .detail-media-label{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--border);margin-bottom:12px}
     .photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px}
-    .photo-slot{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--dark);cursor:crosshair}
+    .photo-slot{position:relative;aspect-ratio:3/2;overflow:hidden;background:var(--dark);cursor:crosshair}
     .photo-slot img{width:100%;height:100%;object-fit:cover;filter:grayscale(12%);transition:filter .4s,transform .5s;display:block}
     .photo-slot:hover img{filter:grayscale(0%);transform:scale(1.04)}
     .photo-slot::after{content:attr(data-caption);position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:var(--light);font-size:11px;letter-spacing:.08em;padding:20px 12px 10px;opacity:0;transition:opacity .3s}
     .photo-slot:hover::after{opacity:1}
-    .videos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:4px}
+    .videos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px}
     .video-slot{position:relative;aspect-ratio:16/9;background:var(--dark);overflow:hidden}
     .video-slot iframe{width:100%;height:100%;border:none;display:block}
     .video-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--border);border:1px dashed rgba(46,46,46,.5)}
@@ -251,7 +252,7 @@
       <a href="#home" data-section="home" id="hero">Inici</a>
       <a href="#formacio" data-section="formacio" id="nav-training">Formació</a>
       <a href="#projectes" data-section="projectes" id="nav-projects">Projectes</a>
-      <a href="#about" data-section="about" id="nav-about">Sobre mi</a>
+      <!--<a href="#about" data-section="about" id="nav-about">Sobre mi</a>-->
       <a href="#contact" data-section="contact" id="nav-contact">Contacte</a>
     </div>
   </div>
@@ -290,8 +291,9 @@
   </div>
   <div class="hero-photo-col">
     <div class="hero-display" id="heroDisplay">
-      <img src="assets/0_profile/marc1.jpeg" alt="Marc Dalmasso" class="active">
+      <img src="assets/0_profile/marc3.jpeg" alt="Marc Dalmasso" class="active">
       <img src="assets/0_profile/marc2.jpeg" alt="Marc Dalmasso">
+      <img src="assets/0_profile/marc1.jpeg" alt="Marc Dalmasso">
       <div class="hero-display-counter" id="heroCounter">1 / 2</div>
     </div>
     <div class="hero-thumbs" id="heroThumbs"></div>
@@ -318,7 +320,7 @@
   <div class="acc-grid proj-grid" id="projectsGrid"></div>
 </section>
 
-<!-- SOBRE MI -->
+<!-- SOBRE MI ->
 <section id="about" style="background:var(--off-black)">
   <div class="about-inner">
     <div class="section-header">
@@ -362,17 +364,20 @@
     </div>
   </div>
 </section>
+-->
 
 <!-- CONTACT -->
 <div id="contact">
   <div class="contact-left" id="contact-phrase">
-    Parlem.<br>
+    Parlem<br>
     <a href="mailto:marcdabl.tux@gmail.com" class="contact-email">marcdabl.tux@gmail.com</a>
   </div>
   <div class="contact-right">
+    <!--
     <div><a href="https://www.instagram.com/envers.teatre/" target="_blank" rel="noopener">@envers.teatre</a></div>
     <div><a href="https://www.eolia.cat/" target="_blank" rel="noopener">Eòlia Barcelona</a></div>
     <div style="margin-top:16px;color:var(--border);font-size:10px;letter-spacing:.1em" id="contact-location">Barcelona</div>
+    -->
   </div>
 </div>
 
@@ -464,51 +469,50 @@ function setLang(lang) {
 /* ══ DATA ══ */
 const PROJECTS = [
   {
-    year:'2019–2020',
-    name:{ca:'La Festa',es:'La Festa',en:'La Festa'},
-    sub:{ca:'Michael · Thomas Vinterberg',es:'Michael · Thomas Vinterberg',en:'Michael · Thomas Vinterberg'},
-    cartells:['assets/envers_festen/cartells/cartell1.jpg','assets/envers_festen/cartells/cartell2.jpg'],
+    year:'2024–2025',
+    name:{ca:'El Diable de l\'Ampolla',es:'El Diable de l\'Ampolla',en:'El Diable de l\'Ampolla'},
+    sub:{ca:'Lopaka · R.L. Stevenson',es:'Lopaka · R.L. Stevenson',en:'Lopaka · R.L. Stevenson'},
+    ciaUrl:'https://www.instagram.com/envers.teatre/',
+    cartells:['assets/envers_diable/cartells/cartell1.jpg'],
     abstract:{
-      ca:'Adaptació de <em>Festen</em> (1998) de Thomas Vinterberg. El 60è aniversari del senyor Hansen, una família, un secret terrible. Una investigació sobre la hipocresia social, el patriarcat i la violència latent que s\'amaga rere la civilitat.',
-      es:'Adaptación de <em>Festen</em> (1998) de Thomas Vinterberg. El 60º aniversario del señor Hansen, una familia, un secreto terrible. Una investigación sobre la hipocresía social, el patriarcado y la violencia latente.',
-      en:'Adaptation of <em>Festen</em> (1998) by Thomas Vinterberg. Mr Hansen\'s 60th birthday, a family, a terrible secret. An investigation into social hypocrisy, patriarchy and latent violence.'
+      ca:'Adaptació teatral del conte de R.L. Stevenson. Un mariner hawaià, una ampolla màgica i un diable que ho atorga tot — menys la vida. Un espectacle per a públic familiar que navega entre la fascinació i l\'advertència moral.',
+      es:'Adaptación teatral del cuento de R.L. Stevenson. Un marinero hawaiano, una botella mágica y un diablo que lo otorga todo — menos la vida. Espectáculo familiar.',
+      en:'Theatrical adaptation of R.L. Stevenson\'s tale. A Hawaiian sailor, a magic bottle and a devil who grants everything — except life. A family show navigating between fascination and moral warning.'
     },
     meta:{
-      ca:[['Personatge','Michael'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Adaptació','Envers Teatre']],
-      es:[['Personaje','Michael'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Adaptación','Envers Teatre']],
-      en:[['Character','Michael'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Adaptation','Envers Teatre']]
+      ca:[['Personatge','Lopaka · Habitant de Honolulu · Contramestre'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Adaptació','Envers Teatre']],
+      es:[['Personaje','Lopaka · Habitante de Honolulu · Contramaestre'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Adaptación','Envers Teatre']],
+      en:[['Character','Lopaka · Honolulu Resident · Bosun'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Adaptation','Envers Teatre']]
     },
     bolos:[
-      {venue:'Centre Cívic Tomasa Cuevas, Barcelona',date:'21–22/12/2019'},
-      {venue:'Centre Cívic Tomasa Cuevas, Barcelona',date:'22/02/2020'},
-      {venue:'Espai Jove la Fontana, Barcelona',date:'22/03/2020',cancelled:true,note:'COVID'},
-      {venue:'Casa dels Contes, Barcelona',date:'14/05/2020',cancelled:true,note:'COVID'},
-      {venue:'Societat El Centru, Vila-seca',date:'16/05/2020',cancelled:true,note:'COVID'},
-      {venue:'Sala Santa Llúcia, Reus',date:'17/05/2020',cancelled:true,note:'COVID'},
-      {venue:'La Bòbila, L\'Hospitalet de Llobregat',date:'17/07/2020',cancelled:true,note:'COVID'},
+      {venue:'Espai Jove Boca Nord, Barcelona',date:'10/05/2025'},
+      {venue:'Ca la Panarra, Barcelona',date:'22/06/2024'},
     ],
     photos:[
-      {src:'https://picsum.photos/seed/festa1/600/450',cap:'La Festa · Envers Teatre'},
-      {src:'https://picsum.photos/seed/festa2/600/450',cap:'Centre Cívic Tomasa Cuevas'},
-      {src:'https://picsum.photos/seed/festa3/600/450',cap:''},
-      {src:'https://picsum.photos/seed/festa4/600/450',cap:''},
-      {src:'https://picsum.photos/seed/festa5/600/450',cap:''},
-      {src:'https://picsum.photos/seed/festa6/600/450',cap:''},
+      {src:'',cap:'El Diable de l\'Ampolla'},
     ],
     videos:[
-      {src:'https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a',label:'Exemple · substitueix l\'ID de Vimeo'},
-      null
+    {src:'https://www.youtube.com/embed/kV-FKPlharU',label:'Keawe li parla a Lopaka de l\'ampolla'},
+    {src:'https://www.youtube.com/embed/32N7aWV6cUg',label:'Keawe i Lopaka veuen el diable'},
+    {src:'https://www.youtube.com/embed/_9JTM6wY2QI',label:'Keawe pregunta per Lopaka'},
+    {src:'https://www.youtube.com/embed/on28ECAuIzU',label:'Keawe observa habitants feliços'},
+    {src:'https://www.youtube.com/embed/20HJ73-V5dI',label:'Els paletes monten el banc'},
+    {src:'https://www.youtube.com/embed/EREeW2XZCl0',label:'Els paletes rebutjen l\'ampolla'},
+    {src:'https://www.youtube.com/embed/DAMeeMMLBFQ',label:'El corsari begut i Keawe'},
+    {src:'https://www.youtube.com/embed/r1ffNpSKcd4',label:'El corsari begut i Keawe 2'},
     ]
   },
   {
     year:'2021–2023',
     name:{ca:'Històries per a ser explicades',es:'Històries per a ser explicades',en:'Històries per a ser explicades'},
     sub:{ca:'Diverses rols · Osvaldo Dragún',es:'Varios roles · Osvaldo Dragún',en:'Multiple roles · Osvaldo Dragún'},
+    ciaUrl:'https://www.instagram.com/envers.teatre/',
     cartells:[
       'assets/envers_histories/cartells/cartell1.jpg',
       'assets/envers_histories/cartells/cartell2.jpg',
       'assets/envers_histories/cartells/cartell3.jpg',
       'assets/envers_histories/cartells/cartell4.jpg',
+      'assets/envers_histories/cartells/cartell5.jpg',
     ],
     abstract:{
       ca:'Quatre peces breus que fusionen el teatre èpic brechtià amb l\'humor àcid porteny. Micos que es tornen homes, treballadors atrapats en sistemes absurds, dignitats cedides per supervivència. L\'home incapaç de dominar el món que ell mateix ha creat. Seleccionada per la Mostra Nacional Itinera de Grups Amateurs de Catalunya.',
@@ -532,51 +536,52 @@ const PROJECTS = [
       {venue:'Sala Santa Llúcia, Reus',date:'28/03/2021'},
     ],
     photos:[
-      {src:'https://picsum.photos/seed/hist1/600/450',cap:'Històries per a ser explicades'},
-      {src:'https://picsum.photos/seed/hist2/600/450',cap:'Mostra Itinera, Olot 2022'},
-      {src:'https://picsum.photos/seed/hist3/600/450',cap:''},
-      {src:'https://picsum.photos/seed/hist4/600/450',cap:''},
-      {src:'https://picsum.photos/seed/hist5/600/450',cap:''},
-      {src:'https://picsum.photos/seed/hist6/600/450',cap:''},
+      {src:'',cap:'Històries per a ser explicades'},
     ],
     videos:[
-      {src:'https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a',label:'Exemple · substitueix l\'ID de Vimeo'},
-      null
-    ]
-  },
-  {
-    year:'2024–2025',
-    name:{ca:'El Diable de l\'Ampolla',es:'El Diable de l\'Ampolla',en:'El Diable de l\'Ampolla'},
-    sub:{ca:'Lopaka · R.L. Stevenson',es:'Lopaka · R.L. Stevenson',en:'Lopaka · R.L. Stevenson'},
-    cartells:['assets/envers_diable/cartells/cartell1.jpg'],
-    abstract:{
-      ca:'Adaptació teatral del conte de R.L. Stevenson. Un mariner hawaià, una ampolla màgica i un diable que ho atorga tot — menys la vida. Un espectacle per a públic familiar que navega entre la fascinació i l\'advertència moral.',
-      es:'Adaptación teatral del cuento de R.L. Stevenson. Un marinero hawaiano, una botella mágica y un diablo que lo otorga todo — menos la vida. Espectáculo familiar.',
-      en:'Theatrical adaptation of R.L. Stevenson\'s tale. A Hawaiian sailor, a magic bottle and a devil who grants everything — except life. A family show navigating between fascination and moral warning.'
-    },
-    meta:{
-      ca:[['Personatge','Lopaka · Habitant de Honolulu · Contramestre'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Adaptació','Envers Teatre']],
-      es:[['Personaje','Lopaka · Habitante de Honolulu · Contramaestre'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Adaptación','Envers Teatre']],
-      en:[['Character','Lopaka · Honolulu Resident · Bosun'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Adaptation','Envers Teatre']]
-    },
-    bolos:[
-      {venue:'Espai Jove Boca Nord, Barcelona',date:'10/05/2025'},
-      {venue:'Ca la Panarra, Barcelona',date:'22/06/2024'},
-    ],
-    photos:[
-      {src:'https://picsum.photos/seed/diab1/600/450',cap:'El Diable de l\'Ampolla'},
-      {src:'https://picsum.photos/seed/diab2/600/450',cap:'Espai Jove Boca Nord, 2025'},
-      {src:'https://picsum.photos/seed/diab3/600/450',cap:''},
-    ],
-    videos:[
-      {src:'https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&color=c8b89a',label:'Exemple · substitueix l\'ID de Vimeo'},
-      null
+    {src:'https://www.youtube.com/embed/xM48coe_A7I',label:'Història de com el nostre amic August Gonzàlez es va sentir responsable de l\'epidèmia de pesta bubònica de l\'Àfrica del sud'},
     ]
   },
   {
     year:'2019–2020',
-    name:{ca:'Accions Performatives',es:'Acciones Performativas',en:'Performative Actions'},
-    sub:{ca:'Park(ing) Day · Ajuntament Barcelona',es:'Park(ing) Day · Ajuntament Barcelona',en:'Park(ing) Day · Barcelona City Council'},
+    name:{ca:'La Festa',es:'La Festa',en:'La Festa'},
+    sub:{ca:'Michael · Thomas Vinterberg',es:'Michael · Thomas Vinterberg',en:'Michael · Thomas Vinterberg'},
+    ciaUrl:'https://www.instagram.com/envers.teatre/',
+    cartells:['assets/envers_festen/cartells/cartell1.jpg','assets/envers_festen/cartells/cartell2.jpg'],
+    abstract:{
+      ca:'Adaptació de <em>Festen</em> (1998) de Thomas Vinterberg. El 60è aniversari del senyor Hansen, una família, un secret terrible. Una investigació sobre la hipocresia social, el patriarcat i la violència latent que s\'amaga rere la civilitat.',
+      es:'Adaptación de <em>Festen</em> (1998) de Thomas Vinterberg. El 60º aniversario del señor Hansen, una familia, un secreto terrible. Una investigación sobre la hipocresía social, el patriarcado y la violencia latente.',
+      en:'Adaptation of <em>Festen</em> (1998) by Thomas Vinterberg. Mr Hansen\'s 60th birthday, a family, a terrible secret. An investigation into social hypocrisy, patriarchy and latent violence.'
+    },
+    meta:{
+      ca:[['Personatge','Michael'],['Direcció','Laura Larrègle'],['Companyia','Envers Teatre'],['Adaptació','Envers Teatre']],
+      es:[['Personaje','Michael'],['Dirección','Laura Larrègle'],['Compañía','Envers Teatre'],['Adaptación','Envers Teatre']],
+      en:[['Character','Michael'],['Direction','Laura Larrègle'],['Company','Envers Teatre'],['Adaptation','Envers Teatre']]
+    },
+    bolos:[
+      {venue:'Centre Cívic Tomasa Cuevas, Barcelona',date:'21–22/12/2019'},
+      {venue:'Centre Cívic Tomasa Cuevas, Barcelona',date:'22/02/2020'},
+      {venue:'Espai Jove la Fontana, Barcelona',date:'22/03/2020',cancelled:true,note:'COVID'},
+      {venue:'Casa dels Contes, Barcelona',date:'14/05/2020',cancelled:true,note:'COVID'},
+      {venue:'Societat El Centru, Vila-seca',date:'16/05/2020',cancelled:true,note:'COVID'},
+      {venue:'Sala Santa Llúcia, Reus',date:'17/05/2020',cancelled:true,note:'COVID'},
+      {venue:'La Bòbila, L\'Hospitalet de Llobregat',date:'17/07/2020',cancelled:true,note:'COVID'},
+    ],
+    photos:[
+      {src:'./assets/envers_festen/DSC_0482.JPG',cap:'La Festa · Envers Teatre'},
+      {src:'./assets/envers_festen/DSC_0502.JPG',cap:'La Festa · Envers Teatre'},
+      {src:'./assets/envers_festen/DSC_0531.JPG',cap:'La Festa · Envers Teatre'},
+      {src:'./assets/envers_festen/DSC_0539.JPG',cap:'La Festa · Envers Teatre'},
+      {src:'./assets/envers_festen/IMG-20200223-WA0061.jpg',cap:'La Festa · Envers Teatre'},
+      {src:'./assets/envers_festen/DSC_0538.JPG',cap:'La Festa · Envers Teatre'},
+    ],
+    videos:[]
+  },
+  {
+    year:'2019–2020',
+    name:{ca:'Park(ing) Day',es:'Park(ing) Day',en:'Park(ing) Day'},
+    sub:{ca:'Envers Teatre · Ajuntament Barcelona',es:'Envers Teatre · Ajuntament Barcelona',en:'Envers Teatre · Barcelona City Council'},
+    ciaUrl:'https://www.instagram.com/envers.teatre/',
     cartells:['assets/envers_parking_day/cartells/cartell1.jpg'],
     abstract:{
       ca:'Accions teatrals improvisades i interactives a l\'espai públic, en el marc del Park(ing) Day de l\'Ajuntament de Barcelona. La plaça com a escenari obert, el viandant com a espectador inesperat.',
@@ -593,20 +598,65 @@ const PROJECTS = [
       {venue:'Plaça Comas, Les Corts, Barcelona',date:'24/09/2020'},
     ],
     photos:[
-      {src:'https://picsum.photos/seed/park1/600/450',cap:'Park(ing) Day 2019'},
-      {src:'https://picsum.photos/seed/park2/600/450',cap:'Plaça Comas, Les Corts'},
+      {src:'./assets/envers_parking_day/20190920_185029.jpg',cap:'Park(ing) Day'},
+      {src:'./assets/envers_parking_day/2019-09-20_10_12_02_1.jpg',cap:'Park(ing) Day'},
+      {src:'./assets/envers_parking_day/20190920_184748.jpg',cap:'Park(ing) Day'},
     ],
     videos:[]
   }
 ];
 
 const TRAINING = [
-  {period:'2025–26',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Teatre de l\'Absurd · Beckett',es:'Teatro del Absurdo · Beckett',en:'Theatre of the Absurd · Beckett'},tutors:[{name:'Ferran Màdico',url:'https://www.eolia.cat/portfolio-items/ferran-madico/'}],photos:[],videos:[]},
-  {period:'2025',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Clown',es:'Clown',en:'Clown'},tutors:[{name:'Arnau Marín',url:'https://www.eolia.cat/portfolio-items/arnau-marin/'}],photos:[],videos:[]},
-  {period:'2024–25',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Interpretació',es:'Interpretación',en:'Acting'},tutors:[{name:'Rosa May',url:'https://www.eolia.cat/portfolio-items/rosa-may/'},{name:'Carla Torres',url:'https://www.eolia.cat/portfolio-items/carla-torres/'},{name:'Salva Soler',url:'https://www.eolia.cat/portfolio-items/salva-soler/'}],photos:[{src:'https://picsum.photos/seed/eolia1/600/450',cap:'Eòlia Interpretació 2024–25'},{src:'https://picsum.photos/seed/eolia2/600/450',cap:''}],videos:[]},
-  {period:'2023–25',inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',name:{ca:'Moviment, Viewpoints i Creació Escènica',es:'Movimiento, Viewpoints y Creación Escénica',en:'Movement, Viewpoints & Scenic Creation'},tutors:[{name:'Mar Medina',url:'https://www.eolia.cat/portfolio-items/mar-medina/'},{name:'Georgia Vardarou',url:'https://www.eolia.cat/portfolio-items/georgia-vardarou/'}],photos:[{src:'https://picsum.photos/seed/move1/600/450',cap:'Moviment i Viewpoints · Eòlia'},{src:'https://picsum.photos/seed/move2/600/450',cap:''}],videos:[]},
-  {period:'2016–17',inst:{ca:'Lazzigags',es:'Lazzigags',en:'Lazzigags'},instUrl:'https://www.lazzigags.cat/',name:{ca:'Teatre Musical',es:'Teatro Musical',en:'Musical Theatre'},tutors:[{name:'Lluís Garrido',url:null}],photos:[],videos:[]},
-  {period:'2012–13',inst:{ca:'CMU Penyafort-Montserrat',es:'CMU Penyafort-Montserrat',en:'CMU Penyafort-Montserrat'},instUrl:null,name:{ca:'Interpretació Teatral',es:'Interpretación Teatral',en:'Acting'},tutors:[{name:'Laura Larrègle',url:null}],photos:[],videos:[]},
+  {period:'09/2025–01/2026',
+    inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',
+    name:{ca:'Teatre de l\'Absurd · Beckett',es:'Teatro del Absurdo · Beckett',en:'Theatre of the Absurd · Beckett'},
+    tutors:[{name:'Ferran Madico',url:'https://www.eolia.cat/portfolio-items/ferran-madico/'}],
+    photos:[
+    {src:'./assets/eolia_absurd_beckett/molloy.jpeg',cap:'Molloy · La Bicicleta'},
+    {src:'./assets/eolia_absurd_beckett/art.jpeg',cap:''},
+    ],
+    videos:[{src:'https://www.youtube.com/embed/fk2dcvBmli4',label:'Molloy · La Bicicleta'},]
+  },
+  {period:'09/2025-12/2025',
+    inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',
+    name:{ca:'Clown',es:'Clown',en:'Clown'},
+    tutors:[{name:'Arnau Marín',url:'https://www.eolia.cat/portfolio-items/arnau-marin/'}],
+    //photos:[{src:'./assets/0_profile/marc2_orig.jpeg',cap:'Clown'}],
+    photos:[{src:'./assets/0_profile/marc2_orig.jpeg',cap:'Clown'}],
+    videos:[]
+  },
+  {period:'02/2024–06/2025',
+    inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'}, instUrl:'https://www.eolia.cat/',
+    name:{ca:'Interpretació',es:'Interpretación',en:'Acting'},
+    tutors:[{name:'Rosa May',url:'https://www.eolia.cat/portfolio-items/rosa-may/'},{name:'Carla Torres',url:'https://www.eolia.cat/portfolio-items/carla-torres/'},{name:'Salva Soler',url:'https://www.eolia.cat/portfolio-items/salva-soler/'}],
+    photos:[],
+    videos:[{src:'https://www.youtube.com/embed/TI3zV9H306w',label:'Funeral · Projecte de creació'},]
+  },
+  {period:'09/2024–06/2026',
+    inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',
+    name:{ca:'Moviment, Viewpoints i Creació Escènica',es:'Movimiento, Viewpoints y Creación Escénica',en:'Movement, Viewpoints & Scenic Creation'},
+    tutors:[
+      {name:'Mar Medina',url:'https://www.eolia.cat/portfolio-items/mar-medina/'},
+      {name:'Georgia Vardarou',url:'https://www.eolia.cat/portfolio-items/georgia-vardarou/'},
+      {name:'Ana Albornoz',url:'https://www.eolia.cat/portfolio-items/ana-albornoz/'},
+    ],
+    photos:[],
+    videos:[]
+  },
+  {period:'11/2016–06/2017',
+    inst:{ca:'Lazzigags',es:'Lazzigags',en:'Lazzigags'},instUrl:'https://www.lazzigags.cat/',
+    name:{ca:'Teatre Musical',es:'Teatro Musical',en:'Musical Theatre'},
+    tutors:[{name:'Lluís Garrido',url:null}],
+    photos:[],
+    videos:[]
+  },
+  {period:'09/2012–06/2013',
+    inst:{ca:'CMU Penyafort-Montserrat',es:'CMU Penyafort-Montserrat',en:'CMU Penyafort-Montserrat'},instUrl:null,
+    name:{ca:'Interpretació Teatral',es:'Interpretación Teatral',en:'Acting'},
+    tutors:[{name:'Laura Larrègle',url:null}],
+    photos:[],
+    videos:[]
+  },
 ];
 
 /* ══ ACCORDION FACTORY ══ */
@@ -795,7 +845,9 @@ function projectTabHTML(p) {
 
 function projectDetailHTML(p, idx, lang) {
   const t = T[lang];
-  const meta = p.meta[lang].map(([k,v]) => `<div class="detail-meta-item"><strong>${k}</strong>${v}</div>`).join('');
+  const ciaLink = p.ciaUrl
+  const meta = p.meta[lang].map(([k,v]) => `<div class="detail-meta-item"><strong>${k}</strong> ${v} </div>`).join('');
+  //const meta = p.meta[lang].map(([k,v]) => `<div class="detail-meta-item"><strong>${k}</strong><a href="${p.ciaUrl}"> ${v} </a> </div>`).join('');
   const bolos = p.bolos.map(b => {
     const cls = b.cancelled ? ' bolo-cancelled' : '';
     const note = b.note ? ` <span style="text-decoration:none,font-size:6px;opacity:.5">· ${b.note}</span>` : '';
@@ -818,7 +870,8 @@ function projectDetailHTML(p, idx, lang) {
   }
   return `
     <div class="detail-top">
-      <div><div class="detail-abstract">${p.abstract[lang]}</div><div class="detail-meta">${meta}</div></div>
+      <div><div class="detail-abstract">${p.abstract[lang]}</div>
+      <div class="detail-meta">${meta}</div></div>
       <div><div class="detail-bolos-title">${t.bolosLabel}</div>${bolos}</div>
     </div>
     <div class="detail-media">${photos}${videos}</div>`;
@@ -836,13 +889,15 @@ function trainingTabHTML(tr) {
   const inst = tr.inst.ca;
   const name = tr.name.ca;
   return `
+    <!--
     <div class="acc-tab-visual no-img">
-      <div class="vis-period">${tr.period}</div>
       <div class="vis-inst">${inst}</div>
     </div>
+    -->
     <div class="acc-tab-info">
       <div>
         <div class="acc-tab-year">${inst}</div>
+        <div class="acc-tab-period">${tr.period}</div>
         <div class="acc-tab-name">${name}</div>
         <div class="acc-tab-sub">${tr.tutors.map(t => t.name).join(' · ')}</div>
       </div>
@@ -868,6 +923,15 @@ function trainingDetailHTML(tr, idx, lang) {
     photos += tr.photos.map(ph => `<div class="photo-slot" data-caption="${ph.cap}"><img src="${ph.src}" alt="${ph.cap}" loading="lazy"></div>`).join('');
     photos += `</div>`;
   }
+  let videos = '';
+  if (tr.videos.length) {
+    videos += `<div class="detail-media-label" style="margin-top:16px">${t.videoLabel}</div><div class="videos-grid">`;
+    videos += tr.videos.map(v => v
+      ? `<div class="video-slot"><iframe src="${v.src}" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe><div class="video-label">${v.label}</div></div>`
+      : `<div class="video-slot"><div class="video-placeholder"><div class="video-placeholder-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div><span>${t.addVideo}</span></div></div>`
+    ).join('');
+    videos += `</div>`;
+  }
   return `
     <div class="detail-top no-bolos">
       <div>
@@ -878,6 +942,7 @@ function trainingDetailHTML(tr, idx, lang) {
           <div class="detail-meta-item"><strong>${tutorLabel}</strong>${tutors}</div>
         </div>
         ${photos}
+        ${videos}
       </div>
     </div>`;
 }
@@ -923,7 +988,7 @@ document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
 });
 
 // Sections to observe for active highlighting
-const navSections = ['home','formacio','projectes','about','contact'];
+const navSections = ['home','formacio','projectes','contact'];
 
 const sectionObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -945,7 +1010,7 @@ navSections.forEach(id => {
 });
 
 /* ══ MOBILE NAV ══ */
-const SECTION_ORDER = ['home','formacio','projectes','about','contact'];
+const SECTION_ORDER = ['home','formacio','projectes','contact'];
 let currentSection = 'home';
 
 function buildMobSectionDropdown() {
