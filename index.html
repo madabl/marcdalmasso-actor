@@ -181,7 +181,7 @@
     .video-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--border);border:1px dashed rgba(46,46,46,.5)}
     .video-placeholder-icon{width:40px;height:40px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
     .video-placeholder span{font-size:10px;letter-spacing:.2em;text-transform:uppercase}
-    .video-label{position:absolute;bottom:0;left:0;right:0;padding:5px 10px;background:rgba(10,10,10,.8);font-size:11px;color:var(--muted);letter-spacing:.06em}
+    .video-label{position:absolute;top:0;left:0;right:0;padding:5px 10px;background:rgba(10,10,10,.8);font-size:11px;color:var(--muted);letter-spacing:.06em}
 
     /* ── ABOUT ── */
     #about{background:var(--off-black)}
@@ -286,13 +286,17 @@
     <p class="hero-tag" id="hero-tag">Dossier Artístic</p>
     <h1 class="hero-title">Marc<br><em>Dalmasso</em></h1>
     <p class="hero-statement" id="hero-statement">
-      Actor format entre la companyia i l'escola, entre el text clàssic i la creació col·lectiva. Una presència construïda en la col·laboració, el risc i la precisió.
+      Actor format a través dels projectes de la companyia <a href="https://www.instagram.com/envers.teatre/" target="_blank" rel="noopener" style="color: grey; text-decoration: none;">Envers Teatre</a>, que ha decidit assumir una postura proactiva cap a una formació professionalitzadora.
     </p>
   </div>
   <div class="hero-photo-col">
     <div class="hero-display" id="heroDisplay">
       <img src="assets/0_profile/marc3.jpeg" alt="Marc Dalmasso" class="active">
       <img src="assets/0_profile/marc2.jpeg" alt="Marc Dalmasso">
+      <img src="assets/0_profile/marc4.jpeg" alt="Marc Dalmasso">
+      <img src="assets/0_profile/marc5.jpeg" alt="Marc Dalmasso">
+      <img src="assets/0_profile/marc6.jpeg" alt="Marc Dalmasso">
+      <img src="assets/0_profile/marc7.jpeg" alt="Marc Dalmasso">
       <img src="assets/0_profile/marc1.jpeg" alt="Marc Dalmasso">
       <div class="hero-display-counter" id="heroCounter">1 / 2</div>
     </div>
@@ -393,7 +397,7 @@
 const T = {
   ca:{
     'hero-tag':'Dossier Artístic',
-    'hero-statement':'Actor format entre la companyia i l\'escola, entre el text clàssic i la creació col·lectiva. Una presència construïda en la col·laboració, el risc i la precisió.',
+    'hero-statement':'Actor format a través dels projectes de la companyia <a href="https://www.instagram.com/envers.teatre/" target="_blank" rel="noopener" style="color: grey; text-decoration: none;">Envers Teatre</a>, que ha decidit assumir una postura proactiva cap a una formació professionalitzadora.',
     'hero': 'Inici','nav-training':'Formació','nav-projects':'Projectes','nav-about':'Sobre mi','nav-contact':'Contacte',
     'title-training':'Formació','title-projects':'Projectes','title-about':'Sobre mi',
     'about-text':'Actor format entre la <em>companyia amateur</em> i l\'escola professional. El treball col·lectiu d\'Envers Teatre, la mirada del teatre èpic i la recerca del moviment escènic conviven amb la formació continuada a Eòlia.<br><br>Un recorregut que va del Shakespeare al Beckett, del Vinterberg al Dragún: textos que exigeixen presència, risc i precisió.',
@@ -407,7 +411,7 @@ const T = {
   },
   es:{
     'hero-tag':'Dossier Artístico',
-    'hero-statement':'Actor formado entre la compañía y la escuela, entre el texto clásico y la creación colectiva. Una presencia construida en la colaboración, el riesgo y la precisión.',
+    'hero-statement':'Actor formado a través de los proyectos de la compañía <a href="https://www.instagram.com/envers.teatre/" target="_blank" rel="noopener" style="color: grey; text-decoration: none;">Envers Teatre</a>, que ha decidido asumir una postura proactiva hacia una formación profesionalizadora.',
     'hero': 'Inicio','nav-training':'Formación','nav-projects':'Proyectos','nav-about':'Sobre mí','nav-contact':'Contacto',
     'title-training':'Formación','title-projects':'Proyectos','title-about':'Sobre mí',
     'about-text':'Actor formado entre la <em>compañía amateur</em> y la escuela profesional. El trabajo colectivo de Envers Teatre, la mirada del teatro épico y la investigación del movimiento escénico conviven con la formación continuada en Eòlia.<br><br>Un recorrido que va de Shakespeare a Beckett, de Vinterberg a Dragún: textos que exigen presencia, riesgo y precisión.',
@@ -421,7 +425,7 @@ const T = {
   },
   en:{
     'hero-tag':'Artistic Dossier',
-    'hero-statement':'Actor trained between the company and the school, between the classical text and collective creation. A presence built on collaboration, risk and precision.',
+    'hero-statement':'Actor trained through the projects of the company <a href="https://www.instagram.com/envers.teatre/" target="_blank" rel="noopener" style="color: grey; text-decoration: none;">Envers Teatre</a>, who has chosen to take a proactive approach toward professional training.',
     'hero': 'Home','nav-training':'Training','nav-projects':'Projects','nav-about':'About','nav-contact':'Contact',
     'title-training':'Training','title-projects':'Projects','title-about':'About',
     'about-text':'Actor trained between <em>amateur company</em> and professional school. The collective work of Envers Teatre, the lens of epic theatre and the exploration of scenic movement coexist with ongoing training at Eòlia.<br><br>A journey from Shakespeare to Beckett, from Vinterberg to Dragún: texts that demand presence, risk and precision.',
@@ -489,7 +493,23 @@ const PROJECTS = [
       {venue:'Ca la Panarra, Barcelona',date:'22/06/2024'},
     ],
     photos:[
-      {src:'',cap:'El Diable de l\'Ampolla'},
+      {src:'./assets/envers_diable/P1030117.JPG',cap:'El Diable de l\'Ampolla · Ca la Panarra (Barcelona)'},
+      {src:'./assets/envers_diable/P1030200.JPG',cap:'El Diable de l\'Ampolla · Ca la Panarra (Barcelona)'},
+      //{src:'./assets/envers_diable/P1030096.JPG',cap:'El Diable de l\'Ampolla'},
+      //{src:'./assets/envers_diable/P1030099.JPG',cap:'El Diable de l\'Ampolla'},
+      //src:'./assets/envers_diable/P1030110.JPG',cap:'El Diable de l\'Ampolla'},
+      {src:'./assets/envers_diable/P1030142.JPG',cap:'El Diable de l\'Ampolla · Ca la Panarra (Barcelona)'},
+      //{src:'./assets/envers_diable/P1030118.JPG',cap:'El Diable de l\'Ampolla'},
+      //{src:'./assets/envers_diable/P1030120.JPG',cap:'El Diable de l\'Ampolla'},
+      //{src:'./assets/envers_diable/P1030172.JPG',cap:'El Diable de l\'Ampolla'},
+      //{src:'./assets/envers_diable/P1030273.JPG',cap:'El Diable de l\'Ampolla'},
+      {src:'./assets/envers_diable/P1030374.JPG',cap:'El Diable de l\'Ampolla · Ca la Panarra (Barcelona)'},
+      {src:'./assets/envers_diable/IMG-20250509-WA0013.jpg',cap:'El Diable de l\'Ampolla · Espai Jove Boca Nord (Barcelona)'},
+      {src:'./assets/envers_diable/P1030274.JPG',cap:'El Diable de l\'Ampolla · Ca la Panarra (Barcelona)'},
+      //{src:'./assets/envers_diable/P1030375.JPG',cap:'El Diable de l\'Ampolla'},
+      {src:'./assets/envers_diable/P1030097.JPG',cap:'El Diable de l\'Ampolla · Ca la Panarra (Barcelona)'},
+      {src:'./assets/envers_diable/P1030094.JPG',cap:'El Diable de l\'Ampolla · Ca la Panarra (Barcelona)'},
+      {src:'./assets/envers_diable/P1030151.JPG',cap:'El Diable de l\'Ampolla · Ca la Panarra (Barcelona)'},
     ],
     videos:[
     {src:'https://www.youtube.com/embed/kV-FKPlharU',label:'Keawe li parla a Lopaka de l\'ampolla'},
@@ -536,10 +556,31 @@ const PROJECTS = [
       {venue:'Sala Santa Llúcia, Reus',date:'28/03/2021'},
     ],
     photos:[
-      {src:'',cap:'Històries per a ser explicades'},
+      {src:'./assets/envers_histories/hpsc_reus-29.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      {src:'./assets/envers_histories/hpsc_reus-20.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      {src:'./assets/envers_histories/hpsc_reus-21.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      {src:'./assets/envers_histories/IMG-20210617-WA0056.jpg',cap:'Històries per a ser explicades · Plaça Comes (Les Corts)'},
+      {src:'./assets/envers_histories/IMG-20210617-WA0016.jpg',cap:'Històries per a ser explicades · Plaça Comes (Les Corts)'},
+      {src:'./assets/envers_histories/IMG-20210617-WA0049.jpg',cap:'Històries per a ser explicades · Plaça Comes (Les Corts)'},
+      {src:'./assets/envers_histories/hpsc_reus-39.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      {src:'./assets/envers_histories/hpsc_reus-46.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      {src:'./assets/envers_histories/hpsc_reus-42.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+
+      //{src:'./assets/envers_histories/hpsc_reus-35.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-36.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-31.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-32.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-34.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-37.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-38.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-41.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-43.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-47.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
+      //{src:'./assets/envers_histories/hpsc_reus-28.jpg',cap:'Històries per a ser explicades · Sala Santa Llucia (Reus)'},
     ],
     videos:[
     {src:'https://www.youtube.com/embed/xM48coe_A7I',label:'Història de com el nostre amic August Gonzàlez es va sentir responsable de l\'epidèmia de pesta bubònica de l\'Àfrica del sud'},
+    {src:'https://www.youtube.com/embed/9EQZRXE6Cho',label:'Història de l\'home que va convertir-se en gos'},
     ]
   },
   {
@@ -575,7 +616,16 @@ const PROJECTS = [
       {src:'./assets/envers_festen/IMG-20200223-WA0061.jpg',cap:'La Festa · Envers Teatre'},
       {src:'./assets/envers_festen/DSC_0538.JPG',cap:'La Festa · Envers Teatre'},
     ],
-    videos:[]
+    videos:[
+      {src:'https://www.youtube.com/embed/hqkDSYrylt0',label:'La Festa · Cançó d\'aniversari'},
+      {src:'https://www.youtube.com/embed/EdESjs8QOG8',label:'La Festa · En Michael pega a en Helge'},
+      {src:'https://www.youtube.com/embed/Vrs_6y8vh8A',label:'La Festa · Escena de la banyera (grades)'},
+      {src:'https://www.youtube.com/embed/ljosWVsN_NY',label:'La Festa · Escena de la banyera (POV)'},
+      {src:'https://www.youtube.com/embed/ry3nYmhSQkM',label:'La Festa · Michael expulsa a Christian i canten una cançó racista (grades)'},
+      {src:'https://www.youtube.com/embed/0tdwM3rUgsA',label:'La Festa · Michael expulsa a Christian i canten una cançó racista (POV)'},
+      {src:'https://www.youtube.com/embed/6TO__OPgkMs',label:'La Festa · Michael i Chrisitan es troben (grades)'},
+      {src:'https://www.youtube.com/embed/CcmiTyr0aNo',label:'La Festa · Michael i Chrisitan es troben (POV)'},
+    ]
   },
   {
     year:'2019–2020',
@@ -630,7 +680,10 @@ const TRAINING = [
     name:{ca:'Interpretació',es:'Interpretación',en:'Acting'},
     tutors:[{name:'Rosa May',url:'https://www.eolia.cat/portfolio-items/rosa-may/'},{name:'Carla Torres',url:'https://www.eolia.cat/portfolio-items/carla-torres/'},{name:'Salva Soler',url:'https://www.eolia.cat/portfolio-items/salva-soler/'}],
     photos:[],
-    videos:[{src:'https://www.youtube.com/embed/TI3zV9H306w',label:'Funeral · Projecte de creació'},]
+    videos:[
+      {src:'https://www.youtube.com/embed/TI3zV9H306w',label:'Funeral · Projecte de creació'},
+        {src:'https://www.youtube.com/embed/SFHILmCjJEM',label:'El Principi d\'Arquimedes · Escena 1 (recull de clips)'},
+    ]
   },
   {period:'09/2024–06/2026',
     inst:{ca:'Eòlia',es:'Eòlia',en:'Eòlia'},instUrl:'https://www.eolia.cat/',
