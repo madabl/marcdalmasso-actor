@@ -45,10 +45,10 @@
     .nav-links a.nav-active{color:var(--accent)}
 
     /* ── MOBILE NAV BAR ── */
-    /* Shown only on mobile, sits below the name bar */
+    /* Shown only on mobile, sits at the very top (full nav replacement) */
     .mobile-nav{
       display:none;
-      position:fixed;top:64px;left:0;right:0;z-index:199;
+      position:fixed;top:0;left:0;right:0;z-index:201;
       background:rgba(10,10,10,.97);
       border-bottom:1px solid var(--border);
       padding:0 20px;
@@ -97,10 +97,13 @@
     .hero-title em{font-style:italic;color:var(--accent)}
     .hero-statement{margin-top:36px;max-width:380px;font-size:14px;line-height:1.95;color:var(--light);opacity:0;animation:fadeUp 1.1s ease forwards .8s}
 
-    /* ── HERO PHOTO ── */
-    .hero-photo-col{position:relative;opacity:0;animation:fadeIn 1.4s ease forwards .9s;display:flex;flex-direction:column;align-items:center;gap:10px}
-    .hero-photo-col::before{content:'';position:absolute;inset:0;background:var(--dark);z-index:0;border:1px solid var(--border)}
-    .hero-display,.hero-thumbs{position:relative;z-index:1}
+    /* ── HERO RIGHT COLUMN ── */
+    .hero-right{position:relative;opacity:0;animation:fadeIn 1.4s ease forwards .9s;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+    .hero-right::before{content:'';position:absolute;inset:0;background:var(--dark);z-index:0;border:1px solid var(--border)}
+    /* On narrow screens, stack: photos on top, reel below spanning full width */
+    @media(max-width:960px){
+      .hero-right{grid-template-columns:1fr}
+    }
     .hero-display{position:relative;width:100%;max-width:360px;aspect-ratio:3/4;overflow:hidden;background:var(--off-black);border:1px solid var(--border)}
     .hero-display img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(10%) contrast(1.04);transition:opacity .5s ease,filter .5s;opacity:0}
     .hero-display img.active{opacity:1}
@@ -111,6 +114,14 @@
     .hero-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;pointer-events:none}
     .hero-thumb.active,.hero-thumb:hover{opacity:1;border-color:var(--accent)}
 
+    /* Hero photo column and reel */
+    .hero-photo-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;align-self:flex-start}
+    .hero-photo-col{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 16px 12px}
+    .hero-reel{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;padding:16px 16px 12px;justify-content:flex-start}
+    .hero-reel-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+    .hero-reel-video{position:relative;width:100%;aspect-ratio:16/9;background:var(--off-black);border:1px solid var(--border);overflow:visible}
+    .hero-reel-video iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block}
+
     /* ── SECTIONS ── */
     section{padding:100px 48px}
     .section-header{display:flex;align-items:baseline;gap:24px;margin-bottom:56px}
@@ -119,11 +130,14 @@
     .section-rule{flex:1;height:1px;background:var(--border)}
 
     /* ── ACCORDION GRIDS ── */
-    .acc-grid{display:grid;gap:0;border-left:1px solid var(--border);border-top:1px solid var(--border)}
+    /* gap:1px + background:var(--border) renders grid lines as a background colour
+       rather than as element borders. This avoids subpixel rendering artifacts
+       where adjacent 1px borders can disappear at certain viewport widths. */
+    .acc-grid{display:grid;gap:1px;background:var(--border);border:1px solid var(--border)}
     .acc-grid.proj-grid{grid-template-columns:repeat(auto-fill,minmax(var(--cartell-min-w),1fr))}
     .acc-grid.train-grid{grid-template-columns:repeat(auto-fill,minmax(var(--training-min-w),1fr))}
 
-    .acc-tab{position:relative;border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;cursor:crosshair;background:var(--off-black);transition:background .3s;display:flex;flex-direction:column}
+    .acc-tab{position:relative;overflow:hidden;cursor:crosshair;background:var(--off-black);transition:background .3s;display:flex;flex-direction:column}
     .acc-tab:hover,.acc-tab.active{background:var(--dark)}
 
     .acc-tab-visual{position:relative;overflow:hidden;flex-shrink:0;background:var(--black);height:var(--cartell-h)}
@@ -131,9 +145,13 @@
     .acc-tab-visual img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .6s ease,filter .5s;filter:brightness(.75) grayscale(25%)}
     .acc-tab:hover .acc-tab-visual img,.acc-tab.active .acc-tab-visual img{transform:scale(1.04);filter:brightness(1) grayscale(0%)}
 
-    //.acc-tab-visual.no-img{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--black);border-bottom:1px solid var(--border)}
-    //.acc-tab-visual.no-img .vis-period{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,32px);font-weight:300;font-style:italic;color:rgba(200,184,154,.35);letter-spacing:.02em}
-    //.acc-tab-visual.no-img .vis-inst{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,184,154,.5)}
+    /* Training tab visual-area alternative: large period/institution text overlay.
+       Re-enable by uncommenting both this CSS and the .acc-tab-visual block
+       inside trainingTabHTML() in the JS.
+    .acc-tab-visual.no-img{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--black);border-bottom:1px solid var(--border)}
+    .acc-tab-visual.no-img .vis-period{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,32px);font-weight:300;font-style:italic;color:rgba(200,184,154,.35);letter-spacing:.02em}
+    .acc-tab-visual.no-img .vis-inst{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,184,154,.5)}
+    */
 
     .cartell-arrows{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;opacity:0.3;transition:opacity .25s;pointer-events:none;z-index:5}
     .acc-tab-visual:hover .cartell-arrows{opacity:1;pointer-events:auto}
@@ -152,12 +170,19 @@
     .acc-tab:hover .acc-tab-indicator,.acc-tab.active .acc-tab-indicator{width:32px;background:var(--accent)}
 
     /* ── DETAIL PANEL ── */
-    .acc-detail{grid-column:1/-1;border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;max-height:0;transition:max-height .55s cubic-bezier(.4,0,.2,1);background:var(--off-black)}
+    /* overflow:hidden blocks the Fullscreen API for descendant iframes.
+       clip-path:inset(0) provides identical visual clipping without creating
+       a scroll container, so fullscreen requests propagate freely. */
+    /* grid-column:1/-1 spans full width. max-height:0→2400px animates open/close.
+       overflow:visible is required for iframe fullscreen; clip-path:inset(0) provides
+       the visual clipping that overflow:hidden would normally give. */
+    .acc-detail{grid-column:1/-1;overflow:visible;clip-path:inset(0);max-height:0;transition:max-height .55s cubic-bezier(.4,0,.2,1);background:var(--off-black)}
     .acc-detail.open{max-height:2400px}
-    .detail-inner{padding:44px 48px}
+    /* border-bottom closes the content box even when there are no photos/videos */
+    .detail-inner{padding:44px 48px;border-bottom:1px solid var(--border)}
     .detail-top{display:grid;grid-template-columns:1fr 370px;gap:48px;margin-bottom:36px;padding-bottom:36px;border-bottom:1px solid var(--border)}
     .detail-top.no-bolos{grid-template-columns:1fr}
-    .detail-abstract{font-size:1  4px;color:var(--light);line-height:1.95}
+    .detail-abstract{font-size:14px;color:var(--light);line-height:1.95}
     .detail-meta{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
     .detail-meta-item{font-size:15px;color:var(--muted);line-height:1.65}
     .detail-meta-item strong{display:block;font-weight:400;color:var(--light);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:2px}
@@ -175,13 +200,40 @@
     .photo-slot:hover img{filter:grayscale(0%);transform:scale(1.04)}
     .photo-slot::after{content:attr(data-caption);position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:var(--light);font-size:11px;letter-spacing:.08em;padding:20px 12px 10px;opacity:0;transition:opacity .3s}
     .photo-slot:hover::after{opacity:1}
+
+    /* ── PHOTO LIGHTBOX ── */
+    #photoLightbox{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.92);align-items:center;justify-content:center;cursor:crosshair}
+    #photoLightbox.open{display:flex}
+    #photoLightboxImg{max-width:92vw;max-height:88vh;object-fit:contain;display:block;border:1px solid var(--border)}
+    .lb-btn{position:fixed;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(30,30,30,.8);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:crosshair;transition:background .2s,border-color .2s;z-index:1001}
+    .lb-btn:hover{background:rgba(10,10,10,.95);border-color:var(--accent)}
+    .lb-btn svg{pointer-events:none}
+    #lbPrev{left:16px}
+    #lbNext{right:16px}
+    #lbClose{position:fixed;top:16px;right:16px;width:36px;height:36px;background:rgba(30,30,30,.8);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:crosshair;z-index:1001;transition:background .2s,border-color .2s}
+    #lbClose:hover{background:rgba(10,10,10,.95);border-color:var(--accent)}
+    #lbCaption{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.12em;color:var(--light);white-space:nowrap;pointer-events:none;background:rgba(10,10,10,.7);padding:6px 14px;max-width:80vw;overflow:hidden;text-overflow:ellipsis;text-align:center}
     .videos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px}
-    .video-slot{position:relative;aspect-ratio:16/9;background:var(--dark);overflow:hidden}
-    .video-slot iframe{width:100%;height:100%;border:none;display:block}
+    .video-slot{position:relative;aspect-ratio:16/9;background:var(--dark);overflow:visible}
+    .video-slot iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block}
     .video-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--border);border:1px dashed rgba(46,46,46,.5)}
     .video-placeholder-icon{width:40px;height:40px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
     .video-placeholder span{font-size:10px;letter-spacing:.2em;text-transform:uppercase}
-    .video-label{position:absolute;top:0;left:0;right:0;padding:5px 10px;background:rgba(10,10,10,.8);font-size:11px;color:var(--muted);letter-spacing:.06em}
+    .video-label{
+      position:absolute;top:0;left:0;right:0;
+      padding:5px 10px;
+      background:linear-gradient(rgba(10,10,10,.85),transparent);
+      font-size:11px;color:var(--muted);letter-spacing:.06em;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      pointer-events:auto;z-index:2;cursor:default;
+    }
+    .video-label:hover{
+      white-space:normal;overflow:visible;text-overflow:unset;
+      background:rgba(10,10,10,.88);
+    }
+    /* Fullscreen: overflow:hidden on ancestors would block the Fullscreen API.
+       .acc-detail uses clip-path:inset(0) instead (see detail panel rules) which
+       provides identical visual clipping without creating a scroll container. */
 
     /* ── ABOUT ── */
     #about{background:var(--off-black)}
@@ -215,14 +267,14 @@
 
     /* ── RESPONSIVE ── */
     @media(max-width:720px){
-      /* Show mobile nav bar, hide desktop links */
-      nav{padding:14px 20px}
-      .nav-links{display:none}
+      /* Show mobile nav bar, hide desktop nav entirely */
+      nav{display:none}
       .mobile-nav{display:flex}
 
-      .hero{grid-template-columns:1fr;padding:110px 20px 56px;gap:40px}
-      .hero-display{max-width:280px}
-      .hero-thumbs{max-width:280px}
+      .hero{grid-template-columns:1fr;padding:70px 20px 56px;gap:40px}
+      .hero-right{grid-template-columns:1fr}
+      .hero-display{max-width:240px}
+      .hero-thumbs{max-width:240px}
       section{padding:72px 20px}
       .detail-top{grid-template-columns:1fr!important;gap:28px}
       .about-content{grid-template-columns:1fr;gap:40px}
@@ -260,6 +312,8 @@
 
 <!-- MOBILE NAV BAR -->
 <div class="mobile-nav" id="mobileNav">
+  <a href="#home" class="nav-name" style="font-size:15px;letter-spacing:.1em">Marc Dalmasso</a>
+  <div style="display:flex;align-items:center;gap:12px">
   <!-- Section selector -->
   <div class="mob-pill" id="mobSectionPill">
     <span id="mobSectionVal" class="mob-val">—</span>
@@ -278,6 +332,7 @@
       <div class="mob-dropdown-item" data-lang="en">English</div>
     </div>
   </div>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -289,18 +344,27 @@
       Actor format a través dels projectes de la companyia <a href="https://www.instagram.com/envers.teatre/" target="_blank" rel="noopener" style="color: grey; text-decoration: none;">Envers Teatre</a>, que ha decidit assumir una postura proactiva cap a una formació professionalitzadora.
     </p>
   </div>
-  <div class="hero-photo-col">
-    <div class="hero-display" id="heroDisplay">
-      <img src="assets/0_profile/marc3.jpeg" alt="Marc Dalmasso" class="active">
-      <img src="assets/0_profile/marc2.jpeg" alt="Marc Dalmasso">
-      <img src="assets/0_profile/marc4.jpeg" alt="Marc Dalmasso">
-      <img src="assets/0_profile/marc5.jpeg" alt="Marc Dalmasso">
-      <img src="assets/0_profile/marc6.jpeg" alt="Marc Dalmasso">
-      <img src="assets/0_profile/marc7.jpeg" alt="Marc Dalmasso">
-      <img src="assets/0_profile/marc1.jpeg" alt="Marc Dalmasso">
-      <div class="hero-display-counter" id="heroCounter">1 / 2</div>
+  <div class="hero-right">
+    <div class="hero-photo-col">
+      <div class="hero-photo-label" id="hero-photo-label">Fotografies</div>
+      <div class="hero-display" id="heroDisplay">
+        <img src="assets/0_profile/marc3.jpeg" alt="Marc Dalmasso" class="active">
+        <img src="assets/0_profile/marc2.jpeg" alt="Marc Dalmasso">
+        <img src="assets/0_profile/marc4.jpeg" alt="Marc Dalmasso">
+        <img src="assets/0_profile/marc5.jpeg" alt="Marc Dalmasso">
+        <img src="assets/0_profile/marc6.jpeg" alt="Marc Dalmasso">
+        <img src="assets/0_profile/marc7.jpeg" alt="Marc Dalmasso">
+        <img src="assets/0_profile/marc1.jpeg" alt="Marc Dalmasso">
+        <div class="hero-display-counter" id="heroCounter">1 / 2</div>
+      </div>
+      <div class="hero-thumbs" id="heroThumbs"></div>
     </div>
-    <div class="hero-thumbs" id="heroThumbs"></div>
+    <div class="hero-reel">
+      <div class="hero-reel-label" id="hero-reel-label">Videobook</div>
+      <div class="hero-reel-video">
+        <iframe src="https://www.youtube.com/embed/nkap3lB_-YM" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -374,7 +438,7 @@
 <div id="contact">
   <div class="contact-left" id="contact-phrase">
     Parlem<br>
-    <a href="mailto:marcdabl.tux@gmail.com" class="contact-email">marcdabl.tux@gmail.com</a>
+    <a href="#" class="contact-email" id="contact-email-link">—</a>
   </div>
   <div class="contact-right">
     <!--
@@ -390,7 +454,17 @@
   <div class="footer-tag">Actor · Barcelona</div>
 </footer>
 
-<script>
+<div id="photoLightbox">
+  <div id="lbClose">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
+  </div>
+  <button class="lb-btn" id="lbPrev"><svg width="10" height="14" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="8,1 2,8 8,15"/></svg></button>
+  <img id="photoLightboxImg" src="" alt="">
+  <button class="lb-btn" id="lbNext"><svg width="10" height="14" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,1 8,8 2,15"/></svg></button>
+  <div id="lbCaption"></div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 'use strict';
 
 /* ══ TRANSLATIONS ══ */
@@ -404,7 +478,8 @@ const T = {
     'about-label-company':'Companyia','about-label-school':'Escola','about-label-skills':'Habilitats escèniques',
     'about-label-lang':'Idiomes','about-langs':'Català · Castellà (Espanya) · Anglès',
     'about-label-avail':'Disponibilitat','about-avail':'Barcelona · Catalunya',
-    'contact-phrase':'Parlem.<br><a href="mailto:marcdabl.tux@gmail.com" class="contact-email">marcdabl.tux@gmail.com</a>',
+    'hero-photo-label':'Fotografies',
+    'contact-phrase-word':'Parlem.',
     'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístic','lang':'ca',
     bolosLabel:'Representacions',photoLabel:'Fotografies',videoLabel:'Vídeo',addVideo:'Afegir vídeo',
     mobSections:{home:'Inici',formacio:'Formació',projectes:'Projectes',about:'Sobre mi',contact:'Contacte'},
@@ -418,7 +493,8 @@ const T = {
     'about-label-company':'Compañía','about-label-school':'Escuela','about-label-skills':'Habilidades escénicas',
     'about-label-lang':'Idiomas','about-langs':'Catalán · Castellano (España) · Inglés',
     'about-label-avail':'Disponibilidad','about-avail':'Barcelona · Cataluña',
-    'contact-phrase':'Hablemos.<br><a href="mailto:marcdabl.tux@gmail.com" class="contact-email">marcdabl.tux@gmail.com</a>',
+    'hero-photo-label':'Fotografías',
+    'contact-phrase-word':'Hablemos.',
     'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Dossier Artístico','lang':'es',
     bolosLabel:'Representaciones',photoLabel:'Fotografías',videoLabel:'Vídeo',addVideo:'Añadir vídeo',
     mobSections:{home:'Inicio',formacio:'Formación',projectes:'Proyectos',about:'Sobre mí',contact:'Contacto'},
@@ -432,7 +508,8 @@ const T = {
     'about-label-company':'Company','about-label-school':'School','about-label-skills':'Stage skills',
     'about-label-lang':'Languages','about-langs':'Catalan · Spanish (Spain) · English',
     'about-label-avail':'Availability','about-avail':'Barcelona · Catalonia',
-    'contact-phrase':'Let\'s talk.<br><a href="mailto:marcdabl.tux@gmail.com" class="contact-email">marcdabl.tux@gmail.com</a>',
+    'hero-photo-label':'Photography',
+    'contact-phrase-word':'Let\'s talk.',
     'contact-location':'Barcelona','footer-copy':'© Marc Dalmasso · Artistic Dossier','lang':'en',
     bolosLabel:'Performances',photoLabel:'Photography',videoLabel:'Video',addVideo:'Add video',
     mobSections:{home:'Home',formacio:'Training',projectes:'Projects',about:'About',contact:'Contact'},
@@ -441,6 +518,17 @@ const T = {
 
 let currentLang = 'ca';
 
+// Assembles the contact email link at runtime. Cloudflare's static email obfuscation
+// replaces mailto: links in HTML with encoded versions; building the address in JS
+// bypasses that and keeps the address readable while still avoiding plain-text exposure.
+function _buildEmailLink() {
+  const u = 'marcdabl.tux'; const d = 'gmail'; const t = 'com';
+  const addr = u + '@' + d + '.' + t;
+  return '<a href="mailto:' + addr + '" class="contact-email">' + addr + '</a>';
+}
+
+// Updates the page language: swaps all id-keyed text, rebuilds accordion labels,
+// re-renders open detail panels, and updates nav/lang-switcher UI state.
 function setLang(lang) {
   currentLang = lang;
   document.documentElement.lang = T[lang].lang;
@@ -450,6 +538,12 @@ function setLang(lang) {
     const el = document.getElementById(k);
     if (el) el.innerHTML = T[lang][k];
   });
+  // Render contact phrase with JS-assembled email (avoids Cloudflare obfuscation)
+  const phrase = document.getElementById('contact-phrase');
+  if (phrase) {
+    const word = T[lang]['contact-phrase-word'] || '';
+    phrase.innerHTML = word + '<br>' + _buildEmailLink();
+  }
   // Desktop lang buttons
   document.querySelectorAll('.lang-btn').forEach(b =>
     b.classList.toggle('active', b.textContent.toLowerCase() === lang)
@@ -672,7 +766,9 @@ const TRAINING = [
     name:{ca:'Clown',es:'Clown',en:'Clown'},
     tutors:[{name:'Arnau Marín',url:'https://www.eolia.cat/portfolio-items/arnau-marin/'}],
     //photos:[{src:'./assets/0_profile/marc2_orig.jpeg',cap:'Clown'}],
-    photos:[{src:'./assets/0_profile/marc2_orig.jpeg',cap:'Clown'}],
+    photos:[
+    //  {src:'./assets/0_profile/marc2_orig.jpeg',cap:'Clown'},
+    ],
     videos:[]
   },
   {period:'02/2024–06/2025',
@@ -712,6 +808,28 @@ const TRAINING = [
   },
 ];
 
+/* ══ FULLSCREEN GUARD ══
+   _fsActive is true while fullscreen is in progress AND for a grace period after
+   exit. This prevents the resize event fired on fullscreen exit from triggering
+   rebuildKeepingIframes, which would reset the video and scroll the page. */
+let _fsActive = false;
+let _fsGraceTimer = null;
+function _onFsChange() {
+  // Check both standard and webkit-prefixed fullscreen (Safari)
+  const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  clearTimeout(_fsGraceTimer);
+  if (isFs) {
+    _fsActive = true;
+  } else {
+    // Keep the flag true for 600ms after exit so the exit-triggered resize is suppressed.
+    // The browser fires a resize event when leaving fullscreen; without this grace period
+    // rebuildKeepingIframes would run immediately after exit and reset the video.
+    _fsGraceTimer = setTimeout(() => { _fsActive = false; }, 600);
+  }
+}
+document.addEventListener('fullscreenchange', _onFsChange);
+document.addEventListener('webkitfullscreenchange', _onFsChange);
+
 /* ══ ACCORDION FACTORY ══ */
 function createAccordion({gridEl, data, buildTabHTML, buildDetailHTML}) {
   const acc = {activeIdx:-1, detailEls:[], tabEls:[]};
@@ -749,27 +867,43 @@ function createAccordion({gridEl, data, buildTabHTML, buildDetailHTML}) {
       }
     }
 
-    // Hover → open (no close on hover)
-    tab.addEventListener('mouseenter', () => { if (acc.activeIdx !== idx) acc.open(idx); });
+    // Hover → open (no close on hover) — suppressed during fullscreen to avoid
+    // destroying the iframe when the fullscreen overlay re-triggers mouseenter
+    tab.addEventListener('mouseenter', () => {
+      if (acc.activeIdx !== idx && !document.fullscreenElement && !document.webkitFullscreenElement) acc.open(idx);
+    });
     // Click → open only, never close (prevents confusion on touch)
     tab.addEventListener('click', (e) => {
       if (!e.target.closest('.cartell-btn')) acc.open(idx);
     });
   });
 
+  // Reads offsetTop of each tab to group them into visual rows.
+  // Returns array of row arrays: [{tab, idx}, ...] per row.
+  // Does not touch the DOM at all — safe to call at any time.
+  function _computeRows() {
+    const rows = [];
+    if (!acc.tabEls.length) return rows;
+    let curRow = [], curTop = acc.tabEls[0].offsetTop;
+    acc.tabEls.forEach((tab, i) => {
+      if (Math.abs(tab.offsetTop - curTop) > 4) { rows.push(curRow); curRow = []; curTop = tab.offsetTop; }
+      curRow.push({tab, idx: i});
+    });
+    rows.push(curRow);
+    return rows;
+  }
+
+  // Full rebuild: removes all .acc-detail panel elements and recreates them from
+  // scratch, one per visual row, inserted after each row's last tab.
+  // Called on init (via requestAnimationFrame) and on language change.
+  // NOT called directly on resize — use rebuildKeepingIframes() instead to
+  // avoid resetting live iframes.
   function rebuildPanels() {
     acc.detailEls.forEach(el => el.remove());
     acc.detailEls = [];
     if (!acc.tabEls.length) return;
-    const rows = [];
-    let curRow = [], curTop = acc.tabEls[0].offsetTop;
-    acc.tabEls.forEach((tab, i) => {
-      if (Math.abs(tab.offsetTop - curTop) > 4) { rows.push(curRow); curRow = []; curTop = tab.offsetTop; }
-      curRow.push({tab, idx:i});
-    });
-    rows.push(curRow);
-    rows.forEach(row => {
-      const lastTab = row[row.length-1].tab;
+    _computeRows().forEach(row => {
+      const lastTab = row[row.length - 1].tab;
       const panel = document.createElement('div');
       panel.className = 'acc-detail';
       panel._rowIndices = row.map(r => r.idx);
@@ -785,28 +919,121 @@ function createAccordion({gridEl, data, buildTabHTML, buildDetailHTML}) {
     }
   }
 
+  // Resize handler: performs a full rebuildPanels() to keep grid row breaks correct,
+  // but first moves any live iframes from the open panel into a hidden off-screen
+  // holder element so they stay alive in the DOM through the rebuild. Afterwards,
+  // the live iframes are swapped back in by matching src URL against the new
+  // placeholder iframes that rebuildPanels() created. Skipped while _fsActive
+  // to avoid disturbing fullscreen sessions (fullscreen+exit both fire resize).
+  function rebuildKeepingIframes() {
+    const holder = document.createElement('div');
+    holder.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden;top:-9999px';
+    const liveIframes = {};
+    if (acc.activeIdx >= 0) {
+      const openPanel = acc.panelForIdx(acc.activeIdx);
+      if (openPanel) {
+        Array.from(openPanel.querySelectorAll('iframe')).forEach(iframe => {
+          const src = iframe.src;
+          if (src) { liveIframes[src] = iframe; holder.appendChild(iframe); }
+        });
+      }
+    }
+    const hasLive = Object.keys(liveIframes).length > 0;
+    if (hasLive) document.body.appendChild(holder);
+
+    rebuildPanels();
+
+    if (hasLive) {
+      const openPanel = acc.panelForIdx(acc.activeIdx);
+      if (openPanel) {
+        openPanel.querySelectorAll('iframe').forEach(placeholder => {
+          const live = liveIframes[placeholder.src];
+          if (live) placeholder.parentNode.replaceChild(live, placeholder);
+        });
+      }
+      document.body.removeChild(holder);
+    }
+  }
+
   acc.panelForIdx = (idx) => acc.detailEls.find(p => p._rowIndices && p._rowIndices.includes(idx));
 
+  // Opens the detail panel for the tab at `idx`. If a different row's panel is
+  // already open, closes it first with an animated scroll compensation so the
+  // content under the cursor appears to stay still as the panel rolls up.
   acc.open = (idx) => {
     // ── SCROLL COMPENSATION ──────────────────────────────────────
-    // Record the hovered tab's viewport position BEFORE any DOM change.
-    // After closing the old panel (which may remove height above this tab),
-    // we correct scrollY by the exact drift so the tab stays visually still.
-    const anchorTab = acc.tabEls[idx];
-    const anchorBefore = anchorTab.getBoundingClientRect().top;
+    // The panel closes with a 0.55s cubic-bezier animation. We animate the
+    // scroll offset over the same duration/easing so content under the cursor
+    // appears to stay still while the panel rolls up above it.
+    const ANIM_MS = 550;
+    // cubic-bezier(.4,0,.2,1) solver via Newton's method
+    const ease = (function() {
+      const p1x=0.4, p1y=0, p2x=0.2, p2y=1;
+      function sampleX(t){ return 3*p1x*t*(1-t)*(1-t)+3*p2x*t*t*(1-t)+t*t*t; }
+      function sampleY(t){ return 3*p1y*t*(1-t)*(1-t)+3*p2y*t*t*(1-t)+t*t*t; }
+      function sampleDX(t){ return 3*p1x*(1-t)*(1-3*t)+3*p2x*t*(3*t-2)+3*t*t; }
+      return function(x) {
+        if (x <= 0) return 0; if (x >= 1) return 1;
+        let t = x;
+        for (let i = 0; i < 8; i++) {
+          const dx = sampleX(t) - x;
+          if (Math.abs(dx) < 1e-6) break;
+          t -= dx / sampleDX(t);
+        }
+        return sampleY(t);
+      };
+    })();
 
     const prevPanel = acc.activeIdx >= 0 ? acc.panelForIdx(acc.activeIdx) : null;
     const switchingRows = prevPanel && !prevPanel._rowIndices.includes(idx);
 
+    // Snapshot panel geometry BEFORE removing 'open'
+    let totalCompensation = 0;
+    let panelActualHeight = 0;
+    const MAX_HEIGHT_CSS = 2400; // must match .acc-detail.open max-height in CSS
+    if (switchingRows && prevPanel) {
+      const r = prevPanel.getBoundingClientRect();
+      panelActualHeight = r.height;
+      const curY = _cursorY;
+      const panelBottom = r.top + r.height;
+      if (panelBottom <= curY) {
+        totalCompensation = -r.height;
+      } else if (r.top < curY) {
+        totalCompensation = -(curY - r.top);
+      }
+    }
+
     if (acc.activeIdx >= 0) {
-      if (prevPanel) prevPanel.classList.remove('open');
+      if (prevPanel) {
+        prevPanel.classList.remove('open');
+      }
       acc.tabEls[acc.activeIdx].classList.remove('active');
     }
 
-    // Compensate immediately after collapsing (synchronous — before paint)
-    if (switchingRows) {
-      const drift = anchorTab.getBoundingClientRect().top - anchorBefore;
-      if (drift !== 0) window.scrollBy({top: drift, behavior: 'instant'});
+    // Animate scroll to match the panel's VISUAL collapse.
+    // max-height transitions from MAX_HEIGHT_CSS→0 via ease(t).
+    // Visible height only starts shrinking when max-height < actualHeight,
+    // i.e. when ease(t) > 1 - actualHeight/MAX_HEIGHT_CSS.
+    // We track that exact value per-frame.
+    if (switchingRows && totalCompensation !== 0 && panelActualHeight > 0) {
+      const threshold = 1 - panelActualHeight / MAX_HEIGHT_CSS;
+      const startTime = performance.now();
+      let applied = 0;
+      function animateScroll(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / ANIM_MS, 1);
+        const easedT = ease(t);
+        // How much of totalCompensation to apply: 0 until threshold, then linear in remaining range
+        const visualProgress = easedT <= threshold ? 0 : (easedT - threshold) / (1 - threshold);
+        const target = Math.round(totalCompensation * visualProgress);
+        const delta = target - applied;
+        if (delta !== 0) {
+          window.scrollBy({top: delta, behavior: 'instant'});
+          applied = target;
+        }
+        if (t < 1) requestAnimationFrame(animateScroll);
+      }
+      requestAnimationFrame(animateScroll);
     }
 
     acc.activeIdx = idx;
@@ -819,33 +1046,30 @@ function createAccordion({gridEl, data, buildTabHTML, buildDetailHTML}) {
     }
   };
 
-  acc.close = () => {
-    if (acc.activeIdx >= 0) {
-      const prev = acc.panelForIdx(acc.activeIdx);
-      if (prev) prev.classList.remove('open');
-      acc.tabEls[acc.activeIdx].classList.remove('active');
-      acc.activeIdx = -1;
-    }
-  };
-
   acc.renderDetail = (idx) => {
     const panel = acc.panelForIdx(idx);
     if (panel && panel.classList.contains('open'))
       panel.innerHTML = `<div class="detail-inner">${buildDetailHTML(data[idx], idx, currentLang)}</div>`;
   };
 
-  // Expose data ref for label rebuild
-  acc._data = data;
-  acc._buildTabHTML = buildTabHTML;
-
   requestAnimationFrame(() => requestAnimationFrame(rebuildPanels));
   let rsz;
-  window.addEventListener('resize', () => { clearTimeout(rsz); rsz = setTimeout(rebuildPanels, 200); });
+  window.addEventListener('resize', () => {
+    clearTimeout(rsz);
+    rsz = setTimeout(() => {
+      // _fsActive stays true during fullscreen AND for 600ms after exit, blocking
+      // the resize that the browser fires when leaving fullscreen.
+      if (_fsActive) return;
+      rebuildKeepingIframes();
+    }, 200);
+  });
   return acc;
 }
 
 /* ══ REBUILD TAB LABELS ON LANG CHANGE ══
-   Tabs are built by JS, not id-keyed, so we need to update them directly. */
+   Accordion tabs are generated from JS data and not id-keyed, so the standard
+   setLang() element lookup won't find them. This function directly updates the
+   text nodes inside each tab for the new language. */
 function rebuildTabLabels() {
   // Projects
   projAccordion.tabEls.forEach((tab, idx) => {
@@ -860,12 +1084,12 @@ function rebuildTabLabels() {
     const tr = TRAINING[idx];
     const instEl = tab.querySelector('.acc-tab-year');
     const nameEl = tab.querySelector('.acc-tab-name');
-    const instVis = tab.querySelector('.vis-inst');
     const inst = tr.inst[currentLang];
     const name = tr.name[currentLang];
     if (instEl) instEl.textContent = inst;
     if (nameEl) nameEl.textContent = name;
-    if (instVis) instVis.textContent = inst;
+    // Note: .vis-inst is inside a commented-out visual block in trainingTabHTML;
+    // if that block is re-enabled, add: tab.querySelector('.vis-inst')?.textContent = inst;
   });
 }
 
@@ -898,9 +1122,14 @@ function projectTabHTML(p) {
 
 function projectDetailHTML(p, idx, lang) {
   const t = T[lang];
-  const ciaLink = p.ciaUrl
-  const meta = p.meta[lang].map(([k,v]) => `<div class="detail-meta-item"><strong>${k}</strong> ${v} </div>`).join('');
-  //const meta = p.meta[lang].map(([k,v]) => `<div class="detail-meta-item"><strong>${k}</strong><a href="${p.ciaUrl}"> ${v} </a> </div>`).join('');
+  const ciaKeys = {ca:'Companyia',es:'Compañía',en:'Company'};
+  const dirKeys = {ca:'Direcció',es:'Dirección',en:'Direction'};
+  const meta = p.meta[lang].map(([k,v]) => {
+    let val = v;
+    if (k === ciaKeys[lang] && p.ciaUrl) val = `<a href="${p.ciaUrl}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,184,154,.3)">${v}</a>`;
+    else if (k === dirKeys[lang] && p.dirUrl) val = `<a href="${p.dirUrl}" target="_blank" rel="noopener" style="color:var(--light);text-decoration:none;border-bottom:1px solid var(--border)">${v}</a>`;
+    return `<div class="detail-meta-item"><strong>${k}</strong> ${val} </div>`;
+  }).join('');
   const bolos = p.bolos.map(b => {
     const cls = b.cancelled ? ' bolo-cancelled' : '';
     const note = b.note ? ` <span style="text-decoration:none,font-size:6px;opacity:.5">· ${b.note}</span>` : '';
@@ -916,7 +1145,7 @@ function projectDetailHTML(p, idx, lang) {
   if (p.videos.length) {
     videos += `<div class="detail-media-label" style="margin-top:16px">${t.videoLabel}</div><div class="videos-grid">`;
     videos += p.videos.map(v => v
-      ? `<div class="video-slot"><iframe src="${v.src}" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe><div class="video-label">${v.label}</div></div>`
+      ? `<div class="video-slot"><iframe src="${v.src}" allow="autoplay; fullscreen *" allowfullscreen loading="lazy"></iframe><div class="video-label">${v.label}</div></div>`
       : `<div class="video-slot"><div class="video-placeholder"><div class="video-placeholder-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div><span>${t.addVideo}</span></div></div>`
     ).join('');
     videos += `</div>`;
@@ -980,7 +1209,7 @@ function trainingDetailHTML(tr, idx, lang) {
   if (tr.videos.length) {
     videos += `<div class="detail-media-label" style="margin-top:16px">${t.videoLabel}</div><div class="videos-grid">`;
     videos += tr.videos.map(v => v
-      ? `<div class="video-slot"><iframe src="${v.src}" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe><div class="video-label">${v.label}</div></div>`
+      ? `<div class="video-slot"><iframe src="${v.src}" allow="autoplay; fullscreen *" allowfullscreen loading="lazy"></iframe><div class="video-label">${v.label}</div></div>`
       : `<div class="video-slot"><div class="video-placeholder"><div class="video-placeholder-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div><span>${t.addVideo}</span></div></div>`
     ).join('');
     videos += `</div>`;
@@ -1031,6 +1260,50 @@ const trainAccordion = createAccordion({
   }
   goTo(0);
 })();
+
+/* ══ HERO REEL HEIGHT SYNC ══
+   Side-by-side: reel video gets the same explicit height as the photo display box.
+   Stacked: reel video gets the same explicit width as the photo display box;
+            the CSS aspect-ratio:16/9 then derives the height automatically.
+   Detection: if the photo column is <80% of hero-right width, it's side-by-side. */
+(function() {
+  const display = document.getElementById('heroDisplay');
+  const reelVideo = document.querySelector('.hero-reel-video');
+  if (!display || !reelVideo) return;
+  function applySync() {
+    // Read dimensions after layout has settled
+    const heroRight = display.closest('.hero-right');
+    const photoCol = display.closest('.hero-photo-col');
+    const isSideBySide = heroRight && photoCol && photoCol.offsetWidth < heroRight.offsetWidth * 0.8;
+    if (isSideBySide) {
+      // Match reel height to photo display height; override aspect-ratio so height drives sizing
+      reelVideo.style.margin = '';
+      reelVideo.style.width = '';
+      reelVideo.style.aspectRatio = 'unset';
+      reelVideo.style.height = display.offsetHeight + 'px';
+    } else {
+      // Match reel width to photo display width; CSS aspect-ratio:16/9 derives the height.
+      // margin:0 auto centers the video horizontally within the full-width reel column.
+      reelVideo.style.margin = '0 auto';
+      reelVideo.style.height = '';
+      reelVideo.style.aspectRatio = '';
+      reelVideo.style.width = display.offsetWidth + 'px';
+    }
+  }
+  function syncReelHeight() {
+    // Defer dimension reads to after the browser finishes the resize reflow,
+    // otherwise offsetWidth/offsetHeight may return stale or zero values mid-transition.
+    requestAnimationFrame(applySync);
+  }
+  syncReelHeight();
+  window.addEventListener('resize', syncReelHeight);
+})();
+
+/* ══ CURSOR TRACKER ══
+   _cursorY is read by acc.open() to decide how much to scroll-compensate
+   when a detail panel closes above the cursor position. */
+let _cursorY = 0;
+document.addEventListener('mousemove', e => { _cursorY = e.clientY; });
 
 /* ══ DESKTOP NAV: smooth scroll + active section highlight ══ */
 document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
@@ -1129,7 +1402,18 @@ document.addEventListener('click', closeMobDropdowns);
 // Init mobile section label
 buildMobSectionDropdown();
 
-/* ══ SCROLL REVEAL ══ */
+// Init contact email (assembled at runtime to avoid Cloudflare obfuscation)
+(function() {
+  const phrase = document.getElementById('contact-phrase');
+  if (phrase) {
+    phrase.innerHTML = 'Parlem.<br>' + _buildEmailLink();
+  }
+})();
+
+/* ══ SCROLL REVEAL ══
+   Accordion tabs fade up into view as they scroll into the viewport.
+   Uses IntersectionObserver; once revealed, the tab is unobserved so the
+   animation only plays once. */
 const obs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -1140,12 +1424,86 @@ const obs = new IntersectionObserver((entries) => {
   });
 }, {threshold:0.06, rootMargin:'0px 0px -24px 0px'});
 
-document.querySelectorAll('.acc-tab').forEach((el, i) => {
+document.querySelectorAll('.acc-tab').forEach(el => {
   el.style.opacity = '0';
-  el.style.transform = 'translateY(14px)';
-  el.style.transition = `opacity .55s ease ${i*.04}s, transform .55s ease ${i*.04}s, background .3s`;
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
   obs.observe(el);
 });
+
+/* ══ PHOTO LIGHTBOX ══ */
+(function() {
+  const lb = document.getElementById('photoLightbox');
+  const lbImg = document.getElementById('photoLightboxImg');
+  const lbCap = document.getElementById('lbCaption');
+  const lbClose = document.getElementById('lbClose');
+  const lbPrev = document.getElementById('lbPrev');
+  const lbNext = document.getElementById('lbNext');
+  let lbPhotos = [];
+  let lbIdx = 0;
+
+  function openLb(photos, idx) {
+    lbPhotos = photos;
+    lbIdx = idx;
+    showLb();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showLb() {
+    const ph = lbPhotos[lbIdx];
+    lbImg.src = ph.src;
+    lbImg.alt = ph.cap || '';
+    if (lbCap) {
+      lbCap.textContent = ph.cap || '';
+      lbCap.style.display = ph.cap ? '' : 'none';
+    }
+    lbPrev.style.display = lbPhotos.length > 1 ? '' : 'none';
+    lbNext.style.display = lbPhotos.length > 1 ? '' : 'none';
+  }
+
+  function closeLb() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  lbClose.addEventListener('click', closeLb);
+  lb.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+  lbPrev.addEventListener('click', (e) => { e.stopPropagation(); lbIdx = (lbIdx - 1 + lbPhotos.length) % lbPhotos.length; showLb(); });
+  lbNext.addEventListener('click', (e) => { e.stopPropagation(); lbIdx = (lbIdx + 1) % lbPhotos.length; showLb(); });
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft') { lbIdx = (lbIdx - 1 + lbPhotos.length) % lbPhotos.length; showLb(); }
+    if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % lbPhotos.length; showLb(); }
+  });
+
+  // Event delegation: catch clicks on any photo-slot
+  document.addEventListener('click', (e) => {
+    const slot = e.target.closest('.photo-slot');
+    if (!slot) return;
+    // Gather all photo-slots in the same photos-grid
+    const grid = slot.closest('.photos-grid');
+    if (!grid) return;
+    const slots = Array.from(grid.querySelectorAll('.photo-slot'));
+    const photos = slots.map(s => ({src: s.querySelector('img').src, cap: s.dataset.caption || ''}));
+    const idx = slots.indexOf(slot);
+    openLb(photos, idx);
+  });
+
+  // Also support hero display photos
+  document.addEventListener('click', (e) => {
+    const heroDisp = e.target.closest('#heroDisplay');
+    if (!heroDisp) return;
+    if (e.target.closest('.hero-thumb')) return;
+    const imgs = Array.from(heroDisp.querySelectorAll('img'));
+    const activeIdx = imgs.findIndex(i => i.classList.contains('active'));
+    const photos = imgs.map(i => ({src: i.src, cap: i.alt || ''}));
+    openLb(photos, activeIdx >= 0 ? activeIdx : 0);
+  });
+})();
+
 </script>
 </body>
 </html>
